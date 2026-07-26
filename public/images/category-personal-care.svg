@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fdf2f8"/>
+      <stop offset="100%" style="stop-color:#fce7f3"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg)" rx="16"/>
+  <!-- Hand soap bottle -->
+  <rect x="220" y="100" width="80" height="160" rx="16" fill="#ec4899" opacity="0.3"/>
+  <rect x="235" y="70" width="50" height="35" rx="6" fill="#ec4899" opacity="0.25"/>
+  <rect x="250" y="60" width="20" height="15" rx="3" fill="#ec4899" opacity="0.35"/>
+  <!-- Pump -->
+  <rect x="252" y="55" width="16" height="10" rx="3" fill="#be185d" opacity="0.3"/>
+  <!-- Lather/bubbles -->
+  <circle cx="300" cy="200" r="40" fill="white" opacity="0.4"/>
+  <circle cx="280" cy="180" r="15" fill="white" opacity="0.5"/>
+  <circle cx="320" cy="180" r="12" fill="white" opacity="0.5"/>
+  <circle cx="265" cy="200" r="10" fill="white" opacity="0.4"/>
+  <circle cx="335" cy="200" r="10" fill="white" opacity="0.4"/>
+  <!-- Hearts -->
+  <text x="120" y="150" font-size="24" fill="#ec4899" opacity="0.4">♥</text>
+  <text x="460" y="130" font-size="20" fill="#ec4899" opacity="0.3">♥</text>
+  <text x="480" y="300" font-size="16" fill="#ec4899" opacity="0.3">♥</text>
+  <text x="100" y="320" font-size="20" fill="#ec4899" opacity="0.3">♥</text>
+  <text x="300" y="370" text-anchor="middle" font-family="sans-serif" font-size="16" font-weight="bold" fill="#be185d">Personal Care</text>
+</svg>

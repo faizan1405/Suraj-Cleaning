@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0fdf4"/>
+      <stop offset="100%" style="stop-color:#dcfce7"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="400" fill="url(#bg)" rx="24"/>
+  <!-- Magnifying glass / quality check -->
+  <circle cx="180" cy="170" r="60" fill="none" stroke="#16a34a" stroke-width="6" opacity="0.3"/>
+  <line x1="225" y1="215" x2="280" y2="270" stroke="#16a34a" stroke-width="8" stroke-linecap="round" opacity="0.4"/>
+  <!-- Check mark -->
+  <path d="M150 170 L175 200 L225 140" stroke="#16a34a" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6"/>
+  <!-- Stars -->
+  <text x="280" y="120" font-size="20" fill="#fbbf24" opacity="0.5">★</text>
+  <text x="100" y="250" font-size="16" fill="#fbbf24" opacity="0.4">★</text>
+  <text x="310" y="250" font-size="14" fill="#fbbf24" opacity="0.4">★</text>
+  <text x="200" y="340" text-anchor="middle" font-family="sans-serif" font-size="14" font-weight="bold" fill="#15803d">Quality Testing</text>
+</svg>

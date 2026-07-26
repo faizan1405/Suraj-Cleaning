@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f7ff"/>
+      <stop offset="100%" style="stop-color:#dbeafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <!-- Building outline -->
+  <rect x="150" y="180" width="500" height="320" rx="12" fill="#2563eb" opacity="0.85"/>
+  <rect x="170" y="200" width="460" height="280" rx="8" fill="#1d4ed8" opacity="0.5"/>
+  <!-- Windows -->
+  <g fill="#93c5fd" opacity="0.6">
+    <rect x="200" y="230" width="60" height="50" rx="4"/>
+    <rect x="280" y="230" width="60" height="50" rx="4"/>
+    <rect x="360" y="230" width="60" height="50" rx="4"/>
+    <rect x="440" y="230" width="60" height="50" rx="4"/>
+    <rect x="520" y="230" width="60" height="50" rx="4"/>
+    <rect x="200" y="300" width="60" height="50" rx="4"/>
+    <rect x="280" y="300" width="60" height="50" rx="4"/>
+    <rect x="360" y="300" width="60" height="50" rx="4"/>
+    <rect x="440" y="300" width="60" height="50" rx="4"/>
+    <rect x="520" y="300" width="60" height="50" rx="4"/>
+    <rect x="200" y="370" width="60" height="50" rx="4"/>
+    <rect x="280" y="370" width="60" height="50" rx="4"/>
+    <rect x="360" y="370" width="60" height="50" rx="4"/>
+    <rect x="440" y="370" width="60" height="50" rx="4"/>
+    <rect x="520" y="370" width="60" height="50" rx="4"/>
+  </g>
+  <!-- Door -->
+  <rect x="355" y="380" width="90" height="120" rx="6" fill="#f8fafc" opacity="0.9"/>
+  <circle cx="435" cy="445" r="4" fill="#94a3b8"/>
+  <!-- Roof -->
+  <rect x="130" y="160" width="540" height="25" rx="6" fill="#1e40af"/>
+  <!-- Text -->
+  <text x="400" y="550" text-anchor="middle" font-family="sans-serif" font-size="18" font-weight="bold" fill="#2563eb">SWARAJ ENTERPRISES</text>
+  <text x="400" y="575" text-anchor="middle" font-family="sans-serif" font-size="12" fill="#64748b">Manufacturing Facility</text>
+</svg>
