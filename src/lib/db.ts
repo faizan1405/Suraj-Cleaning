@@ -28,7 +28,7 @@ export async function readJsonFile<T>(relativePath: string): Promise<T> {
   const collection = db.collection(getCollectionName(relativePath));
 
   if (SINGLETON_COLLECTIONS.has(relativePath)) {
-    const doc = await collection.findOne<{ data: T }>({ _id: "singleton" });
+    const doc = await collection.findOne<{ data: T }>({ _id: "singleton" } as Record<string, string>);
     return doc?.data ?? ([] as unknown as T);
   }
 
