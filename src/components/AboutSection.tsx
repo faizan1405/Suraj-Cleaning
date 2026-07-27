@@ -76,10 +76,10 @@ export default function AboutSection() {
           >
             <div className="relative rounded-[24px] overflow-hidden aspect-[4/3] bg-slate-100 shadow-lg">
               <Image
-                src="/images/about-building.webp"
-                alt="Swaraj Enterprises facility"
+                src="/images/about-products.jpeg"
+                alt="Swaraj Enterprises product range - Hygix, Handpure, Dishsheen, Clearon"
                 fill
-                className="object-cover"
+                className="object-contain p-4"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
               {/* Made in India badge */}
