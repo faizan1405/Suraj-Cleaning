@@ -13,11 +13,10 @@ export default function AdminSubmissions() {
   
 
   useEffect(() => {
-    if (!isAuthenticated) return;
     fetch("/api/admin/submissions")
       .then((r) => r.ok ? r.json() : [])
       .then((d) => { setSubmissions(Array.isArray(d) ? d : []); setLoading(false); });
-  }, [isAuthenticated]);
+  }, []);
 
   const filtered = submissions.filter((s) => s.type === activeTab);
 
@@ -64,16 +63,6 @@ export default function AdminSubmissions() {
       setSubmissions((prev) => prev.filter((s) => s.id !== id));
     }
   };
-
-  if (isChecking) {
-    return (
-      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
-        <div className="w-8 h-8 border border-[#2563eb]/20 border-t-[#2563eb] rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) return null;
 
   return (
     <div className="p-6">

@@ -15,11 +15,10 @@ export default function AdminCategories() {
   
 
   useEffect(() => {
-    if (!isAuthenticated) return;
     fetch("/api/admin/data/categories")
       .then((r) => r.json())
       .then((d) => { setData(Array.isArray(d) ? d : []); setLoading(false); });
-  }, [isAuthenticated]);
+  }, []);
 
   const handleSave = async (formData: Record<string, unknown>) => {
     const isEdit = !!editingItem;
@@ -51,16 +50,6 @@ export default function AdminCategories() {
     { name: "description", label: "Description", type: "text", required: true },
     { name: "image", label: "Category Image", type: "image-upload", placeholder: "/images/category-name.webp" },
   ];
-
-  if (isChecking) {
-    return (
-      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
-        <div className="w-8 h-8 border border-[#2563eb]/20 border-t-[#2563eb] rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) return null;
 
   return (
     <div className="p-6">

@@ -15,11 +15,10 @@ export default function AdminQualityProcess() {
   
 
   useEffect(() => {
-    if (!isAuthenticated) return;
     fetch("/api/admin/data/qualityProcess")
       .then((r) => r.json())
       .then((d) => { setData(Array.isArray(d) ? d : []); setLoading(false); });
-  }, [isAuthenticated]);
+  }, []);
 
   const handleSave = async (formData: Record<string, unknown>) => {
     const isEdit = !!editingItem;
@@ -52,16 +51,6 @@ export default function AdminQualityProcess() {
     { name: "description", label: "Description", type: "textarea", rows: 3, required: true },
     { name: "image", label: "Process Image", type: "image-upload", placeholder: "/images/process-step.webp" },
   ];
-
-  if (isChecking) {
-    return (
-      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
-        <div className="w-8 h-8 border border-[#2563eb]/20 border-t-[#2563eb] rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) return null;
 
   return (
     <div className="p-6">

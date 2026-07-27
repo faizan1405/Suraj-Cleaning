@@ -13,11 +13,10 @@ export default function AdminSettings() {
   
 
   useEffect(() => {
-    if (!isAuthenticated) return;
     fetch("/api/admin/data/company")
       .then((r) => r.json())
       .then((d) => { setCompany(d); setLoading(false); });
-  }, [isAuthenticated]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -63,16 +62,6 @@ export default function AdminSettings() {
     if (!company) return;
     setCompany({ ...company, [name]: value });
   };
-
-  if (isChecking) {
-    return (
-      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
-        <div className="w-8 h-8 border border-[#2563eb]/20 border-t-[#2563eb] rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) return null;
 
   if (loading || !company) {
     return (
