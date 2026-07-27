@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { qualitySteps } from "@/data/qualityProcess";
+import type { QualityStep } from "@/data/qualityProcess";
 import Image from "next/image";
 
 export default function QualityProcess() {
-  const [steps, setSteps] = useState<typeof qualitySteps>([]);
+  const [steps, setSteps] = useState<QualityStep[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
