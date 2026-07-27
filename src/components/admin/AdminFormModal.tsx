@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, Upload, Loader2 } from "lucide-react";
 
-export type FieldType = "text" | "email" | "number" | "textarea" | "select" | "checkbox" | "image-upload";
+export type FieldType = "text" | "email" | "number" | "textarea" | "select" | "checkbox" | "image-upload" | "multi-image-upload";
 
 export interface FieldConfig {
   name: string;
@@ -121,6 +121,137 @@ function ImageUploadField({ value, onChange }: ImageUploadFieldProps) {
   );
 }
 
+interface MultiImageUploadFieldProps {
+  value: string[];
+  onChange: (urls: string[]) => void;
+  maxImages?: number;
+}
+
+function MultiImageUploadField({ value = [], onChange, maxImages = 8 }: MultiImageUploadFieldProps) {
+  const [uploading, setUploading] = useState(false);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const remaining = maxImages - value.length;
+    const filesToUpload = Array.from(files).slice(0, remaining);
+
+    if (filesToUpload.length === 0) {
+      alert(`Maximum ${maxImages} images allowed.`);
+      return;
+    }
+
+    for (const file of filesToUpload) {
+      if (!file.type.startsWith("image/")) {
+        alert("Please select image files only.");
+        continue;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        alert(`${file.name} is too large. Maximum size is 10MB.`);
+        continue;
+      }
+    }
+
+    setUploading(true);
+
+    try {
+      const uploadedUrls: string[] = [];
+
+      for (const file of filesToUpload) {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({ error: "Upload failed" }));
+          throw new Error(err.error || "Upload failed");
+        }
+
+        const data = await res.json();
+        uploadedUrls.push(data.url);
+      }
+
+      onChange([...value, ...uploadedUrls]);
+    } catch (err) {
+      alert("Failed to upload one or more images. Please try again.");
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  const handleRemove = (index: number) => {
+    onChange(value.filter((_, i) => i !== index));
+  };
+
+  return (
+    <div className="space-y-3">
+      {/* Image grid */}
+      {value.length > 0 && (
+        <div className="grid grid-cols-4 gap-3">
+          {value.map((url, index) => (
+            <div key={index} className="relative group">
+              <div className="aspect-square rounded-xl border border-[#e2e8f0] bg-[#f8fafc] overflow-hidden">
+                <img src={url} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
+              </div>
+              {/* Remove button */}
+              <button
+                type="button"
+                onClick={() => handleRemove(index)}
+                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-md transition-colors"
+                aria-label={`Remove image ${index + 1}`}
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+              {/* Primary badge */}
+              {index === 0 && (
+                <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 bg-[#2563eb] text-white text-[10px] font-semibold rounded-md">
+                  Primary
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Upload button */}
+      {value.length < maxImages && (
+        <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2563eb] text-white text-[13px] font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors cursor-pointer disabled:opacity-60">
+          {uploading ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Uploading...
+            </>
+          ) : (
+            <>
+              <Upload className="w-4 h-4" />
+              {value.length > 0 ? "Add More Images" : "Choose Images"}
+            </>
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={handleFileChange}
+            disabled={uploading}
+          />
+        </label>
+      )}
+
+      {/* Count */}
+      <p className="text-[11px] text-[#64748b]">
+        {value.length} / {maxImages} images uploaded
+      </p>
+    </div>
+  );
+}
+
 export default function AdminFormModal({
   isOpen,
   onClose,
@@ -166,6 +297,13 @@ export default function AdminFormModal({
           <ImageUploadField
             value={String(value)}
             onChange={(url) => setField(field.name, url)}
+          />
+        );
+      case "multi-image-upload":
+        return (
+          <MultiImageUploadField
+            value={Array.isArray(value) ? value : []}
+            onChange={(urls) => setField(field.name, urls)}
           />
         );
       case "textarea":

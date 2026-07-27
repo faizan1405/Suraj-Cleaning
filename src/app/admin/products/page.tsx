@@ -88,6 +88,7 @@ export default function AdminProducts() {
     { name: "price", label: "Price (₹)", type: "number", required: true, placeholder: "99" },
     { name: "sizes", label: "Sizes (comma separated)", type: "text", placeholder: "500ml, 1L" },
     { name: "image", label: "Product Image", type: "image-upload", placeholder: "/images/product-name.webp" },
+    { name: "gallery", label: "Product Gallery", type: "multi-image-upload" },
     { name: "benefits", label: "Benefits (one per line)", type: "textarea", rows: 3, placeholder: "Kills 99.9% germs" },
     { name: "directions", label: "Directions (one per line)", type: "textarea", rows: 3, placeholder: "Apply under the rim" },
     { name: "featured", label: "Featured", type: "checkbox" },
