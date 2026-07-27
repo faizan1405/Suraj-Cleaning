@@ -1,6 +1,6 @@
 import { getCompany } from "@/data/company";
 import { getProducts } from "@/data/products";
-import AboutView from "@/components/AboutSection";
+import AboutView from "@/components/AboutView";
 
 export const metadata = {
   title: "About Us | Swaraj Enterprises",

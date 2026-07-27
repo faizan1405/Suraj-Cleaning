@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Product } from "@/data/products";
+import { ProductImage } from "@/components/products/ProductImage";
 
 function ProductCard({
   product,
@@ -24,10 +24,9 @@ function ProductCard({
       className="bg-white border border-slate-100 rounded-[20px] overflow-hidden card-lift flex flex-col"
     >
       <div className="relative aspect-square bg-[#f8fafc] overflow-hidden">
-        <Image
+        <ProductImage
           src={product.image}
           alt={product.name}
-          fill
           className="object-contain p-4 img-zoom"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
@@ -91,10 +90,9 @@ function ProductModal({
 
         <div className="grid md:grid-cols-2">
           <div className="relative aspect-square bg-[#f8fafc] p-6">
-            <Image
+            <ProductImage
               src={product.image}
               alt={product.name}
-              fill
               className="object-contain"
               sizes="(max-width: 768px) 100vw, 50vw"
             />
@@ -225,7 +223,7 @@ function ProductModal({
               {relatedProducts.map((rp) => (
                 <div key={rp.id} className="flex items-center gap-3 p-2 bg-slate-50 rounded-xl card-lift">
                   <div className="relative w-12 h-12 bg-white rounded-lg overflow-hidden shrink-0">
-                    <Image src={rp.image} alt={rp.name} fill className="object-contain p-1" sizes="48px" />
+                    <ProductImage src={rp.image} alt={rp.name} className="object-contain p-1" sizes="48px" />
                   </div>
                   <div className="min-w-0">
                     <p className="text-[13px] font-bold text-[#0f172a] truncate">{rp.name}</p>

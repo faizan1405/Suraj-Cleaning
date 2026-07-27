@@ -1,10 +1,9 @@
-import { getProducts, getCategories } from "@/data/products";
+import { getProducts } from "@/data/products";
 import Image from "next/image";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, Filter } from "lucide-react";
 import type { Product } from "@/data/products";
-import ProductsView from "@/components/products/ProductsView";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { ArrowRight, Filter } from "lucide-react";
 
 function ProductCard({
   product,
@@ -68,9 +67,11 @@ export default async function ProductsPage({
 }) {
   const { category: categoryFilter } = await searchParams;
   const products = await getProducts();
-  const categories = await getCategories();
 
   const activeProducts = products.filter((p) => p.active);
+  const categories = Array.from(
+    new Set(activeProducts.map((p) => p.category))
+  );
   const filteredProducts = categoryFilter
     ? activeProducts.filter((p) => p.category === categoryFilter)
     : activeProducts;
@@ -125,15 +126,15 @@ export default async function ProductsPage({
             </Link>
             {categories.map((cat) => (
               <Link
-                key={cat.id}
-                href={`/products?category=${encodeURIComponent(cat.name)}`}
+                key={cat}
+                href={`/products?category=${encodeURIComponent(cat)}`}
                 className={`px-4 py-2 text-[13px] font-medium rounded-full transition-all ${
-                  categoryFilter === cat.name
+                  categoryFilter === cat
                     ? "bg-[#2563eb] text-white shadow-md shadow-blue-200"
                     : "bg-slate-100 text-[#334155] hover:bg-slate-200"
                 }`}
               >
-                {cat.name}
+                {cat}
               </Link>
             ))}
           </div>

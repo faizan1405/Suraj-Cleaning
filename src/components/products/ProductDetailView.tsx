@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, ShoppingCart, Share2 } from "lucide-react";
 import type { Product } from "@/data/products";
+import { ProductImage } from "./ProductImage";
 
 export default function ProductDetailView({
   product,
@@ -76,10 +76,9 @@ export default function ProductDetailView({
               className="relative"
             >
               <div className="relative rounded-[24px] overflow-hidden aspect-square bg-[#f8fafc]">
-                <Image
+                <ProductImage
                   src={gallery[currentImage]}
                   alt={`${product.name} - image ${currentImage + 1}`}
-                  fill
                   className="object-contain p-6"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
@@ -260,10 +259,9 @@ export default function ProductDetailView({
                     className="group block bg-white border border-slate-100 rounded-[20px] overflow-hidden card-lift"
                   >
                     <div className="relative aspect-square bg-[#f8fafc] overflow-hidden">
-                      <Image
+                      <ProductImage
                         src={rp.image}
                         alt={rp.name}
-                        fill
                         className="object-contain p-4 img-zoom"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
