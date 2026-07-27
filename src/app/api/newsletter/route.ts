@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { readJsonFile, writeJsonFile } from "@/lib/data-store";
+import { readJsonFile, writeJsonFile } from "@/lib/db";
 
 export async function POST(request: Request) {
   try {
@@ -24,13 +24,13 @@ export async function POST(request: Request) {
     }
 
     // Persist to submissions
-    const submissions = readJsonFile<any[]>("submissions/newsletter.json");
+    const submissions = (await readJsonFile<any[]>("submissions/newsletter.json")) || [];
     submissions.push({
       id: `news_${Date.now()}`,
       email: body.email,
       submittedAt: new Date().toISOString(),
     });
-    writeJsonFile("submissions/newsletter.json", submissions);
+    await writeJsonFile("submissions/newsletter.json", submissions);
 
     return NextResponse.json(
       { message: "Subscribed successfully" },

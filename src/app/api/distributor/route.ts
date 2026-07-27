@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { readJsonFile, writeJsonFile } from "@/lib/data-store";
+import { readJsonFile, writeJsonFile } from "@/lib/db";
 
 export async function POST(request: Request) {
   try {
@@ -33,13 +33,13 @@ export async function POST(request: Request) {
     }
 
     // Persist to submissions
-    const submissions = readJsonFile<any[]>("submissions/distributor.json");
+    const submissions = (await readJsonFile<any[]>("submissions/distributor.json")) || [];
     submissions.push({
       id: `dist_${Date.now()}`,
       ...body,
       submittedAt: new Date().toISOString(),
     });
-    writeJsonFile("submissions/distributor.json", submissions);
+    await writeJsonFile("submissions/distributor.json", submissions);
 
     return NextResponse.json(
       { message: "Application submitted successfully" },

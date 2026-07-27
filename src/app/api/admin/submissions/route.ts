@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
-import { readJsonFile } from "@/lib/data-store";
+import { readJsonFile } from "@/lib/db";
 
 export async function GET() {
   try {
@@ -11,9 +11,9 @@ export async function GET() {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const contact = readJsonFile<any[]>("submissions/contact.json");
-    const distributor = readJsonFile<any[]>("submissions/distributor.json");
-    const newsletter = readJsonFile<any[]>("submissions/newsletter.json");
+    const contact = (await readJsonFile<any[]>("submissions/contact.json")) || [];
+    const distributor = (await readJsonFile<any[]>("submissions/distributor.json")) || [];
+    const newsletter = (await readJsonFile<any[]>("submissions/newsletter.json")) || [];
 
     const all = [
       ...contact.map((c) => ({ ...c, type: "contact" })),

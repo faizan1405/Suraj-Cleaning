@@ -2,7 +2,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { readJsonFile, writeJsonFile } from "@/lib/data-store";
+import { readJsonFile, writeJsonFile } from "@/lib/db";
 
 export async function POST(request: Request) {
   try {
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     }
 
     // Persist to submissions
-    const submissions = readJsonFile<any[]>("submissions/contact.json");
+    const submissions = (await readJsonFile<any[]>("submissions/contact.json")) || [];
     submissions.push({
       id: `contact_${Date.now()}`,
       name: body.name,
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       message: body.message,
       submittedAt: new Date().toISOString(),
     });
-    writeJsonFile("submissions/contact.json", submissions);
+    await writeJsonFile("submissions/contact.json", submissions);
 
     return NextResponse.json(
       { message: "Message received successfully" },
