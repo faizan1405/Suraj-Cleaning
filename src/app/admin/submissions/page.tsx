@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import { Inbox, Mail, User, FileText } from "lucide-react";
+import { Inbox, Mail, User, FileText, Trash2, Calendar, Clock } from "lucide-react";
 
 type SubmissionType = "contact" | "distributor" | "newsletter";
 
@@ -10,7 +10,7 @@ export default function AdminSubmissions() {
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<SubmissionType>("contact");
-  
+
 
   useEffect(() => {
     fetch("/api/admin/submissions")
@@ -65,86 +65,97 @@ export default function AdminSubmissions() {
   };
 
   return (
-    <div className="p-6">
-      <div className="max-w-6xl">
-        <h2 className="text-[24px] font-bold text-[#0f172a] mb-1">Submissions</h2>
-        <p className="text-[14px] text-[#64748b] mb-6">View form submissions from visitors.</p>
+    <div>
+      <div className="mb-6">
+        <h2 className="text-[22px] font-bold text-slate-900 tracking-tight">Submissions</h2>
+        <p className="text-[14px] text-slate-500 mt-1">View form submissions from visitors.</p>
+      </div>
 
-        {/* Tabs */}
-        <div className="flex gap-2 mb-6 border-b border-[#e2e8f0]">
-          {tabs.map((tab) => {
-            const Icon = tab.icon;
-            const count = submissions.filter((s) => s.type === tab.key).length;
-            return (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key)}
-                className={`flex items-center gap-2 px-4 py-3 text-[14px] font-medium border-b-2 transition-colors ${
-                  activeTab === tab.key
-                    ? "border-[#2563eb] text-[#2563eb]"
-                    : "border-transparent text-[#64748b] hover:text-[#334155]"
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                {tab.label}
-                <span className={`text-[11px] px-1.5 py-0.5 rounded-full ${
-                  activeTab === tab.key ? "bg-blue-100 text-[#2563eb]" : "bg-slate-100 text-[#64748b]"
-                }`}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
+      {/* Tabs */}
+      <div className="flex gap-1 mb-6 bg-slate-100 p-1 rounded-xl w-fit">
+        {tabs.map((tab) => {
+          const Icon = tab.icon;
+          const count = submissions.filter((s) => s.type === tab.key).length;
+          return (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`flex items-center gap-2 px-4 py-2 text-[13px] font-semibold rounded-lg transition-all ${
+                activeTab === tab.key
+                  ? "bg-white text-slate-900 shadow-sm"
+                  : "text-slate-500 hover:text-slate-700"
+              }`}
+            >
+              <Icon className="w-3.5 h-3.5" />
+              {tab.label}
+              <span className={`text-[11px] px-1.5 py-0.5 rounded-md font-bold ${
+                activeTab === tab.key ? "bg-slate-100 text-slate-600" : "bg-slate-200/50 text-slate-500"
+              }`}>
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Submissions */}
+      {loading ? (
+        <div className="space-y-3">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="bg-white rounded-2xl border border-slate-200/80 p-5 animate-pulse">
+              <div className="h-4 bg-slate-100 rounded w-1/3 mb-3" />
+              <div className="h-3 bg-slate-100 rounded w-2/3" />
+            </div>
+          ))}
         </div>
-
-        {/* Submissions */}
-        {loading ? (
-          <div className="space-y-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-white rounded-2xl border border-[#e2e8f0] p-5 animate-pulse">
-                <div className="h-4 bg-slate-100 rounded w-1/3 mb-3" />
-                <div className="h-3 bg-slate-100 rounded w-2/3" />
-              </div>
-            ))}
+      ) : filtered.length === 0 ? (
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-16 text-center">
+          <div className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-4">
+            <Inbox className="w-6 h-6 text-slate-400" />
           </div>
-        ) : filtered.length === 0 ? (
-          <div className="bg-white rounded-2xl border border-[#e2e8f0] p-12 text-center">
-            <Inbox className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-            <p className="text-[#64748b] text-[14px]">No submissions yet.</p>
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {filtered.map((item) => (
-              <div key={item.id} className="bg-white rounded-2xl border border-[#e2e8f0] p-5 hover:shadow-sm transition-shadow">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    {activeTab === "contact" && <Mail className="w-4 h-4 text-[#2563eb]" />}
-                    {activeTab === "distributor" && <User className="w-4 h-4 text-[#2563eb]" />}
-                    {activeTab === "newsletter" && <FileText className="w-4 h-4 text-[#2563eb]" />}
-                    <span className="text-[13px] font-medium text-[#64748b]">
-                      {new Date(item.submittedAt).toLocaleString()}
-                    </span>
+          <p className="text-[14px] text-slate-500 font-medium">No submissions yet.</p>
+          <p className="text-[13px] text-slate-400 mt-1">Submissions will appear here when visitors fill out forms.</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {filtered.map((item) => {
+            const TabIcon = activeTab === "contact" ? Mail : activeTab === "distributor" ? User : FileText;
+            return (
+              <div key={item.id} className="bg-white rounded-2xl border border-slate-200/80 p-5 hover:shadow-md hover:border-slate-300 transition-all">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center">
+                      <TabIcon className="w-4 h-4 text-slate-500" />
+                    </div>
+                    <div className="flex items-center gap-1.5 text-[12px] text-slate-400">
+                      <Calendar className="w-3 h-3" />
+                      <span className="font-medium">{new Date(item.submittedAt).toLocaleDateString()}</span>
+                      <span className="text-slate-300">|</span>
+                      <Clock className="w-3 h-3" />
+                      <span className="font-medium">{new Date(item.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                    </div>
                   </div>
                   <button
                     onClick={() => handleDelete(item.id)}
-                    className="text-[12px] text-red-600 hover:text-red-700 font-medium px-2 py-1 rounded-lg hover:bg-red-50 transition-colors"
+                    className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-red-600 hover:text-red-700 px-2.5 py-1.5 rounded-lg hover:bg-red-50 transition-colors"
                   >
+                    <Trash2 className="w-3 h-3" />
                     Delete
                   </button>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-2.5">
                   {getFields(activeTab, item).filter((f) => f !== "submittedAt").map((field) => (
                     <div key={field} className="text-[13px]">
-                      <span className="font-medium text-[#334155]">{fieldLabels[field] || field}: </span>
-                      <span className="text-[#64748b] break-all">{renderField(field, item[field])}</span>
+                      <span className="font-semibold text-slate-500 text-[11px] uppercase tracking-wider block mb-0.5">{fieldLabels[field] || field}</span>
+                      <span className="text-slate-800 break-all">{renderField(field, item[field])}</span>
                     </div>
                   ))}
                 </div>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

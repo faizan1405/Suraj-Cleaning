@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
 import AdminDataTable, { Column } from "@/components/admin/AdminDataTable";
 import AdminFormModal, { FieldConfig } from "@/components/admin/AdminFormModal";
 import type { Product } from "@/data/products";
@@ -105,28 +106,28 @@ export default function AdminProducts() {
   ];
 
   return (
-    <div className="p-6">
-      <div className="max-w-6xl">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-[24px] font-bold text-[#0f172a] mb-1">Products</h2>
-            <p className="text-[14px] text-[#64748b]">Manage your product catalog.</p>
-          </div>
-          <button
-            onClick={handleAdd}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2563eb] text-white text-[14px] font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors shadow-sm"
-          >
-            <Plus className="w-4 h-4" /> Add Product
-          </button>
-        </div>
-        <AdminDataTable
-          columns={columns}
-          data={products}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          loading={loading}
-        />
+    <div>
+      <div className="mb-6">
+        <h2 className="text-[22px] font-bold text-slate-900 tracking-tight">Products</h2>
+        <p className="text-[14px] text-slate-500 mt-1">Manage your product catalog.</p>
       </div>
+
+      <div className="mb-6">
+        <button
+          onClick={handleAdd}
+          className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-[14px] font-semibold rounded-xl hover:bg-slate-800 transition-colors shadow-sm shadow-slate-900/10"
+        >
+          <Plus className="w-4 h-4" /> Add Product
+        </button>
+      </div>
+
+      <AdminDataTable
+        columns={columns}
+        data={products}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        loading={loading}
+      />
 
       {modalOpen && (
         <AdminFormModal

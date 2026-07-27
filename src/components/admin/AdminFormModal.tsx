@@ -83,16 +83,16 @@ function ImageUploadField({ value, onChange }: ImageUploadFieldProps) {
     <div className="space-y-3">
       <div className="flex items-start gap-4">
         {/* Preview */}
-        <div className="w-24 h-24 rounded-xl border border-[#e2e8f0] bg-[#f8fafc] flex items-center justify-center overflow-hidden shrink-0">
+        <div className="w-24 h-24 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden shrink-0">
           {displayImage ? (
             <img src={displayImage} alt="Preview" className="w-full h-full object-cover" />
           ) : (
-            <span className="text-[11px] text-slate-400 px-2 text-center">No image</span>
+            <Upload className="w-6 h-6 text-slate-300" />
           )}
         </div>
         {/* Upload button */}
         <div className="flex-1">
-          <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2563eb] text-white text-[13px] font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors cursor-pointer disabled:opacity-60">
+          <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-[13px] font-semibold rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60 shadow-sm">
             {uploading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -113,7 +113,7 @@ function ImageUploadField({ value, onChange }: ImageUploadFieldProps) {
             />
           </label>
           {value && !preview && (
-            <p className="mt-1.5 text-[11px] text-[#64748b] truncate max-w-[200px]">{value}</p>
+            <p className="mt-2 text-[11px] text-slate-400 truncate max-w-[200px] font-mono">{value}</p>
           )}
         </div>
       </div>
@@ -196,21 +196,21 @@ function MultiImageUploadField({ value = [], onChange, maxImages = 8 }: MultiIma
         <div className="grid grid-cols-4 gap-3">
           {value.map((url, index) => (
             <div key={index} className="relative group">
-              <div className="aspect-square rounded-xl border border-[#e2e8f0] bg-[#f8fafc] overflow-hidden">
+              <div className="aspect-square rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
                 <img src={url} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
               </div>
               {/* Remove button */}
               <button
                 type="button"
                 onClick={() => handleRemove(index)}
-                className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-md transition-colors"
+                className="absolute -top-1.5 -right-1.5 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center shadow-md transition-colors"
                 aria-label={`Remove image ${index + 1}`}
               >
-                <X className="w-3.5 h-3.5" />
+                <X className="w-3 h-3" />
               </button>
               {/* Primary badge */}
               {index === 0 && (
-                <span className="absolute bottom-1.5 left-1.5 px-1.5 py-0.5 bg-[#2563eb] text-white text-[10px] font-semibold rounded-md">
+                <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 bg-slate-900 text-white text-[10px] font-bold rounded-md">
                   Primary
                 </span>
               )}
@@ -221,7 +221,7 @@ function MultiImageUploadField({ value = [], onChange, maxImages = 8 }: MultiIma
 
       {/* Upload button */}
       {value.length < maxImages && (
-        <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2563eb] text-white text-[13px] font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors cursor-pointer disabled:opacity-60">
+        <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-[13px] font-semibold rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60 shadow-sm">
           {uploading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -245,7 +245,7 @@ function MultiImageUploadField({ value = [], onChange, maxImages = 8 }: MultiIma
       )}
 
       {/* Count */}
-      <p className="text-[11px] text-[#64748b]">
+      <p className="text-[11px] text-slate-400 font-medium">
         {value.length} / {maxImages} images uploaded
       </p>
     </div>
@@ -315,7 +315,7 @@ export default function AdminFormModal({
             required={field.required}
             rows={field.rows || 3}
             placeholder={field.placeholder}
-            className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb] transition-all resize-none bg-white"
+            className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none bg-white hover:border-slate-300"
           />
         );
       case "select":
@@ -324,7 +324,7 @@ export default function AdminFormModal({
             id={field.name}
             value={String(value)}
             onChange={(e) => setField(field.name, e.target.value)}
-            className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb] transition-all bg-white"
+            className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white hover:border-slate-300"
           >
             {field.options?.map((opt) => (
               <option key={opt.value} value={opt.value}>
@@ -335,14 +335,21 @@ export default function AdminFormModal({
         );
       case "checkbox":
         return (
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={Boolean(value)}
-              onChange={(e) => setField(field.name, e.target.checked)}
-              className="w-4 h-4 text-[#2563eb] border-[#e2e8f0] rounded focus:ring-[#2563eb]"
-            />
-            <span className="text-[13px] text-[#64748b]">Enabled</span>
+          <label className="flex items-center gap-2.5 cursor-pointer group">
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={Boolean(value)}
+                onChange={(e) => setField(field.name, e.target.checked)}
+                className="w-4 h-4 appearance-none border-2 border-slate-300 rounded-md checked:bg-blue-600 checked:border-blue-600 transition-colors cursor-pointer"
+              />
+              {Boolean(value) && (
+                <svg className="absolute top-0.5 left-0.5 w-3.5 h-3.5 text-white pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path d="M5 12l5 5L20 7" />
+                </svg>
+              )}
+            </div>
+            <span className="text-[13px] text-slate-600 group-hover:text-slate-800 transition-colors">Enabled</span>
           </label>
         );
       default:
@@ -354,7 +361,7 @@ export default function AdminFormModal({
             onChange={(e) => setField(field.name, e.target.value)}
             required={field.required}
             placeholder={field.placeholder}
-            className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb] transition-all bg-white"
+            className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white hover:border-slate-300 placeholder:text-slate-400"
           />
         );
     }
@@ -362,43 +369,56 @@ export default function AdminFormModal({
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
-        <div className="flex items-center justify-between p-6 border-b border-[#e2e8f0]">
-          <h3 className="text-[20px] font-bold text-[#0f172a]">{title}</h3>
+      <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" onClick={onClose} />
+      <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-200/80">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+          <div>
+            <h3 className="text-[17px] font-bold text-slate-900">{title}</h3>
+            <p className="text-[12px] text-slate-400 mt-0.5">Fill in the details below</p>
+          </div>
           <button
             onClick={onClose}
-            className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-slate-100 rounded-xl transition-colors"
             aria-label="Close"
           >
-            <X className="w-5 h-5 text-[#64748b]" />
+            <X className="w-4 h-4 text-slate-400" />
           </button>
         </div>
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {fields.map((field) => (
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="p-6 space-y-5">
+          {fields.map((field, idx) => (
             <div key={field.name}>
-              <label htmlFor={field.name} className="block text-[13px] font-medium text-[#334155] mb-1.5">
+              <label htmlFor={field.name} className="block text-[13px] font-semibold text-slate-700 mb-2">
                 {field.label}
-                {field.required && <span className="text-red-500 ml-0.5">*</span>}
+                {field.required && <span className="text-red-500 ml-1">*</span>}
               </label>
               {renderField(field)}
             </div>
           ))}
-          <div className="flex gap-3 pt-2">
+
+          <div className="flex gap-3 pt-3">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2.5 text-[14px] font-semibold text-[#334155] bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
+              className="flex-1 py-2.5 text-[14px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2.5 text-[14px] font-semibold text-white bg-[#2563eb] rounded-xl hover:bg-[#1d4ed8] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+              className="flex-1 py-2.5 text-[14px] font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-xl transition-all disabled:opacity-60 flex items-center justify-center gap-2 shadow-sm shadow-slate-900/10"
             >
-              {loading && <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />}
-              {loading ? "Saving..." : "Save"}
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save"
+              )}
             </button>
           </div>
         </form>

@@ -2,15 +2,21 @@
 
 import { useState, useEffect } from "react";
 
-import { Save, Loader2 } from "lucide-react";
+import { Save, Loader2, MapPin, Phone, Mail, Clock, Building2, TrendingUp } from "lucide-react";
 import type { CompanyInfo } from "@/data/company";
+
+const sectionConfig = [
+  { key: "general", label: "General Info", icon: Building2, fields: ["name", "tagline", "description"] },
+  { key: "contact", label: "Contact Details", icon: MapPin, fields: ["address", "phone", "phoneRaw", "email", "hours"] },
+  { key: "stats", label: "Statistics", icon: TrendingUp, fields: [] },
+] as const;
 
 export default function AdminSettings() {
   const [company, setCompany] = useState<CompanyInfo | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  
+
 
   useEffect(() => {
     fetch("/api/admin/data/company")
@@ -65,112 +71,132 @@ export default function AdminSettings() {
 
   if (loading || !company) {
     return (
-      <div className="p-6">
-        <div className="max-w-3xl">
-          <div className="bg-white rounded-2xl border border-[#e2e8f0] p-8 animate-pulse space-y-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="h-12 bg-slate-100 rounded-xl" />
-            ))}
-          </div>
+      <div>
+        <div className="mb-6">
+          <div className="h-7 bg-slate-200 rounded-lg w-40 animate-pulse mb-2" />
+          <div className="h-4 bg-slate-200 rounded w-64 animate-pulse" />
+        </div>
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-8 animate-pulse space-y-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-12 bg-slate-100 rounded-xl" />
+          ))}
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-      <div className="max-w-3xl">
-        <div className="mb-6">
-          <h2 className="text-[24px] font-bold text-[#0f172a] mb-1">Settings</h2>
-          <p className="text-[14px] text-[#64748b]">Manage company information.</p>
+    <div>
+      <div className="mb-6">
+        <h2 className="text-[22px] font-bold text-slate-900 tracking-tight">Settings</h2>
+        <p className="text-[14px] text-slate-500 mt-1">Manage company information and configuration.</p>
+      </div>
+
+      {message && (
+        <div className={`mb-6 text-[14px] px-4 py-3 rounded-xl border ${
+          message.type === "success" ? "bg-emerald-50 text-emerald-700 border-emerald-100" : "bg-red-50 text-red-600 border-red-100"
+        }`}>
+          {message.text}
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* General Info Section */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-100 flex items-center gap-2.5">
+            <Building2 className="w-4 h-4 text-slate-400" />
+            <h3 className="text-[14px] font-bold text-slate-800">General Info</h3>
+          </div>
+          <div className="p-6 space-y-5">
+            <div>
+              <label className="block text-[13px] font-semibold text-slate-700 mb-2">Company Name *</label>
+              <input type="text" name="name" required value={company.name} onChange={(e) => updateField("name", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white hover:border-slate-300" />
+            </div>
+            <div>
+              <label className="block text-[13px] font-semibold text-slate-700 mb-2">Tagline</label>
+              <input type="text" name="tagline" value={company.tagline} onChange={(e) => updateField("tagline", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white hover:border-slate-300" />
+            </div>
+            <div>
+              <label className="block text-[13px] font-semibold text-slate-700 mb-2">Description</label>
+              <textarea name="description" rows={3} value={company.description} onChange={(e) => updateField("description", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none bg-white hover:border-slate-300" />
+            </div>
+          </div>
         </div>
 
-        {message && (
-          <div className={`mb-6 text-[14px] px-4 py-3 rounded-xl ${
-            message.type === "success" ? "bg-green-50 text-green-700" : "bg-red-50 text-red-600"
-          }`}>
-            {message.text}
+        {/* Contact Details Section */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-100 flex items-center gap-2.5">
+            <Mail className="w-4 h-4 text-slate-400" />
+            <h3 className="text-[14px] font-bold text-slate-800">Contact Details</h3>
           </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-[#e2e8f0] p-6 space-y-5">
-          <div>
-            <h3 className="text-[16px] font-bold text-[#0f172a] mb-4">General Info</h3>
-            <div className="grid gap-4">
+          <div className="p-6 space-y-5">
+            <div>
+              <label className="block text-[13px] font-semibold text-slate-700 mb-2">Address</label>
+              <textarea name="address" rows={2} value={company.address} onChange={(e) => updateField("address", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none bg-white hover:border-slate-300" />
+            </div>
+            <div className="grid sm:grid-cols-2 gap-5">
               <div>
-                <label className="block text-[13px] font-medium text-[#334155] mb-1.5">Company Name *</label>
-                <input type="text" name="name" required value={company.name} onChange={(e) => updateField("name", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb]" />
+                <label className="block text-[13px] font-semibold text-slate-700 mb-2">Phone</label>
+                <input type="text" name="phone" value={company.phone} onChange={(e) => updateField("phone", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white hover:border-slate-300" />
               </div>
               <div>
-                <label className="block text-[13px] font-medium text-[#334155] mb-1.5">Tagline</label>
-                <input type="text" name="tagline" value={company.tagline} onChange={(e) => updateField("tagline", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb]" />
-              </div>
-              <div>
-                <label className="block text-[13px] font-medium text-[#334155] mb-1.5">Description</label>
-                <textarea name="description" rows={3} value={company.description} onChange={(e) => updateField("description", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb] resize-none" />
+                <label className="block text-[13px] font-semibold text-slate-700 mb-2">Email</label>
+                <input type="email" name="email" value={company.email} onChange={(e) => updateField("email", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white hover:border-slate-300" />
               </div>
             </div>
-          </div>
-
-          <div className="border-t border-[#e2e8f0] pt-5">
-            <h3 className="text-[16px] font-bold text-[#0f172a] mb-4">Contact Details</h3>
-            <div className="grid gap-4">
-              <div>
-                <label className="block text-[13px] font-medium text-[#334155] mb-1.5">Address</label>
-                <textarea name="address" rows={2} value={company.address} onChange={(e) => updateField("address", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb] resize-none" />
-              </div>
-              <div className="grid sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-[13px] font-medium text-[#334155] mb-1.5">Phone</label>
-                  <input type="text" name="phone" value={company.phone} onChange={(e) => updateField("phone", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb]" />
-                </div>
-                <div>
-                  <label className="block text-[13px] font-medium text-[#334155] mb-1.5">Email</label>
-                  <input type="email" name="email" value={company.email} onChange={(e) => updateField("email", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb]" />
-                </div>
-              </div>
-              <div>
-                <label className="block text-[13px] font-medium text-[#334155] mb-1.5">Working Hours</label>
-                <input type="text" name="hours" value={company.hours} onChange={(e) => updateField("hours", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb]" />
-              </div>
+            <div>
+              <label className="block text-[13px] font-semibold text-slate-700 mb-2">Working Hours</label>
+              <input type="text" name="hours" value={company.hours} onChange={(e) => updateField("hours", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white hover:border-slate-300" />
             </div>
           </div>
+        </div>
 
-          <div className="border-t border-[#e2e8f0] pt-5">
-            <h3 className="text-[16px] font-bold text-[#0f172a] mb-4">Stats</h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        {/* Stats Section */}
+        <div className="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+          <div className="px-6 py-4 border-b border-slate-100 flex items-center gap-2.5">
+            <TrendingUp className="w-4 h-4 text-slate-400" />
+            <h3 className="text-[14px] font-bold text-slate-800">Statistics</h3>
+          </div>
+          <div className="p-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
               {[
-                { key: "stats.customers", label: "Customers" },
-                { key: "stats.distributors", label: "Distributors" },
-                { key: "stats.products", label: "Products" },
-                { key: "stats.years", label: "Years" },
+                { key: "customers", label: "Customers" },
+                { key: "distributors", label: "Distributors" },
+                { key: "products", label: "Products" },
+                { key: "years", label: "Years" },
               ].map((stat) => (
                 <div key={stat.key}>
-                  <label className="block text-[13px] font-medium text-[#334155] mb-1.5">{stat.label}</label>
-                  <input type="number" name={stat.key} value={(company.stats as any)[stat.key.replace("stats.", "")]} onChange={(e) => {
-                    const field = stat.key.replace("stats.", "");
-                    setCompany({ ...company, stats: { ...company.stats, [field]: parseInt(e.target.value) || 0 } });
-                  }} className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb]" />
+                  <label className="block text-[13px] font-semibold text-slate-700 mb-2">{stat.label}</label>
+                  <input type="number" name={`stats.${stat.key}`} value={(company.stats as any)[stat.key]} onChange={(e) => {
+                    setCompany({ ...company, stats: { ...company.stats, [stat.key]: parseInt(e.target.value) || 0 } });
+                  }} className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white hover:border-slate-300" />
                 </div>
               ))}
             </div>
           </div>
+        </div>
 
-          <div className="flex justify-end pt-2">
-            <button
-              type="submit"
-              disabled={saving}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#2563eb] text-white font-semibold text-[14px] rounded-xl hover:bg-[#1d4ed8] transition-colors disabled:opacity-60"
-            >
-              {saving ? (
-                <><Loader2 className="w-4 h-4 animate-spin" /> Saving...</>
-              ) : (
-                <><Save className="w-4 h-4" /> Save Settings</>
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
+        {/* Save */}
+        <div className="flex justify-end pt-1">
+          <button
+            type="submit"
+            disabled={saving}
+            className="inline-flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white font-semibold text-[14px] rounded-xl hover:bg-slate-800 transition-all disabled:opacity-60 shadow-sm shadow-slate-900/10"
+          >
+            {saving ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="w-4 h-4" />
+                Save Settings
+              </>
+            )}
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

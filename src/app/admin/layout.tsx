@@ -19,7 +19,6 @@ export default function AdminLayout({
   const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
-    // Skip auth check on the login page
     if (isLoginPage) {
       setChecking(false);
       return;
@@ -51,8 +50,11 @@ export default function AdminLayout({
 
   if (checking) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
-        <div className="w-8 h-8 border border-[#2563eb]/20 border-t-[#2563eb] rounded-full animate-spin" />
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-slate-200 border-t-blue-600 rounded-full animate-spin" />
+          <p className="text-[13px] text-slate-500 font-medium">Loading...</p>
+        </div>
       </div>
     );
   }
@@ -60,7 +62,7 @@ export default function AdminLayout({
   if (!authenticated) return null;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
+    <div className="min-h-screen bg-slate-50 flex">
       <AdminSidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
@@ -68,8 +70,10 @@ export default function AdminLayout({
       />
       <div className="flex-1 flex flex-col min-w-0">
         <AdminHeader onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-        <main className="flex-1 p-6 overflow-auto">
-          {children}
+        <main className="flex-1 p-6 sm:p-8 overflow-auto">
+          <div className="max-w-[1400px] mx-auto">
+            {children}
+          </div>
         </main>
       </div>
     </div>

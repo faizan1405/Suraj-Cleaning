@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { Loader2, Pencil, Trash2, ChevronUp, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface Column<T> {
@@ -62,10 +62,10 @@ export default function AdminDataTable<T extends Record<string, any>>({
 
   if (loading) {
     return (
-      <div className="bg-white rounded-2xl border border-[#e2e8f0] overflow-hidden">
-        <div className="p-8 flex items-center justify-center">
-          <Loader2 className="w-6 h-6 text-[#2563eb] animate-spin" />
-          <span className="ml-3 text-[#64748b]">Loading...</span>
+      <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden">
+        <div className="p-10 flex items-center justify-center gap-3">
+          <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
+          <span className="text-[14px] text-slate-500 font-medium">Loading data...</span>
         </div>
       </div>
     );
@@ -73,65 +73,76 @@ export default function AdminDataTable<T extends Record<string, any>>({
 
   return (
     <>
-      <div className="bg-white rounded-2xl border border-[#e2e8f0] overflow-hidden">
+      <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left">
             <thead>
-              <tr className="border-b border-[#e2e8f0] bg-[#f8fafc]">
+              <tr className="border-b border-slate-100 bg-slate-50/50">
                 {columns.map((col) => (
                   <th
                     key={col.key}
                     onClick={() => handleSort(col.key)}
-                    className="px-4 py-3 text-[12px] font-semibold text-[#64748b] uppercase tracking-wider cursor-pointer hover:text-[#2563eb] whitespace-nowrap select-none"
+                    className="px-5 py-3.5 text-[11px] font-bold text-slate-500 uppercase tracking-wider cursor-pointer hover:text-blue-600 whitespace-nowrap select-none transition-colors group"
                   >
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1.5">
                       {col.label}
-                      {sortKey === col.key && (
-                        <span className="text-[#2563eb]">
-                          {sortDir === "asc" ? "↑" : "↓"}
-                        </span>
-                      )}
+                      <span className={cn(
+                        "flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity",
+                        sortKey === col.key && "opacity-100 text-blue-600"
+                      )}>
+                        <ChevronUp className={cn("w-3 h-3 -mb-1", sortKey === col.key && sortDir === "desc" && "text-slate-300")} />
+                        <ChevronDown className={cn("w-3 h-3 -mt-1", sortKey === col.key && sortDir === "asc" && "text-slate-300")} />
+                      </span>
                     </div>
                   </th>
                 ))}
                 {(onEdit || onDelete) && (
-                  <th className="px-4 py-3 text-[12px] font-semibold text-[#64748b] uppercase tracking-wider whitespace-nowrap">
+                  <th className="px-5 py-3.5 text-[11px] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap w-[130px]">
                     Actions
                   </th>
                 )}
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#e2e8f0]">
+            <tbody className="divide-y divide-slate-100">
               {sortedData.length === 0 ? (
                 <tr>
-                  <td colSpan={columns.length + 1} className="px-4 py-12 text-center text-[#64748b] text-[14px]">
-                    {emptyMessage}
+                  <td colSpan={columns.length + 1} className="px-5 py-16 text-center">
+                    <div className="flex flex-col items-center">
+                      <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+                        <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                          <path d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                        </svg>
+                      </div>
+                      <p className="text-[14px] text-slate-500 font-medium">{emptyMessage}</p>
+                    </div>
                   </td>
                 </tr>
               ) : (
                 sortedData.map((item) => (
-                  <tr key={String(item.id)} className="hover:bg-slate-50 transition-colors">
+                  <tr key={String(item.id)} className="hover:bg-slate-50/80 transition-colors group/row">
                     {columns.map((col) => (
-                      <td key={col.key} className="px-4 py-3 text-[14px] text-[#334155]">
+                      <td key={col.key} className="px-5 py-3.5 text-[13px] text-slate-600">
                         {col.render ? col.render(item) : String(item[col.key] ?? "")}
                       </td>
                     ))}
                     {(onEdit || onDelete) && (
-                      <td className="px-4 py-3 whitespace-nowrap">
-                        <div className="flex items-center gap-2">
+                      <td className="px-5 py-3.5 whitespace-nowrap">
+                        <div className="flex items-center gap-1.5">
                           {onEdit && (
                             <button
                               onClick={() => onEdit(item)}
-                              className="px-3 py-1.5 text-[13px] font-medium text-[#2563eb] bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors"
                             >
+                              <Pencil className="w-3 h-3" />
                               Edit
                             </button>
                           )}
                           {onDelete && (
                             <button
                               onClick={() => setDeleteId(String(item.id))}
-                              className="px-3 py-1.5 text-[13px] font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[12px] font-semibold text-red-700 bg-red-50 hover:bg-red-100 rounded-lg transition-colors"
                             >
+                              <Trash2 className="w-3 h-3" />
                               Delete
                             </button>
                           )}
@@ -149,22 +160,25 @@ export default function AdminDataTable<T extends Record<string, any>>({
       {/* Delete Confirmation */}
       {deleteId && onDelete && (
         <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setDeleteId(null)} />
-          <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6">
-            <h3 className="text-[18px] font-bold text-[#0f172a] mb-2">Delete Item</h3>
-            <p className="text-[14px] text-[#64748b] mb-6">
+          <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" onClick={() => setDeleteId(null)} />
+          <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 border border-slate-200/80">
+            <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center mb-4">
+              <Trash2 className="w-5 h-5 text-red-600" />
+            </div>
+            <h3 className="text-[17px] font-bold text-slate-900 mb-1.5">Delete Item</h3>
+            <p className="text-[14px] text-slate-500 mb-6 leading-relaxed">
               Are you sure you want to delete this item? This action cannot be undone.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteId(null)}
-                className="flex-1 py-2.5 text-[14px] font-semibold text-[#334155] bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors"
+                className="flex-1 py-2.5 text-[14px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 py-2.5 text-[14px] font-semibold text-white bg-red-600 rounded-xl hover:bg-red-700 transition-colors"
+                className="flex-1 py-2.5 text-[14px] font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors shadow-sm shadow-red-600/20"
               >
                 Delete
               </button>
