@@ -27,12 +27,13 @@ export default function TrustBenefits() {
               key={i}
               initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.5 }}
-              className="flex flex-col items-center text-center"
+              whileHover={{ y: -6, scale: 1.05 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="flex flex-col items-center text-center group"
             >
-              <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center mb-3">
-                <item.icon className="w-6 h-6 text-[#2563eb]" strokeWidth={1.8} />
+              <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center mb-3 shadow-sm">
+                <item.icon className="w-6 h-6 text-[#2563eb] icon-pop" strokeWidth={1.8} />
               </div>
               <span className="text-[13px] font-semibold text-[#334155] leading-tight">
                 {item.label}

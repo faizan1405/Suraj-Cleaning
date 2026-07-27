@@ -1,9 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { navigation } from "@/data/navigation";
-import { company } from "@/data/company";
-import { categories } from "@/data/categories";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 const socialIcons = [
@@ -25,15 +24,56 @@ const socialIcons = [
   },
 ];
 
+const defaultCategories = [
+  { id: "1", name: "Floor Care" },
+  { id: "2", name: "Bathroom Care" },
+  { id: "3", name: "Kitchen Care" },
+  { id: "4", name: "Laundry Care" },
+  { id: "5", name: "Personal Care" },
+];
+
+const defaultCompany = {
+  description: "Your trusted partner for premium cleaning solutions. Clean Homes, Happy Lives.",
+  address: "Bantwala, Dakshina Kannada, Karnataka, India",
+  phone: "+91 98447 34939",
+  phoneRaw: "919844734939",
+  email: "swarajenterprisesco@gmail.com",
+  hours: "Mon - Sat: 9:00 AM - 7:00 PM",
+};
+
 export default function Footer() {
+  const [categories, setCategories] = useState(defaultCategories);
+  const [company] = useState(defaultCompany);
   const currentYear = new Date().getFullYear();
+
+  useEffect(() => {
+    fetch("/api/admin/data/categories", { cache: "no-store" })
+      .then((res) => res.ok ? res.json() : null)
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setCategories(data.map((c: { id: string; name: string }) => ({ id: c.id, name: c.name })));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <footer className="bg-[#0f172a] text-white pt-[60px] md:pt-[72px] pb-8">
-      <div className="mx-auto max-w-[1260px] px-5 md:px-8">
+      <motion.div
+        className="mx-auto max-w-[1260px] px-5 md:px-8"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8 }}
+      >
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 mb-12">
           {/* Column 1 - Brand */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
             <div className="mb-4">
               <span className="text-[22px] font-bold tracking-tight text-white">
                 SWARAJ
@@ -42,109 +82,157 @@ export default function Footer() {
                 ENTERPRISES
               </span>
             </div>
-            <p className="text-[13px] text-slate-400 leading-relaxed mb-5">
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-[13px] text-slate-400 leading-relaxed mb-5"
+            >
               {company.description}
-            </p>
+            </motion.p>
             <div className="flex gap-3">
-              {socialIcons.map((s) => (
-                <a
+              {socialIcons.map((s, i) => (
+                <motion.a
                   key={s.name}
                   href="#"
                   aria-label={s.name}
                   className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-[#2563eb] transition-colors"
+                  initial={{ opacity: 0, scale: 0.7 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
+                  whileHover={{ scale: 1.15, rotate: -8 }}
                 >
                   <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white/70" aria-hidden="true">
                     <path d={s.path} />
                   </svg>
-                </a>
+                </motion.a>
               ))}
             </div>
-          </div>
+          </motion.div>
 
           {/* Column 2 - Quick Links */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
             <h4 className="text-[14px] font-bold text-white mb-4">Quick Links</h4>
             <ul className="space-y-2.5">
-              {navigation.map((item) => (
-                <li key={item.label}>
+              {navigation.map((item, i) => (
+                <motion.li
+                  key={item.label}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: 0.1 + i * 0.05 }}
+                >
                   <a
                     href={item.href}
-                    className="text-[13px] text-slate-400 hover:text-white transition-colors"
+                    className="text-[13px] text-slate-400 hover:text-white transition-colors relative nav-underline inline-block"
                   >
                     {item.label}
                   </a>
-                </li>
+                </motion.li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Column 3 - Products */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
             <h4 className="text-[14px] font-bold text-white mb-4">Products</h4>
             <ul className="space-y-2.5">
-              {categories.map((cat) => (
-                <li key={cat.id}>
+              {categories.map((cat, i) => (
+                <motion.li
+                  key={cat.id}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: 0.15 + i * 0.05 }}
+                >
                   <a
                     href="#products"
-                    className="text-[13px] text-slate-400 hover:text-white transition-colors"
+                    className="text-[13px] text-slate-400 hover:text-white transition-colors relative nav-underline inline-block"
                   >
                     {cat.name}
                   </a>
-                </li>
+                </motion.li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
           {/* Column 4 - Contact */}
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             <h4 className="text-[14px] font-bold text-white mb-4">
               Contact Us
             </h4>
             <ul className="space-y-3.5">
-              <li className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-blue-400 mt-0.5 shrink-0" />
-                <span className="text-[13px] text-slate-400 leading-relaxed">
-                  {company.address}
-                </span>
-              </li>
-              <li>
-                <a
-                  href={`tel:${company.phoneRaw}`}
-                  className="flex items-center gap-2.5 text-[13px] text-slate-400 hover:text-white transition-colors"
+              {[
+                { icon: MapPin, text: company.address, href: `https://maps.google.com/?q=Bantwala,Dakshina+Kannada,Karnataka,India` },
+                { icon: Phone, text: company.phone, href: `tel:${company.phoneRaw}` },
+                { icon: Mail, text: company.email, href: `mailto:${company.email}` },
+              ].map((item, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -8 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.35, delay: 0.15 + i * 0.05 }}
                 >
-                  <Phone className="w-4 h-4 text-blue-400 shrink-0" />
-                  {company.phone}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={`mailto:${company.email}`}
-                  className="flex items-center gap-2.5 text-[13px] text-slate-400 hover:text-white transition-colors"
-                >
-                  <Mail className="w-4 h-4 text-blue-400 shrink-0" />
-                  {company.email}
-                </a>
-              </li>
+                  <a
+                    href={item.href}
+                    target={item.href.startsWith("http") ? "_blank" : undefined}
+                    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="flex items-start gap-2.5 group"
+                  >
+                    <div className="w-4 h-4 text-blue-400 mt-0.5 shrink-0 icon-pop">
+                      <item.icon className="w-4 h-4" />
+                    </div>
+                    <span className="text-[13px] text-slate-400 leading-relaxed group-hover:text-white transition-colors">
+                      {item.text}
+                    </span>
+                  </a>
+                </motion.li>
+              ))}
               <li className="flex items-center gap-2.5">
-                <Clock className="w-4 h-4 text-blue-400 shrink-0" />
-                <span className="text-[13px] text-slate-400">
-                  {company.hours}
-                </span>
+                <Clock className="w-4 h-4 text-blue-400 shrink-0 icon-pop" />
+                <span className="text-[13px] text-slate-400">{company.hours}</span>
               </li>
             </ul>
-          </div>
+          </motion.div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
+        >
           <p className="text-[12px] text-slate-500">
             &copy; {currentYear} Swaraj Enterprises. All Rights Reserved.
           </p>
-          <p className="text-[12px] text-slate-500">
+          <motion.p
+            className="text-[12px] text-slate-500"
+            whileHover={{ scale: 1.04 }}
+          >
             Designed with &lt;3 for a Cleaner Tomorrow
-          </p>
-        </div>
-      </div>
+          </motion.p>
+        </motion.div>
+      </motion.div>
     </footer>
   );
 }

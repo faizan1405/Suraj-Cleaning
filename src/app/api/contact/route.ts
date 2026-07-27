@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { readJsonFile, writeJsonFile } from "@/lib/data-store";
 
 export async function POST(request: Request) {
   try {
@@ -12,7 +13,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate required fields
     if (!body.name || !body.email || !body.message) {
       return NextResponse.json(
         { message: "Missing required fields" },
@@ -20,8 +20,17 @@ export async function POST(request: Request) {
       );
     }
 
-    // In production, integrate with email service or CRM here
-    console.log("Contact form submission:", body);
+    // Persist to submissions
+    const submissions = readJsonFile<any[]>("submissions/contact.json");
+    submissions.push({
+      id: `contact_${Date.now()}`,
+      name: body.name,
+      email: body.email,
+      phone: body.phone || "",
+      message: body.message,
+      submittedAt: new Date().toISOString(),
+    });
+    writeJsonFile("submissions/contact.json", submissions);
 
     return NextResponse.json(
       { message: "Message received successfully" },

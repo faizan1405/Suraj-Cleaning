@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { readJsonFile, writeJsonFile } from "@/lib/data-store";
 
 export async function POST(request: Request) {
   try {
@@ -16,8 +17,14 @@ export async function POST(request: Request) {
       );
     }
 
-    // In production, integrate with email service here
-    console.log("Newsletter subscription:", body.email);
+    // Persist to submissions
+    const submissions = readJsonFile<any[]>("submissions/newsletter.json");
+    submissions.push({
+      id: `news_${Date.now()}`,
+      email: body.email,
+      submittedAt: new Date().toISOString(),
+    });
+    writeJsonFile("submissions/newsletter.json", submissions);
 
     return NextResponse.json(
       { message: "Subscribed successfully" },

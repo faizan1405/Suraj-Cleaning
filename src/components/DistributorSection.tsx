@@ -23,14 +23,29 @@ export default function DistributorSection() {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="inline-block px-4 py-1.5 bg-white/15 text-white text-[11px] font-bold tracking-[0.2em] uppercase rounded-full mb-4">
+              <motion.span
+                animate={{ y: [0, -6, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                className="inline-block px-4 py-1.5 bg-white/15 text-white text-[11px] font-bold tracking-[0.2em] uppercase rounded-full mb-4"
+              >
                 GROW WITH SWARAJ
-              </span>
+              </motion.span>
               <h2 className="text-[28px] md:text-[36px] font-bold text-white mb-3">
-                Become a Distributor
+                {"Become a Distributor".split(" ").map((word, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ delay: 0.3 + i * 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    className="inline-block"
+                  >
+                    {word}{i < 4 ? " " : ""}
+                  </motion.span>
+                ))}
               </h2>
               <p className="text-white/80 text-[15px] mb-8">
                 Low Investment | High Margin | Marketing Support | Fast Delivery
@@ -42,8 +57,8 @@ export default function DistributorSection() {
                     key={i}
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 + i * 0.08, duration: 0.4 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ delay: 0.4 + i * 0.08, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     className="flex items-center gap-3 text-white text-[14px]"
                   >
                     <span className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center shrink-0">
@@ -54,13 +69,14 @@ export default function DistributorSection() {
                 ))}
               </ul>
 
-              <button
+              <motion.button
+                whileHover={{ y: -3 }}
                 onClick={() => setFormOpen(true)}
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#2563eb] font-bold text-[15px] rounded-full hover:bg-blue-50 transition-colors shadow-lg"
+                className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#2563eb] font-bold text-[15px] rounded-full hover:bg-blue-50 transition-colors shadow-lg btn-shine"
               >
                 Apply Now
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </motion.button>
             </motion.div>
 
             {/* Right - Image/Illustration */}
@@ -68,7 +84,8 @@ export default function DistributorSection() {
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.15 }}
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
               className="hidden lg:flex items-center justify-center"
             >
               <svg
@@ -144,7 +161,8 @@ function DistributorFormModal({ onClose }: { onClose: () => void }) {
             <h3 className="text-[22px] font-bold text-[#0f172a]">
               Distributor Application
             </h3>
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 90 }}
               onClick={onClose}
               className="p-2 hover:bg-slate-100 rounded-full transition-colors"
               aria-label="Close form"
@@ -152,7 +170,7 @@ function DistributorFormModal({ onClose }: { onClose: () => void }) {
               <svg className="w-5 h-5 text-[#334155]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
-            </button>
+            </motion.button>
           </div>
 
           <form action="#" method="POST" className="space-y-4">

@@ -1,0 +1,26 @@
+import { NextResponse } from "next/server";
+import { validatePassword } from "@/lib/admin-auth";
+
+export async function POST(request: Request) {
+  try {
+    const body = await request.json();
+    const { password } = body as { password: string };
+
+    if (!password || !validatePassword(password)) {
+      return NextResponse.json({ error: "Invalid password" }, { status: 401 });
+    }
+
+    const response = NextResponse.json({ success: true }, { status: 200 });
+    response.cookies.set("admin-session", process.env.ADMIN_SESSION_SECRET!, {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 60 * 60 * 24,
+      path: "/",
+    });
+
+    return response;
+  } catch {
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+  }
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "stepNumber": 1,
+    "title": "Carefully Selected Raw Materials",
+    "description": "We source only the finest ingredients, ensuring every product starts with the highest quality raw materials.",
+    "image": "/images/process-raw-materials.webp"
+  },
+  {
+    "id": "2",
+    "stepNumber": 2,
+    "title": "Advanced Manufacturing",
+    "description": "State-of-the-art manufacturing facilities with precision blending and modern production technology.",
+    "image": "/images/process-manufacturing.webp"
+  },
+  {
+    "id": "3",
+    "stepNumber": 3,
+    "title": "Strict Quality Testing",
+    "description": "Every batch undergoes rigorous quality testing to ensure it meets our exacting standards.",
+    "image": "/images/process-testing.webp"
+  },
+  {
+    "id": "4",
+    "stepNumber": 4,
+    "title": "Safe & Hygienic Packaging",
+    "description": "Products are packaged in hygienic conditions using premium materials that preserve freshness.",
+    "image": "/images/process-packaging.webp"
+  },
+  {
+    "id": "5",
+    "stepNumber": 5,
+    "title": "On Time Delivery",
+    "description": "Efficient logistics ensure your orders reach you promptly, every single time.",
+    "image": "/images/process-delivery.webp"
+  }
+]

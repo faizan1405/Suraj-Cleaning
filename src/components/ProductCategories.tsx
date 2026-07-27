@@ -1,11 +1,51 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { categories } from "@/data/categories";
+import type { Category } from "@/data/categories";
 
 export default function ProductCategories() {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/admin/data/categories", { cache: "no-store" })
+      .then((res) => res.ok ? res.json() : [])
+      .then((data: Category[]) => {
+        setCategories(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <section id="categories" className="py-[72px] md:py-[88px] bg-white">
+        <div className="mx-auto max-w-[1260px] px-5 md:px-8">
+          <div className="text-center mb-10 md:mb-12">
+            <h2 className="text-[28px] md:text-[34px] font-bold text-[#0f172a] tracking-tight">
+              OUR PRODUCT CATEGORIES
+            </h2>
+            <div className="w-12 h-1 bg-[#2563eb] rounded-full mx-auto mt-3" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="bg-white border border-slate-100 rounded-[20px] overflow-hidden animate-pulse">
+                <div className="aspect-[4/3] bg-slate-100" />
+                <div className="p-4 space-y-2">
+                  <div className="h-4 bg-slate-100 rounded w-3/4" />
+                  <div className="h-3 bg-slate-100 rounded w-full" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="categories" className="py-[72px] md:py-[88px] bg-white">
       <div className="mx-auto max-w-[1260px] px-5 md:px-8">
@@ -16,18 +56,24 @@ export default function ProductCategories() {
             <motion.a
               key={cat.id}
               href={`#products`}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
-              transition={{ delay: i * 0.08, duration: 0.5 }}
-              className="group bg-white border border-slate-100 rounded-[20px] overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+              transition={{
+                delay: i * 0.08,
+                type: "spring",
+                stiffness: 100,
+                damping: 20,
+                mass: 0.8,
+              }}
+              className="group bg-white border border-slate-100 rounded-[20px] overflow-hidden card-lift flex flex-col"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-slate-50">
                 <Image
                   src={cat.image}
                   alt={cat.name}
                   fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="object-cover group-hover:scale-110 transition-transform duration-500 img-zoom"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
                 />
               </div>
@@ -39,7 +85,7 @@ export default function ProductCategories() {
                   {cat.description}
                 </p>
                 <span className="inline-flex items-center gap-1 text-[13px] font-semibold text-[#2563eb] group-hover:gap-2 transition-all">
-                  Explore <ArrowRight className="w-3.5 h-3.5" />
+                  Explore <ArrowRight className="w-3.5 h-3.5 arrow-nudge" />
                 </span>
               </div>
             </motion.a>
@@ -49,10 +95,10 @@ export default function ProductCategories() {
         <div className="text-center mt-10">
           <a
             href="#products"
-            className="inline-flex items-center gap-2 text-[#2563eb] font-semibold text-[15px] hover:gap-3 transition-all"
+            className="inline-flex items-center gap-2 text-[#2563eb] font-semibold text-[15px] hover:gap-3 transition-all group"
           >
             View All Products
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-4 h-4 arrow-nudge" />
           </a>
         </div>
       </div>
@@ -61,11 +107,31 @@ export default function ProductCategories() {
 }
 
 function SectionHeading({ title }: { title: string }) {
+  const words = title.split(" ");
   return (
     <div className="text-center mb-10 md:mb-12">
-      <h2 className="text-[28px] md:text-[34px] font-bold text-[#0f172a] tracking-tight">
-        {title}
-      </h2>
+      <motion.h2
+        className="text-[28px] md:text-[34px] font-bold text-[#0f172a] tracking-tight flex flex-wrap justify-center gap-x-[0.25em]"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ staggerChildren: 0.05, delayChildren: 0.1 }}
+      >
+        {words.map((word, i) => (
+          <span key={i} className="inline-block overflow-hidden">
+            <motion.span
+              className="inline-block"
+              variants={{
+                hidden: { y: "110%", opacity: 0 },
+                visible: { y: "0%", opacity: 1 },
+              }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {word}
+            </motion.span>
+          </span>
+        ))}
+      </motion.h2>
       <div className="w-12 h-1 bg-[#2563eb] rounded-full mx-auto mt-3" />
     </div>
   );

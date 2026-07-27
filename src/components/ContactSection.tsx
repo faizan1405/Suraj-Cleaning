@@ -1,12 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, MapPin, Phone, Mail, Clock } from "lucide-react";
-import { company } from "@/data/company";
+import type { CompanyInfo } from "@/data/company";
 
 export default function ContactSection() {
+  const [company, setCompany] = useState<CompanyInfo | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  useEffect(() => {
+    fetch("/api/admin/data/company", { cache: "no-store" })
+      .then((res) => res.ok ? res.json() : null)
+      .then((data) => {
+        if (data) setCompany(data);
+      });
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,6 +49,21 @@ export default function ContactSection() {
     setTimeout(() => setStatus("idle"), 4000);
   };
 
+  if (!company) {
+    return (
+      <section id="contact" className="py-[72px] md:py-[88px] bg-white">
+        <div className="mx-auto max-w-[1260px] px-5 md:px-8">
+          <div className="animate-pulse space-y-4">
+            <div className="h-8 bg-slate-100 rounded w-48 mx-auto" />
+            <div className="h-4 bg-slate-100 rounded w-96 mx-auto" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  const headingText = "Get in Touch";
+
   return (
     <section id="contact" className="py-[72px] md:py-[88px] bg-white">
       <div className="mx-auto max-w-[1260px] px-5 md:px-8">
@@ -48,14 +72,31 @@ export default function ContactSection() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="inline-block px-4 py-1.5 bg-blue-50 text-[#2563eb] text-[11px] font-bold tracking-[0.2em] uppercase rounded-full mb-4">
+            <motion.span
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-block px-4 py-1.5 bg-blue-50 text-[#2563eb] text-[11px] font-bold tracking-[0.2em] uppercase rounded-full mb-4"
+            >
               CONTACT US
-            </span>
+            </motion.span>
             <h2 className="text-[28px] md:text-[36px] font-bold text-[#0f172a] mb-4">
-              Get in Touch
+              {headingText.split(" ").map((word, i) => (
+                <motion.span
+                  key={i}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ delay: i * 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="inline-block"
+                >
+                  {word}{i < headingText.split(" ").length - 1 ? " " : ""}
+                </motion.span>
+              ))}
             </h2>
             <p className="text-[15px] text-[#64748b] leading-relaxed mb-8">
               Have questions about our products or want to become a distributor?
@@ -64,14 +105,15 @@ export default function ContactSection() {
             </p>
 
             <div className="space-y-4">
-              <a
+              <motion.a
+                whileHover={{ x: 4 }}
                 href="https://maps.google.com/?q=Bantwala,Dakshina+Kannada,Karnataka,India"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 group"
               >
                 <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition-colors">
-                  <MapPin className="w-5 h-5 text-[#2563eb]" />
+                  <MapPin className="w-5 h-5 text-[#2563eb] icon-pop" />
                 </div>
                 <div>
                   <p className="text-[14px] font-medium text-[#0f172a]">
@@ -81,14 +123,15 @@ export default function ContactSection() {
                     {company.address}
                   </p>
                 </div>
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
+                whileHover={{ x: 4 }}
                 href={`tel:${company.phoneRaw}`}
                 className="flex items-start gap-3 group"
               >
                 <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition-colors">
-                  <Phone className="w-5 h-5 text-[#2563eb]" />
+                  <Phone className="w-5 h-5 text-[#2563eb] icon-pop" />
                 </div>
                 <div>
                   <p className="text-[14px] font-medium text-[#0f172a]">
@@ -96,14 +139,15 @@ export default function ContactSection() {
                   </p>
                   <p className="text-[13px] text-[#64748b]">{company.phone}</p>
                 </div>
-              </a>
+              </motion.a>
 
-              <a
+              <motion.a
+                whileHover={{ x: 4 }}
                 href={`mailto:${company.email}`}
                 className="flex items-start gap-3 group"
               >
                 <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition-colors">
-                  <Mail className="w-5 h-5 text-[#2563eb]" />
+                  <Mail className="w-5 h-5 text-[#2563eb] icon-pop" />
                 </div>
                 <div>
                   <p className="text-[14px] font-medium text-[#0f172a]">
@@ -111,11 +155,14 @@ export default function ContactSection() {
                   </p>
                   <p className="text-[13px] text-[#64748b]">{company.email}</p>
                 </div>
-              </a>
+              </motion.a>
 
-              <div className="flex items-start gap-3">
+              <motion.div
+                whileHover={{ x: 4 }}
+                className="flex items-start gap-3"
+              >
                 <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0">
-                  <Clock className="w-5 h-5 text-[#2563eb]" />
+                  <Clock className="w-5 h-5 text-[#2563eb] icon-pop" />
                 </div>
                 <div>
                   <p className="text-[14px] font-medium text-[#0f172a]">
@@ -123,7 +170,7 @@ export default function ContactSection() {
                   </p>
                   <p className="text-[13px] text-[#64748b]">{company.hours}</p>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </motion.div>
 
@@ -131,16 +178,22 @@ export default function ContactSection() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           >
             <form
               onSubmit={handleSubmit}
               className="bg-slate-50 rounded-[24px] p-6 md:p-8"
             >
-              <h3 className="text-[18px] font-bold text-[#0f172a] mb-5">
+              <motion.h3
+                initial={{ opacity: 0, y: 8 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="text-[18px] font-bold text-[#0f172a] mb-5"
+              >
                 Send us a Message
-              </h3>
+              </motion.h3>
 
               {/* Honeypot */}
               <div className="hidden" aria-hidden="true">
@@ -209,10 +262,11 @@ export default function ContactSection() {
                   />
                 </div>
 
-                <button
+                <motion.button
+                  whileHover={{ y: -3 }}
                   type="submit"
                   disabled={status === "loading"}
-                  className="w-full py-3.5 bg-[#2563eb] text-white font-bold text-[15px] rounded-full hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 disabled:opacity-60 flex items-center justify-center gap-2"
+                  className="w-full py-3.5 bg-[#2563eb] text-white font-bold text-[15px] rounded-full hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 disabled:opacity-60 flex items-center justify-center gap-2 btn-shine"
                 >
                   {status === "loading" ? (
                     "Sending..."
@@ -223,7 +277,7 @@ export default function ContactSection() {
                       Send Message <Send className="w-4 h-4" />
                     </>
                   )}
-                </button>
+                </motion.button>
 
                 {status === "success" && (
                   <p className="text-green-600 text-[13px] text-center">

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Send } from "lucide-react";
 
 export default function NewsletterSection() {
@@ -13,20 +13,45 @@ export default function NewsletterSection() {
     if (!email.trim()) return;
     setStatus("loading");
 
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 1500));
-    setStatus("success");
-    setEmail("");
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (res.ok) {
+        setStatus("success");
+        setEmail("");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
 
     setTimeout(() => setStatus("idle"), 4000);
   };
+
+  const headingText = "Stay Updated with Offers & New Launches";
 
   return (
     <section className="py-[72px] md:py-[88px] bg-[#2563eb]">
       <div className="mx-auto max-w-[1260px] px-5 md:px-8">
         <div className="max-w-xl mx-auto text-center">
           <h2 className="text-[24px] md:text-[30px] font-bold text-white mb-3">
-            Stay Updated with Offers & New Launches
+            {headingText.split(" ").map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ delay: i * 0.05, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                className="inline-block"
+              >
+                {word}{i < headingText.split(" ").length - 1 ? " " : ""}
+              </motion.span>
+            ))}
           </h2>
           <p className="text-white/75 text-[15px] mb-8">
             Subscribe to our newsletter and never miss an update.
@@ -45,10 +70,11 @@ export default function NewsletterSection() {
                 className="w-full pl-11 pr-4 py-3.5 text-[14px] bg-white rounded-full border-0 focus:outline-none focus:ring-2 focus:ring-white/30 text-[#0f172a] placeholder:text-slate-400 disabled:opacity-60"
               />
             </div>
-            <button
+            <motion.button
+              whileHover={{ y: -3 }}
               type="submit"
               disabled={status === "loading" || status === "success"}
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#0f172a] text-white font-bold text-[14px] rounded-full hover:bg-[#1e293b] transition-colors disabled:opacity-60 shrink-0"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-[#0f172a] text-white font-bold text-[14px] rounded-full hover:bg-[#1e293b] transition-colors disabled:opacity-60 shrink-0 btn-shine"
             >
               {status === "loading" ? (
                 "Subscribing..."
@@ -59,14 +85,21 @@ export default function NewsletterSection() {
                   Subscribe <Send className="w-4 h-4" />
                 </>
               )}
-            </button>
+            </motion.button>
           </form>
 
-          {status === "success" && (
-            <div className="text-white/90 text-[13px] mt-3">
-              Thanks for subscribing! Check your inbox soon.
-            </div>
-          )}
+          <AnimatePresence>
+            {status === "success" && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="text-white/90 text-[13px] mt-3"
+              >
+                Thanks for subscribing! Check your inbox soon.
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {status === "error" && (
             <p className="text-red-200 text-[13px] mt-3">

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { readJsonFile, writeJsonFile } from "@/lib/data-store";
 
 export async function POST(request: Request) {
   try {
@@ -25,7 +26,14 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log("Distributor application:", body);
+    // Persist to submissions
+    const submissions = readJsonFile<any[]>("submissions/distributor.json");
+    submissions.push({
+      id: `dist_${Date.now()}`,
+      ...body,
+      submittedAt: new Date().toISOString(),
+    });
+    writeJsonFile("submissions/distributor.json", submissions);
 
     return NextResponse.json(
       { message: "Application submitted successfully" },

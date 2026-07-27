@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { products, getBestSellers } from "@/data/products";
+import type { Product } from "@/data/products";
 
 interface SimpleProduct {
   id: string;
@@ -36,14 +36,14 @@ function ProductCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
       transition={{ delay: index * 0.06, duration: 0.5 }}
-      className="bg-white border border-slate-100 rounded-[20px] overflow-hidden hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col"
+      className="bg-white border border-slate-100 rounded-[20px] overflow-hidden card-lift flex flex-col"
     >
       <div className="relative aspect-square bg-[#f8fafc] overflow-hidden">
         <Image
           src={product.image}
           alt={product.name}
           fill
-          className="object-contain p-4"
+          className="object-contain p-4 img-zoom"
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
       </div>
@@ -62,7 +62,7 @@ function ProductCard({
             onClick={() => onViewDetails(product)}
             className="text-[13px] font-semibold text-[#2563eb] hover:text-[#1d4ed8] transition-colors flex items-center gap-1"
           >
-            View Details <ArrowRight className="w-3.5 h-3.5" />
+            View Details <ArrowRight className="w-3.5 h-3.5 arrow-nudge" />
           </button>
         </div>
       </div>
@@ -93,15 +93,16 @@ function ProductModal({
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
         className="relative bg-white rounded-[24px] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
       >
-        <button
+        <motion.button
           onClick={onClose}
+          whileHover={{ scale: 1.1 }}
           className="absolute top-4 right-4 z-10 p-2 bg-white/80 rounded-full hover:bg-white transition-colors"
           aria-label="Close modal"
         >
           <svg className="w-5 h-5 text-[#334155]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>
-        </button>
+        </motion.button>
 
         <div className="grid md:grid-cols-2">
           <div className="relative aspect-square bg-[#f8fafc] p-6">
@@ -167,13 +168,13 @@ function ProductModal({
                 href="https://wa.me/919844734939"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white text-[13px] font-semibold rounded-full hover:bg-green-600 transition-colors"
+                className="btn-shine inline-flex items-center gap-2 px-5 py-2.5 bg-green-500 text-white text-[13px] font-semibold rounded-full hover:bg-green-600 transition-colors"
               >
                 WhatsApp Enquiry
               </a>
               <a
                 href="tel:+919844734939"
-                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#2563eb] text-white text-[13px] font-semibold rounded-full hover:bg-[#1d4ed8] transition-colors"
+                className="btn-shine inline-flex items-center gap-2 px-5 py-2.5 bg-[#2563eb] text-white text-[13px] font-semibold rounded-full hover:bg-[#1d4ed8] transition-colors"
               >
                 Enquire Now
               </a>
@@ -188,7 +189,7 @@ function ProductModal({
             </h4>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               {relatedProducts.map((rp) => (
-                <div key={rp.id} className="flex items-center gap-3 p-2 bg-slate-50 rounded-xl">
+                <div key={rp.id} className="flex items-center gap-3 p-2 bg-slate-50 rounded-xl card-lift">
                   <div className="relative w-12 h-12 bg-white rounded-lg overflow-hidden shrink-0">
                     <Image src={rp.image} alt={rp.name} fill className="object-contain p-1" sizes="48px" />
                   </div>
@@ -207,8 +208,21 @@ function ProductModal({
 }
 
 export default function BestSellingProducts() {
-  const bestSellers = getBestSellers();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<SimpleProduct | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/data/products", { cache: "no-store" })
+      .then((res) => res.ok ? res.json() : [])
+      .then((data: Product[]) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  const bestSellers = products.filter((p) => p.bestSeller && p.active);
 
   const relatedProducts: SimpleProduct[] = selectedProduct
     ? bestSellers
@@ -216,14 +230,68 @@ export default function BestSellingProducts() {
         .map((p) => p as SimpleProduct)
     : [];
 
+  const headingWords = "BEST SELLING PRODUCTS".split(" ");
+
+  if (loading) {
+    return (
+      <section id="products" className="py-[72px] md:py-[88px] bg-white">
+        <div className="mx-auto max-w-[1260px] px-5 md:px-8">
+          <div className="text-center mb-10 md:mb-12">
+            <h2 className="text-[28px] md:text-[34px] font-bold text-[#0f172a] tracking-tight">
+              BEST SELLING PRODUCTS
+            </h2>
+            <div className="w-12 h-1 bg-[#2563eb] rounded-full mx-auto mt-3" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white border border-slate-100 rounded-[20px] overflow-hidden animate-pulse">
+                <div className="aspect-square bg-slate-100" />
+                <div className="p-4 space-y-3">
+                  <div className="h-4 bg-slate-100 rounded w-3/4" />
+                  <div className="h-3 bg-slate-100 rounded w-1/2" />
+                  <div className="h-6 bg-slate-100 rounded w-1/4" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="products" className="py-[72px] md:py-[88px] bg-white">
       <div className="mx-auto max-w-[1260px] px-5 md:px-8">
         <div className="text-center mb-10 md:mb-12">
-          <h2 className="text-[28px] md:text-[34px] font-bold text-[#0f172a] tracking-tight">
-            BEST SELLING PRODUCTS
-          </h2>
-          <div className="w-12 h-1 bg-[#2563eb] rounded-full mx-auto mt-3" />
+          <motion.h2
+            className="text-[28px] md:text-[34px] font-bold text-[#0f172a] tracking-tight flex flex-wrap justify-center gap-x-[0.25em] overflow-hidden"
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ staggerChildren: 0.04, delayChildren: 0.1 }}
+          >
+            {headingWords.map((word, i) => (
+              <span key={i} className="inline-block overflow-hidden">
+                <motion.span
+                  className="inline-block"
+                  variants={{
+                    hidden: { y: "110%", opacity: 0 },
+                    show: { y: "0%", opacity: 1 },
+                  }}
+                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {word}
+                </motion.span>
+              </span>
+            ))}
+          </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="w-12 h-1 bg-[#2563eb] rounded-full mx-auto mt-3"
+          />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

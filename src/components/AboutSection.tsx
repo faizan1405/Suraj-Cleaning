@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import { company } from "@/data/company";
+import type { CompanyInfo } from "@/data/company";
 
 function AnimatedCounter({
   target,
@@ -40,13 +40,27 @@ function AnimatedCounter({
   );
 }
 
+const headingWords = ["Swaraj", "Enterprises"];
+
 export default function AboutSection() {
-  const stats = [
-    { label: "Happy Customers", value: company.stats.customers },
-    { label: "Distributors", value: company.stats.distributors },
-    { label: "Products", value: company.stats.products },
-    { label: "Years of Trust", value: company.stats.years },
-  ];
+  const [statsData, setStatsData] = useState<CompanyInfo["stats"] | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/data/company", { cache: "no-store" })
+      .then((res) => res.ok ? res.json() : null)
+      .then((data: CompanyInfo | null) => {
+        if (data?.stats) setStatsData(data.stats);
+      });
+  }, []);
+
+  const stats = statsData
+    ? [
+        { label: "Happy Customers", value: statsData.customers },
+        { label: "Distributors", value: statsData.distributors },
+        { label: "Products", value: statsData.products },
+        { label: "Years of Trust", value: statsData.years },
+      ]
+    : [];
 
   return (
     <section id="about" className="py-[72px] md:py-[88px] bg-[#f8fafc]">
@@ -54,8 +68,8 @@ export default function AboutSection() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left - Image */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, x: -30, scale: 1.05 }}
+            whileInView={{ opacity: 1, x: 0, scale: 1 }}
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.7 }}
             className="relative"
@@ -82,7 +96,7 @@ export default function AboutSection() {
               </div>
             </div>
             {/* Decorative element */}
-            <div className="absolute -top-3 -right-3 w-24 h-24 bg-blue-100/60 rounded-full blur-xl -z-10" />
+            <div className="absolute -top-3 -right-3 w-24 h-24 bg-blue-100/60 rounded-full blur-xl -z-10 soft-pulse" />
           </motion.div>
 
           {/* Right - Content */}
@@ -92,18 +106,47 @@ export default function AboutSection() {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.7, delay: 0.1 }}
           >
-            <span className="inline-block px-4 py-1.5 bg-blue-50 text-[#2563eb] text-[11px] font-bold tracking-[0.2em] uppercase rounded-full mb-4">
+            <motion.span
+              initial={{ opacity: 0, y: 12, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5 }}
+              className="inline-block px-4 py-1.5 bg-blue-50 text-[#2563eb] text-[11px] font-bold tracking-[0.2em] uppercase rounded-full mb-4"
+            >
               ABOUT US
-            </span>
-            <h2 className="text-[32px] md:text-[40px] font-bold text-[#0f172a] mb-4">
-              Swaraj Enterprises
+            </motion.span>
+
+            <h2 className="text-[32px] md:text-[40px] font-bold text-[#0f172a] mb-4 overflow-hidden">
+              <motion.span
+                className="inline-block"
+                initial={{ y: "110%", opacity: 0 }}
+                animate={{ y: "0%", opacity: 1 }}
+                transition={{
+                  staggerChildren: 0.05,
+                  delayChildren: 0.1,
+                  duration: 0.6,
+                }}
+              >
+                {headingWords.map((word, i) => (
+                  <span key={i} className="inline-block mr-[0.25em]">
+                    {word}
+                  </span>
+                ))}
+              </motion.span>
             </h2>
-            <p className="text-[15px] md:text-[16px] text-[#64748b] leading-relaxed mb-8">
+
+            <motion.p
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.6, delay: 0.15 }}
+              className="text-[15px] md:text-[16px] text-[#64748b] leading-relaxed mb-8"
+            >
               We are committed to providing high-quality cleaning solutions that
               make your everyday life cleaner, healthier and happier. Our products
               are made with carefully selected ingredients and advanced technology
               to deliver superior performance and lasting freshness.
-            </p>
+            </motion.p>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mb-8">
@@ -114,7 +157,7 @@ export default function AboutSection() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-                  className="text-center p-4 bg-white rounded-2xl border border-slate-100 shadow-sm"
+                  className="text-center p-4 bg-white rounded-2xl border border-slate-100 shadow-sm pop-in"
                 >
                   <p className="text-[28px] md:text-[32px] font-bold text-[#2563eb] leading-none mb-1">
                     <AnimatedCounter target={stat.value} />
@@ -126,13 +169,14 @@ export default function AboutSection() {
               ))}
             </div>
 
-            <a
+            <motion.a
               href="#"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563eb] text-white font-semibold text-[14px] rounded-full hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200"
+              whileHover={{ y: -3 }}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563eb] text-white font-semibold text-[14px] rounded-full hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 btn-shine"
             >
               Read More About Us
               <ArrowRight className="w-4 h-4" />
-            </a>
+            </motion.a>
           </motion.div>
         </div>
       </div>
