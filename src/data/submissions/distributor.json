@@ -1,1 +1,57 @@
-[]
+[
+  {
+    "id": "dist_1785178386029",
+    "fullName": "Test",
+    "businessName": "TestBiz",
+    "mobile": "+919876543210",
+    "email": "test@test.com",
+    "city": "TestCity",
+    "state": "Delhi",
+    "submittedAt": "2026-07-27T18:53:06.029Z"
+  },
+  {
+    "id": "dist_1785178466213",
+    "fullName": "Test",
+    "businessName": "TestBiz",
+    "mobile": "+919876543210",
+    "email": "test@test.com",
+    "city": "TestCity",
+    "state": "Delhi",
+    "message": "test",
+    "businessType": "",
+    "investment": "",
+    "consent": "on",
+    "website": "",
+    "submittedAt": "2026-07-27T18:54:26.214Z"
+  },
+  {
+    "id": "dist_1785178622729",
+    "fullName": "Test",
+    "businessName": "TestBiz",
+    "mobile": "+919876543210",
+    "email": "test@test.com",
+    "city": "TestCity",
+    "state": "Delhi",
+    "businessType": "",
+    "investment": "",
+    "message": "",
+    "consent": "",
+    "website": "",
+    "submittedAt": "2026-07-27T18:57:02.729Z"
+  },
+  {
+    "id": "dist_1785178912883",
+    "fullName": "Faizan khan",
+    "businessName": "dfghj",
+    "mobile": "+919873721207",
+    "email": "faizankhan1405@gmail.cor",
+    "city": "Shri ram colony, khajoori",
+    "state": "Delhi",
+    "businessType": "wholesale",
+    "investment": "10-25",
+    "message": "aaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "consent": "on",
+    "website": "",
+    "submittedAt": "2026-07-27T19:01:52.883Z"
+  }
+]

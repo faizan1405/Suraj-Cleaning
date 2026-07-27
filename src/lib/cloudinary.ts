@@ -13,9 +13,9 @@ export function initCloudinary(): void {
     throw new Error("Cloudinary environment variables are not configured");
   }
   cloudinary.config({
-    cloudName,
-    apiKey,
-    apiSecret,
+    cloud_name: cloudName,
+    api_key: apiKey,
+    api_secret: apiSecret,
   });
   cloudinaryReady = true;
 }
