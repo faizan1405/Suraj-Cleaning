@@ -11,6 +11,9 @@ const ENTITY_FILES: Record<string, string> = {
   testimonials: "testimonials.json",
   qualityProcess: "qualityProcess.json",
   company: "company.json",
+  contact: "submissions/contact.json",
+  distributor: "submissions/distributor.json",
+  newsletter: "submissions/newsletter.json",
 };
 
 function getEntityFile(entity: string): string {

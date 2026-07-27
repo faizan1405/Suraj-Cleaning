@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Product } from "@/data/products";
 
 function ProductCard({
@@ -263,6 +263,17 @@ export default function BestSellingProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scroll = useCallback((direction: "left" | "right") => {
+    if (!scrollRef.current) return;
+    const card = scrollRef.current.querySelector("[data-product-card]");
+    const cardWidth = card ? (card as HTMLElement).offsetWidth + 20 : 340;
+    scrollRef.current.scrollBy({
+      left: direction === "left" ? -cardWidth : cardWidth,
+      behavior: "smooth",
+    });
+  }, []);
 
   useEffect(() => {
     fetch("/api/admin/data/products", { cache: "no-store" })
@@ -345,10 +356,42 @@ export default function BestSellingProducts() {
           />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {bestSellers.map((product, i) => (
-            <ProductCard key={product.id} product={product} index={i} onViewDetails={setSelectedProduct} />
-          ))}
+        <div className="relative">
+          <div
+            ref={scrollRef}
+            className="flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide"
+          >
+            {bestSellers.map((product, i) => (
+              <div
+                key={product.id}
+                data-product-card
+                className="snap-start shrink-0 w-[280px] sm:w-[300px] lg:w-[340px]"
+              >
+                <ProductCard product={product} index={i} onViewDetails={setSelectedProduct} />
+              </div>
+            ))}
+          </div>
+
+          {bestSellers.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={() => scroll("left")}
+                className="absolute left-0 top-[40%] -translate-y-1/2 z-10 p-2 bg-white/90 backdrop-blur rounded-full shadow-lg hover:bg-white transition-all"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-5 h-5 text-[#334155]" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scroll("right")}
+                className="absolute right-0 top-[40%] -translate-y-1/2 z-10 p-2 bg-white/90 backdrop-blur rounded-full shadow-lg hover:bg-white transition-all"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-5 h-5 text-[#334155]" />
+              </button>
+            </>
+          )}
         </div>
 
         <div className="text-center mt-10">

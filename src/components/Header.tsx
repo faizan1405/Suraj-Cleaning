@@ -75,12 +75,11 @@ export default function Header() {
             whileHover={{ scale: 1.03 }}
             transition={{ type: "spring", stiffness: 400, damping: 20 }}
           >
-            <span className="text-[22px] md:text-[26px] font-bold tracking-tight text-[#0f172a] transition-colors group-hover:text-[#2563eb]">
-              SWARAJ
-            </span>
-            <span className="text-[13px] md:text-[14px] font-semibold tracking-[0.25em] text-[#2563eb] -mt-0.5">
-              ENTERPRISES
-            </span>
+            <img
+              src="/images/Logo.png"
+              alt="Swaraj Enterprises"
+              className="h-[44px] md:h-[52px] w-auto object-contain"
+            />
           </motion.a>
 
           {/* Desktop Navigation */}
