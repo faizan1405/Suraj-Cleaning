@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { X, Upload, Loader2 } from "lucide-react";
 
-export type FieldType = "text" | "email" | "number" | "textarea" | "select" | "checkbox";
+export type FieldType = "text" | "email" | "number" | "textarea" | "select" | "checkbox" | "image-upload";
 
 export interface FieldConfig {
   name: string;
@@ -22,6 +22,103 @@ interface AdminFormModalProps {
   fields: FieldConfig[];
   onSubmit: (data: Record<string, unknown>) => Promise<void>;
   initialData?: any;
+}
+
+interface ImageUploadFieldProps {
+  value: string;
+  onChange: (url: string) => void;
+}
+
+function ImageUploadField({ value, onChange }: ImageUploadFieldProps) {
+  const [uploading, setUploading] = useState(false);
+  const [preview, setPreview] = useState<string | null>(null);
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file.");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Image must be smaller than 5MB.");
+      return;
+    }
+
+    const localPreview = URL.createObjectURL(file);
+    setPreview(localPreview);
+    setUploading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: "Upload failed" }));
+        throw new Error(err.error || "Upload failed");
+      }
+
+      const data = await res.json();
+      setPreview(null);
+      onChange(data.url);
+    } catch (err) {
+      alert("Failed to upload image. Please try again.");
+      setPreview(null);
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  const displayImage = preview || value;
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-start gap-4">
+        {/* Preview */}
+        <div className="w-24 h-24 rounded-xl border border-[#e2e8f0] bg-[#f8fafc] flex items-center justify-center overflow-hidden shrink-0">
+          {displayImage ? (
+            <img src={displayImage} alt="Preview" className="w-full h-full object-cover" />
+          ) : (
+            <span className="text-[11px] text-slate-400 px-2 text-center">No image</span>
+          )}
+        </div>
+        {/* Upload button */}
+        <div className="flex-1">
+          <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2563eb] text-white text-[13px] font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors cursor-pointer disabled:opacity-60">
+            {uploading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Uploading...
+              </>
+            ) : (
+              <>
+                <Upload className="w-4 h-4" />
+                {value ? "Replace Image" : "Choose Image"}
+              </>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+              disabled={uploading}
+            />
+          </label>
+          {value && !preview && (
+            <p className="mt-1.5 text-[11px] text-[#64748b] truncate max-w-[200px]">{value}</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default function AdminFormModal({
@@ -64,6 +161,13 @@ export default function AdminFormModal({
     const value = formData[field.name] ?? "";
 
     switch (field.type) {
+      case "image-upload":
+        return (
+          <ImageUploadField
+            value={String(value)}
+            onChange={(url) => setField(field.name, url)}
+          />
+        );
       case "textarea":
         return (
           <textarea

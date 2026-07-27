@@ -49,7 +49,7 @@ export default function AdminCategories() {
     { name: "name", label: "Name", type: "text", required: true },
     { name: "slug", label: "Slug", type: "text", required: true, placeholder: "e.g. floor-care" },
     { name: "description", label: "Description", type: "text", required: true },
-    { name: "image", label: "Image Path", type: "text", placeholder: "/images/category-name.webp" },
+    { name: "image", label: "Category Image", type: "image-upload", placeholder: "/images/category-name.webp" },
   ];
 
   if (isChecking) {

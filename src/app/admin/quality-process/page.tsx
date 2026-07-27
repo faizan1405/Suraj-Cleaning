@@ -50,7 +50,7 @@ export default function AdminQualityProcess() {
     { name: "stepNumber", label: "Step Number", type: "number", required: true },
     { name: "title", label: "Title", type: "text", required: true },
     { name: "description", label: "Description", type: "textarea", rows: 3, required: true },
-    { name: "image", label: "Image Path", type: "text", placeholder: "/images/process-step.webp" },
+    { name: "image", label: "Process Image", type: "image-upload", placeholder: "/images/process-step.webp" },
   ];
 
   if (isChecking) {
