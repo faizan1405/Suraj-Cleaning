@@ -5,6 +5,46 @@ import { motion } from "framer-motion";
 import { Send, MapPin, Phone, Mail, Clock } from "lucide-react";
 import type { CompanyInfo } from "@/data/company";
 
+function MapEmbed({ address }: { address: string }) {
+  const [loaded, setLoaded] = useState(false);
+
+  const mapSrc =
+    "https://maps.google.com/maps?q=" +
+    encodeURIComponent(address) +
+    "&t=&z=14&ie=UTF8&iwloc=&output=embed";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      className="relative w-full h-[350px] md:h-[450px] rounded-[24px] overflow-hidden shadow-lg border border-slate-100"
+    >
+      {!loaded && (
+        <div className="absolute inset-0 bg-slate-100 animate-pulse rounded-[24px] flex items-center justify-center">
+          <div className="text-center">
+            <MapPin className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+            <p className="text-[13px] text-slate-400">Loading map...</p>
+          </div>
+        </div>
+      )}
+      <iframe
+        title="Our Location"
+        src={mapSrc}
+        width="100%"
+        height="100%"
+        style={{ border: 0, display: loaded ? "block" : "none" }}
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        onLoad={() => setLoaded(true)}
+        className="rounded-[24px]"
+      />
+    </motion.div>
+  );
+}
+
 export default function ContactSection() {
   const [company, setCompany] = useState<CompanyInfo | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -302,6 +342,13 @@ export default function ContactSection() {
             </form>
           </motion.div>
         </div>
+
+        {/* Map */}
+        {company && (
+          <div className="mt-12 md:mt-16">
+            <MapEmbed address={company.address} />
+          </div>
+        )}
       </div>
     </section>
   );
