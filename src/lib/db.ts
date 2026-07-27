@@ -48,7 +48,7 @@ export async function writeJsonFile<T>(relativePath: string, data: T): Promise<v
 
   if (SINGLETON_COLLECTIONS.has(relativePath)) {
     await collection.updateOne(
-      { _id: "singleton" },
+      { _id: "singleton" } as Record<string, string>,
       { $set: { data } },
       { upsert: true }
     );
