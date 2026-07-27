@@ -45,12 +45,11 @@ export default function Header() {
   };
 
   const displayNav = navigation.length > 0 ? navigation : [
-    { label: "Home", href: "#home" },
-    { label: "About Us", href: "#about" },
-    { label: "Products", href: "#products" },
-    { label: "Why Us", href: "#benefits" },
-    { label: "Distributor", href: "#distributor" },
-    { label: "Contact Us", href: "#contact" },
+    { label: "Home", href: "/" },
+    { label: "About Us", href: "/about" },
+    { label: "Products", href: "/products" },
+    { label: "Distributor", href: "/distributor" },
+    { label: "Contact Us", href: "/contact" },
   ];
 
   return (
@@ -78,7 +77,7 @@ export default function Header() {
             <img
               src="/images/Logo.png"
               alt="Swaraj Enterprises"
-              className="h-[44px] md:h-[52px] w-auto object-contain"
+              className="h-[52px] md:h-[60px] w-auto object-contain"
             />
           </motion.a>
 

@@ -56,7 +56,7 @@ export async function POST(
     }
 
     const current = (await readJsonFile<any[]>(file)) || [];
-    const newItem = { ...body.data, id: body.id || `item_${Date.now()}` };
+    const newItem = { ...body.data, id: body.id || crypto.randomUUID() };
     current.push(newItem);
     await writeJsonFile(file, current);
     return NextResponse.json({ success: true, data: newItem }, { status: 201 });

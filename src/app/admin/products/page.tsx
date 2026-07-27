@@ -37,17 +37,25 @@ export default function AdminProducts() {
     const isEdit = !!editingItem;
     const method = isEdit ? "PUT" : "POST";
 
-    await fetch("/api/admin/data/products", {
+    const saveRes = await fetch("/api/admin/data/products", {
       method,
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: editingItem?.id, data }),
     });
+
+    if (!saveRes.ok) {
+      const err = await saveRes.json().catch(() => ({}));
+      alert(err.error || `Failed to ${isEdit ? "update" : "add"} product. Please try again.`);
+      return;
+    }
 
     // Refresh
     const res = await fetch("/api/admin/data/products");
     if (res.ok) {
       const p = await res.json();
       setProducts(Array.isArray(p) ? p : []);
+    } else {
+      alert("Product saved but failed to refresh list. Please reload the page.");
     }
   };
 

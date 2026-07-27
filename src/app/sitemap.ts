@@ -3,27 +3,38 @@ import { MetadataRoute } from "next";
 const base = "https://swarajenterprises.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = [
-    "",
-    "#about",
-    "#products",
-    "#benefits",
-    "#distributor",
-    "#contact",
-  ];
+  const now = new Date();
 
   return [
     {
       url: base,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
     },
-    ...routes.map((route) => ({
-      url: `${base}${route}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
+    {
+      url: `${base}/about`,
+      lastModified: now,
+      changeFrequency: "monthly",
       priority: 0.8,
-    })),
+    },
+    {
+      url: `${base}/products`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${base}/distributor`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${base}/contact`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
   ];
 }

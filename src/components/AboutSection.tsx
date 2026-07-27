@@ -74,7 +74,7 @@ export default function AboutSection() {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            <div className="relative rounded-[24px] overflow-hidden aspect-[4/3] bg-slate-100 shadow-lg">
+            <div className="relative rounded-[24px] overflow-hidden aspect-[4/3] bg-slate-100">
               <Image
                 src="/images/about-products.jpeg"
                 alt="Swaraj Enterprises product range - Hygix, Handpure, Dishsheen, Clearon"

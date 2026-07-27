@@ -1,4 +1,4 @@
-import { getDb, closeDb } from "@/lib/mongodb";
+import { getDb, resetDb } from "@/lib/mongodb";
 
 const COLLECTION_MAP: Record<string, string> = {
   "products.json": "products",
@@ -19,48 +19,60 @@ function getCollectionName(relativePath: string): string {
   return name;
 }
 
-/**
- * Read data from MongoDB. Returns the stored value — an object for singletons
- * (e.g. company), an array for everything else.
- */
-export async function readJsonFile<T>(relativePath: string): Promise<T> {
-  const db = await getDb();
-  const collection = db.collection(getCollectionName(relativePath));
+async function readJsonFile<T>(relativePath: string): Promise<T> {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const db = await getDb();
+      const collection = db.collection(getCollectionName(relativePath));
 
-  if (SINGLETON_COLLECTIONS.has(relativePath)) {
-    const doc = await collection.findOne<{ data: T }>({ _id: "singleton" } as Record<string, string>);
-    return doc?.data ?? ([] as unknown as T);
+      if (SINGLETON_COLLECTIONS.has(relativePath)) {
+        const doc = await collection.findOne<{ data: T }>({ _id: "singleton" } as Record<string, string>);
+        return doc?.data ?? ([] as unknown as T);
+      }
+
+      const docs = await collection.find({}).toArray();
+      const items = docs.map(({ _id, ...rest }) => rest as Record<string, unknown>);
+      return items as unknown as T;
+    } catch (error) {
+      if (attempt < 2) {
+        await resetDb();
+        continue;
+      }
+      throw error;
+    }
   }
-
-  const docs = await collection.find({}).toArray();
-  // Strip MongoDB's _id before returning
-  const items = docs.map(({ _id, ...rest }) => rest as Record<string, unknown>);
-  return items as unknown as T;
+  throw new Error("readJsonFile: all retries exhausted");
 }
 
-/**
- * Write data to MongoDB. Accepts an object for singletons, an array for
- * everything else — mirrors the old JSON-file behaviour.
- */
-export async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
-  const db = await getDb();
-  const collection = db.collection(getCollectionName(relativePath));
+async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const db = await getDb();
+      const collection = db.collection(getCollectionName(relativePath));
 
-  if (SINGLETON_COLLECTIONS.has(relativePath)) {
-    await collection.updateOne(
-      { _id: "singleton" } as Record<string, string>,
-      { $set: { data } },
-      { upsert: true }
-    );
-    return;
-  }
+      if (SINGLETON_COLLECTIONS.has(relativePath)) {
+        await collection.updateOne(
+          { _id: "singleton" } as Record<string, string>,
+          { $set: { data } },
+          { upsert: true }
+        );
+        return;
+      }
 
-  // For arrays: wipe and re-insert
-  await collection.deleteMany({});
-  const items = data as Record<string, unknown>[];
-  if (items.length > 0) {
-    await collection.insertMany(items);
+      await collection.deleteMany({});
+      const items = data as Record<string, unknown>[];
+      if (items.length > 0) {
+        await collection.insertMany(items);
+      }
+      return;
+    } catch (error) {
+      if (attempt < 2) {
+        await resetDb();
+        continue;
+      }
+      throw error;
+    }
   }
 }
 
-export { closeDb };
+export { resetDb, readJsonFile, writeJsonFile };
