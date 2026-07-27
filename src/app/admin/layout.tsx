@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminHeader from "@/components/admin/AdminHeader";
 
@@ -14,8 +14,17 @@ export default function AdminLayout({
   const [checking, setChecking] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+
+  const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
+    // Skip auth check on the login page
+    if (isLoginPage) {
+      setChecking(false);
+      return;
+    }
+
     fetch("/api/admin/auth/check")
       .then((res) => res.json())
       .then((data) => {
@@ -27,13 +36,18 @@ export default function AdminLayout({
       })
       .catch(() => router.push("/admin/login"))
       .finally(() => setChecking(false));
-  }, [router]);
+  }, [router, isLoginPage]);
 
   const handleLogout = async () => {
     await fetch("/api/admin/auth/logout", { method: "POST" });
     router.push("/admin/login");
     router.refresh();
   };
+
+  // Login page renders without auth wrapper
+  if (isLoginPage) {
+    return <>{children}</>;
+  }
 
   if (checking) {
     return (
