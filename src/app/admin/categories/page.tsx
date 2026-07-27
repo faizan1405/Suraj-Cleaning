@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAdminAuth } from "@/hooks/useAdminAuth";
+
 import AdminDataTable, { Column } from "@/components/admin/AdminDataTable";
 import AdminFormModal, { FieldConfig } from "@/components/admin/AdminFormModal";
 import type { Category } from "@/data/categories";
@@ -12,7 +12,7 @@ export default function AdminCategories() {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Category | null>(null);
-  const { isChecking, isAuthenticated } = useAdminAuth();
+  
 
   useEffect(() => {
     if (!isAuthenticated) return;

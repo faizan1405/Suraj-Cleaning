@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAdminAuth } from "@/hooks/useAdminAuth";
+
 import { Inbox, Mail, User, FileText } from "lucide-react";
 
 type SubmissionType = "contact" | "distributor" | "newsletter";
@@ -10,7 +10,7 @@ export default function AdminSubmissions() {
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<SubmissionType>("contact");
-  const { isChecking, isAuthenticated } = useAdminAuth();
+  
 
   useEffect(() => {
     if (!isAuthenticated) return;

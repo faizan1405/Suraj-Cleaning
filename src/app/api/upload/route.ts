@@ -1,14 +1,8 @@
 import { NextResponse } from "next/server";
-import { v2 as cloudinary } from "cloudinary";
-
-cloudinary.config({
-  cloudName: process.env.CLOUDINARY_CLOUD_NAME,
-  apiKey: process.env.CLOUDINARY_API_KEY,
-  apiSecret: process.env.CLOUDINARY_API_SECRET,
-});
+import cloudinary from "@/lib/cloudinary";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const dynamic = "force-dynamic";
 
 export async function POST(request: Request) {
   try {
@@ -16,36 +10,50 @@ export async function POST(request: Request) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
-    }
-
-    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-      console.error("Cloudinary env vars missing:", {
-        cloudName: !!process.env.CLOUDINARY_CLOUD_NAME,
-        apiKey: !!process.env.CLOUDINARY_API_KEY,
-        apiSecret: !!process.env.CLOUDINARY_API_SECRET,
-      });
-      return NextResponse.json({ error: "Server not configured. Contact support." }, { status: 500 });
-    }
-
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-
-    const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
-      const upload = cloudinary.uploader.upload_stream(
-        { folder: "suraj-cleaning/admin" },
-        (error, result) => {
-          if (error) reject(error);
-          else if (result?.secure_url) resolve({ secure_url: result.secure_url });
-          else reject(new Error("Upload failed: no result"));
-        }
+      return NextResponse.json(
+        { error: "No file was uploaded. Please choose an image." },
+        { status: 400 }
       );
-      upload.end(buffer);
+    }
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      return NextResponse.json(
+        { error: `Invalid file type: ${file.type}. Please upload an image.` },
+        { status: 400 }
+      );
+    }
+
+    // Validate file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: "Image is too large. Maximum size is 10MB." },
+        { status: 400 }
+      );
+    }
+
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // Upload using base64 — simpler and avoids stream issues in Next.js runtime
+    const dataUri = `data:${file.type};base64,${buffer.toString("base64")}`;
+
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder: "suraj-cleaning/admin",
+      resource_type: "auto",
     });
 
     return NextResponse.json({ url: result.secure_url });
   } catch (error: any) {
-    console.error("Upload API error:", error?.message || error);
-    return NextResponse.json({ error: error?.message || "Upload failed" }, { status: 500 });
+    console.error("[upload] Error:", error?.message || error);
+    return NextResponse.json(
+      {
+        error:
+          error?.message ||
+          error?.error?.message ||
+          "Upload failed. Please check the server logs.",
+      },
+      { status: 500 }
+    );
   }
 }

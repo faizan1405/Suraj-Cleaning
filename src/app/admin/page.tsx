@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { Package, FolderTree, MessageSquare, Settings, Inbox, Users } from "lucide-react";
 
 export default function AdminDashboard() {
@@ -9,7 +8,6 @@ export default function AdminDashboard() {
     products: 0, categories: 0, testimonials: 0, steps: 0, contact: 0, distributor: 0, newsletter: 0,
   });
   const [loading, setLoading] = useState(true);
-  const { isChecking, isAuthenticated } = useAdminAuth();
 
   useEffect(() => {
     const loadStats = async () => {
@@ -69,21 +67,6 @@ export default function AdminDashboard() {
     indigo: { bg: "bg-indigo-50", text: "text-indigo-600", border: "border-indigo-100" },
     teal: { bg: "bg-teal-50", text: "text-teal-600", border: "border-teal-100" },
   };
-
-  if (isChecking) {
-    return (
-      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-[#2563eb] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-sm text-[#64748b]">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return null;
-  }
 
   return (
     <div className="p-6">

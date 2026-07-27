@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useAdminAuth } from "@/hooks/useAdminAuth";
+
 import { Save, Loader2 } from "lucide-react";
 import type { CompanyInfo } from "@/data/company";
 
@@ -10,7 +10,7 @@ export default function AdminSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
-  const { isChecking, isAuthenticated } = useAdminAuth();
+  
 
   useEffect(() => {
     if (!isAuthenticated) return;
