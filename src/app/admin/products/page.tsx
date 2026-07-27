@@ -1,60 +1,54 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import AdminSidebar from "@/components/admin/AdminSidebar";
-import AdminHeader from "@/components/admin/AdminHeader";
 import AdminDataTable, { Column } from "@/components/admin/AdminDataTable";
 import AdminFormModal, { FieldConfig } from "@/components/admin/AdminFormModal";
 import type { Product } from "@/data/products";
 import { Plus } from "lucide-react";
 
 export default function AdminProducts() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Product | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     const load = async () => {
-      const [p, c] = await Promise.all([
-        fetch("/api/admin/data/products").then((r) => r.json()),
-        fetch("/api/admin/data/categories").then((r) => r.json()),
-      ]);
-      setProducts(Array.isArray(p) ? p : []);
-      setCategories(Array.isArray(c) ? c : []);
-      setLoading(false);
+      try {
+        const [pRes, cRes] = await Promise.all([
+          fetch("/api/admin/data/products"),
+          fetch("/api/admin/data/categories"),
+        ]);
+        const p = pRes.ok ? await pRes.json() : [];
+        const c = cRes.ok ? await cRes.json() : [];
+        setProducts(Array.isArray(p) ? p : []);
+        setCategories(Array.isArray(c) ? c : []);
+      } catch {
+        // keep empty
+      } finally {
+        setLoading(false);
+      }
     };
     load();
   }, []);
 
-  const handleLogout = async () => {
-    await fetch("/api/admin/auth/logout", { method: "POST" });
-    router.push("/admin/login");
-    router.refresh();
-  };
-
   const handleSave = async (data: Record<string, unknown>) => {
     const isEdit = !!editingItem;
-    const url = isEdit ? `/api/admin/data/products` : "/api/admin/data/products";
     const method = isEdit ? "PUT" : "POST";
 
-    await fetch(url, {
+    await fetch("/api/admin/data/products", {
       method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: editingItem?.id,
-        data,
-      }),
+      body: JSON.stringify({ id: editingItem?.id, data }),
     });
 
     // Refresh
     const res = await fetch("/api/admin/data/products");
-    const p = await res.json();
-    setProducts(Array.isArray(p) ? p : []);
+    if (res.ok) {
+      const p = await res.json();
+      setProducts(Array.isArray(p) ? p : []);
+    }
   };
 
   const handleEdit = (item: Product) => {
@@ -102,33 +96,27 @@ export default function AdminProducts() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
-      <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onLogout={handleLogout} />
-      <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-        <main className="flex-1 p-6 overflow-auto">
-          <div className="max-w-6xl">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-[24px] font-bold text-[#0f172a] mb-1">Products</h2>
-                <p className="text-[14px] text-[#64748b]">Manage your product catalog.</p>
-              </div>
-              <button
-                onClick={handleAdd}
-                className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2563eb] text-white text-[14px] font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors shadow-sm"
-              >
-                <Plus className="w-4 h-4" /> Add Product
-              </button>
-            </div>
-            <AdminDataTable
-              columns={columns}
-              data={products}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              loading={loading}
-            />
+    <div className="p-6">
+      <div className="max-w-6xl">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-[24px] font-bold text-[#0f172a] mb-1">Products</h2>
+            <p className="text-[14px] text-[#64748b]">Manage your product catalog.</p>
           </div>
-        </main>
+          <button
+            onClick={handleAdd}
+            className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#2563eb] text-white text-[14px] font-semibold rounded-xl hover:bg-[#1d4ed8] transition-colors shadow-sm"
+          >
+            <Plus className="w-4 h-4" /> Add Product
+          </button>
+        </div>
+        <AdminDataTable
+          columns={columns}
+          data={products}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          loading={loading}
+        />
       </div>
 
       {modalOpen && (

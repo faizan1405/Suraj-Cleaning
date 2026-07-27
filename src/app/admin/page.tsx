@@ -1,24 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import AdminSidebar from "@/components/admin/AdminSidebar";
-import AdminHeader from "@/components/admin/AdminHeader";
+import { useAdminAuth } from "@/hooks/useAdminAuth";
 import { Package, FolderTree, MessageSquare, Settings, Inbox, Users } from "lucide-react";
 
 export default function AdminDashboard() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [stats, setStats] = useState({
-    products: 0,
-    categories: 0,
-    testimonials: 0,
-    steps: 0,
-    contact: 0,
-    distributor: 0,
-    newsletter: 0,
+    products: 0, categories: 0, testimonials: 0, steps: 0, contact: 0, distributor: 0, newsletter: 0,
   });
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
+  const { isChecking, isAuthenticated } = useAdminAuth();
 
   useEffect(() => {
     const loadStats = async () => {
@@ -59,12 +50,6 @@ export default function AdminDashboard() {
     loadStats();
   }, []);
 
-  const handleLogout = async () => {
-    await fetch("/api/admin/auth/logout", { method: "POST" });
-    router.push("/admin/login");
-    router.refresh();
-  };
-
   const statCards = [
     { label: "Products", value: stats.products, href: "/admin/products", icon: Package, color: "blue" },
     { label: "Categories", value: stats.categories, href: "/admin/categories", icon: FolderTree, color: "purple" },
@@ -85,48 +70,57 @@ export default function AdminDashboard() {
     teal: { bg: "bg-teal-50", text: "text-teal-600", border: "border-teal-100" },
   };
 
-  return (
-    <div className="min-h-screen bg-[#f8fafc] flex">
-      <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} onLogout={handleLogout} />
-      <div className="flex-1 flex flex-col min-w-0">
-        <AdminHeader onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
-        <main className="flex-1 p-6 overflow-auto">
-          <div className="max-w-5xl">
-            <h2 className="text-[24px] font-bold text-[#0f172a] mb-1">Dashboard</h2>
-            <p className="text-[14px] text-[#64748b] mb-6">Overview of your website content.</p>
+  if (isChecking) {
+    return (
+      <div className="min-h-screen bg-[#f8fafc] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-[#2563eb] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-sm text-[#64748b]">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
-            {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="bg-white rounded-2xl border border-[#e2e8f0] p-5 animate-pulse">
-                    <div className="h-4 bg-slate-100 rounded w-1/2 mb-3" />
-                    <div className="h-8 bg-slate-100 rounded w-1/3" />
-                  </div>
-                ))}
+  if (!isAuthenticated) {
+    return null;
+  }
+
+  return (
+    <div className="p-6">
+      <div className="max-w-5xl">
+        <h2 className="text-[24px] font-bold text-[#0f172a] mb-1">Dashboard</h2>
+        <p className="text-[14px] text-[#64748b] mb-6">Overview of your website content.</p>
+
+        {loading ? (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-white rounded-2xl border border-[#e2e8f0] p-5 animate-pulse">
+                <div className="h-4 bg-slate-100 rounded w-1/2 mb-3" />
+                <div className="h-8 bg-slate-100 rounded w-1/3" />
               </div>
-            ) : (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                {statCards.map((card) => {
-                  const Icon = card.icon;
-                  const colors = colorClasses[card.color];
-                  return (
-                    <a
-                      key={card.label}
-                      href={card.href}
-                      className={`bg-white rounded-2xl border ${colors.border} p-5 hover:shadow-md transition-all group`}
-                    >
-                      <div className={`w-10 h-10 ${colors.bg} rounded-xl flex items-center justify-center mb-3`}>
-                        <Icon className={`w-5 h-5 ${colors.text}`} />
-                      </div>
-                      <p className="text-[12px] font-medium text-[#64748b] mb-1">{card.label}</p>
-                      <p className={`text-[28px] font-bold ${colors.text}`}>{card.value}</p>
-                    </a>
-                  );
-                })}
-              </div>
-            )}
+            ))}
           </div>
-        </main>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {statCards.map((card) => {
+              const Icon = card.icon;
+              const colors = colorClasses[card.color];
+              return (
+                <a
+                  key={card.label}
+                  href={card.href}
+                  className={`bg-white rounded-2xl border ${colors.border} p-5 hover:shadow-md transition-all group`}
+                >
+                  <div className={`w-10 h-10 ${colors.bg} rounded-xl flex items-center justify-center mb-3`}>
+                    <Icon className={`w-5 h-5 ${colors.text}`} />
+                  </div>
+                  <p className="text-[12px] font-medium text-[#64748b] mb-1">{card.label}</p>
+                  <p className={`text-[28px] font-bold ${colors.text}`}>{card.value}</p>
+                </a>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );
