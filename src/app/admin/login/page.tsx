@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 
 export default function LoginPage() {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,14 +20,15 @@ export default function LoginPage() {
       const res = await fetch("/api/admin/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ username, password }),
       });
 
       if (res.ok) {
         router.push("/admin");
         router.refresh();
       } else {
-        setError("Invalid password. Please try again.");
+        const data = await res.json();
+        setError(data.error || "Invalid username or password. Please try again.");
       }
     } catch {
       setError("Something went wrong. Please try again.");
@@ -53,10 +55,26 @@ export default function LoginPage() {
             Admin Login
           </h1>
           <p className="text-[13px] text-[#64748b] text-center mb-6">
-            Enter your password to access the admin panel.
+            Enter your credentials to access the admin panel.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label htmlFor="username" className="block text-[13px] font-medium text-[#334155] mb-1.5">
+                Username
+              </label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                autoFocus
+                className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb] transition-all"
+                placeholder="Enter username"
+              />
+            </div>
+
             <div>
               <label htmlFor="password" className="block text-[13px] font-medium text-[#334155] mb-1.5">
                 Password
@@ -67,9 +85,8 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                autoFocus
                 className="w-full px-4 py-2.5 text-[14px] border border-[#e2e8f0] rounded-xl focus:outline-none focus:ring-2 focus:ring-[#2563eb]/30 focus:border-[#2563eb] transition-all"
-                placeholder="Enter admin password"
+                placeholder="Enter password"
               />
             </div>
 

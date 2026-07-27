@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
-import { validatePassword } from "@/lib/admin-auth";
+import { validateCredentials } from "@/lib/admin-auth";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { password } = body as { password: string };
+    const { username, password } = body as { username: string; password: string };
 
-    if (!password || !validatePassword(password)) {
-      return NextResponse.json({ error: "Invalid password" }, { status: 401 });
+    if (!username || !password || !validateCredentials(username, password)) {
+      return NextResponse.json({ error: "Invalid username or password" }, { status: 401 });
     }
 
     const response = NextResponse.json({ success: true }, { status: 200 });

@@ -9,6 +9,9 @@ export async function isAdminAuthenticated(): Promise<boolean> {
   return session.value === process.env.ADMIN_SESSION_SECRET;
 }
 
-export function validatePassword(password: string): boolean {
-  return password === process.env.ADMIN_PASSWORD;
+export function validateCredentials(username: string, password: string): boolean {
+  return (
+    username === process.env.ADMIN_USERNAME &&
+    password === process.env.ADMIN_PASSWORD
+  );
 }
