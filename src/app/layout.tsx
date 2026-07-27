@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import FloatingContactActions from "@/components/FloatingContactActions";
+import PublicLayout from "@/components/PublicLayout";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -112,9 +111,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-body text-[var(--text)]">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <FloatingContactActions />
+        <PublicLayout>{children}</PublicLayout>
       </body>
     </html>
   );
