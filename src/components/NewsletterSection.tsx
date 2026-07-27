@@ -1,17 +1,19 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { Mail, Send } from "lucide-react";
 
 export default function NewsletterSection() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!email.trim()) return;
     setStatus("loading");
+    setErrorMessage("");
 
     try {
       const res = await fetch("/api/newsletter", {
@@ -24,13 +26,19 @@ export default function NewsletterSection() {
         setStatus("success");
         setEmail("");
       } else {
+        const result = await res.json().catch(() => ({ message: "Something went wrong" }));
         setStatus("error");
+        setErrorMessage(result.message || "Something went wrong. Please try again.");
       }
     } catch {
       setStatus("error");
+      setErrorMessage("Network error. Please try again.");
     }
 
-    setTimeout(() => setStatus("idle"), 4000);
+    setTimeout(() => {
+      setStatus("idle");
+      setErrorMessage("");
+    }, 4000);
   };
 
   const headingText = "Stay Updated with Offers & New Launches";
@@ -58,6 +66,18 @@ export default function NewsletterSection() {
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+            {/* Honeypot */}
+            <div className="hidden" aria-hidden="true">
+              <label htmlFor="website">Website</label>
+              <input
+                type="text"
+                id="website"
+                name="website"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
             <div className="flex-1 relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-[18px] h-[18px] text-slate-400" />
               <input
@@ -88,23 +108,20 @@ export default function NewsletterSection() {
             </motion.button>
           </form>
 
-          <AnimatePresence>
-            {status === "success" && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="text-white/90 text-[13px] mt-3"
-              >
-                Thanks for subscribing! Check your inbox soon.
-              </motion.div>
-            )}
-          </AnimatePresence>
-
           {status === "error" && (
             <p className="text-red-200 text-[13px] mt-3">
-              Something went wrong. Please try again.
+              {errorMessage || "Something went wrong. Please try again."}
             </p>
+          )}
+
+          {status === "success" && (
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-white/90 text-[13px] mt-3"
+            >
+              Thanks for subscribing! Check your inbox soon.
+            </motion.p>
           )}
 
           <p className="text-white/50 text-[11px] mt-4">

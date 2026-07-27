@@ -6,29 +6,14 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import type { Product } from "@/data/products";
 
-interface SimpleProduct {
-  id: string;
-  name: string;
-  category: string;
-  price: number;
-  sizes: string[];
-  image: string;
-}
-
-interface ModalProduct extends SimpleProduct {
-  shortDescription: string;
-  benefits: string[];
-  directions: string[];
-}
-
 function ProductCard({
   product,
   index,
   onViewDetails,
 }: {
-  product: SimpleProduct;
+  product: Product;
   index: number;
-  onViewDetails: (product: SimpleProduct) => void;
+  onViewDetails: (product: Product) => void;
 }) {
   return (
     <motion.div
@@ -75,8 +60,8 @@ function ProductModal({
   relatedProducts,
   onClose,
 }: {
-  product: ModalProduct;
-  relatedProducts: SimpleProduct[];
+  product: Product;
+  relatedProducts: Product[];
   onClose: () => void;
 }) {
   return (
@@ -164,6 +149,73 @@ function ProductModal({
             </div>
 
             <div className="flex flex-wrap gap-2.5">
+              <button
+                onClick={async () => {
+                  if (!product) return;
+                  try {
+                    const res = await fetch("/api/checkout", {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify({
+                        amount: product.price,
+                        productName: product.name,
+                        productId: product.id,
+                      }),
+                    });
+
+                    if (!res.ok) throw new Error("Failed to create order");
+
+                    const { orderId, keyId, amount, currency } = await res.json();
+
+                    const options = {
+                      key: keyId,
+                      amount: amount,
+                      currency: currency,
+                      name: "Swaraj Enterprises",
+                      description: product.name,
+                      order_id: orderId,
+                      image: "/images/logo.png",
+                      handler: function (response: {
+                        razorpay_payment_id: string;
+                        razorpay_order_id: string;
+                        razorpay_signature: string;
+                      }) {
+                        // Payment successful — redirect to confirmation or store order
+                        window.location.href = `/order-success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}`;
+                      },
+                      prefill: {
+                        name: "",
+                        email: "",
+                        contact: "",
+                      },
+                      theme: {
+                        color: "#2563eb",
+                      },
+                    };
+
+                    // Load Razorpay script dynamically
+                    if (!(window as any).Razorpay) {
+                      await new Promise<void>((resolve, reject) => {
+                        const script = document.createElement("script");
+                        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+                        script.async = true;
+                        script.onload = () => resolve();
+                        script.onerror = () => reject(new Error("Failed to load Razorpay"));
+                        document.body.appendChild(script);
+                      });
+                    }
+
+                    const rzp = new (window as any).Razorpay(options);
+                    rzp.open();
+                  } catch (err) {
+                    console.error("Payment initiation failed:", err);
+                    alert("Unable to start payment. Please try again.");
+                  }
+                }}
+                className="btn-shine inline-flex items-center gap-2 px-5 py-2.5 bg-[#2563eb] text-white text-[13px] font-semibold rounded-full hover:bg-[#1d4ed8] transition-colors"
+              >
+                Buy Now
+              </button>
               <a
                 href="https://wa.me/919844734939"
                 target="_blank"
@@ -174,7 +226,7 @@ function ProductModal({
               </a>
               <a
                 href="tel:+919844734939"
-                className="btn-shine inline-flex items-center gap-2 px-5 py-2.5 bg-[#2563eb] text-white text-[13px] font-semibold rounded-full hover:bg-[#1d4ed8] transition-colors"
+                className="btn-shine inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 text-[#334155] text-[13px] font-semibold rounded-full hover:bg-slate-200 transition-colors"
               >
                 Enquire Now
               </a>
@@ -210,7 +262,7 @@ function ProductModal({
 export default function BestSellingProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProduct, setSelectedProduct] = useState<SimpleProduct | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     fetch("/api/admin/data/products", { cache: "no-store" })
@@ -224,10 +276,9 @@ export default function BestSellingProducts() {
 
   const bestSellers = products.filter((p) => p.bestSeller && p.active);
 
-  const relatedProducts: SimpleProduct[] = selectedProduct
+  const relatedProducts: Product[] = selectedProduct
     ? bestSellers
         .filter((p) => p.category === selectedProduct.category && p.id !== selectedProduct.id)
-        .map((p) => p as SimpleProduct)
     : [];
 
   const headingWords = "BEST SELLING PRODUCTS".split(" ");
@@ -312,14 +363,7 @@ export default function BestSellingProducts() {
 
       {selectedProduct && (
         <ProductModal
-          product={
-            {
-              ...selectedProduct,
-              shortDescription: "",
-              benefits: [],
-              directions: [],
-            } as ModalProduct
-          }
+          product={selectedProduct}
           relatedProducts={relatedProducts}
           onClose={() => setSelectedProduct(null)}
         />

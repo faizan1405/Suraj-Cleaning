@@ -122,8 +122,8 @@ export default function DistributorSection() {
                 <path d="M130 110 L140 95 L150 110" stroke="white" strokeWidth="2" fill="none" opacity="0.3" />
 
                 {/* Stars */}
-                <text x="310" y="80" fill="white" fontSize="18" opacity="0.3">★</text>
-                <text x="70" y="130" fill="white" fontSize="14" opacity="0.3">★</text>
+                <text x="310" y="80" fill="white" fontSize="18" opacity="0.3">&#9733;</text>
+                <text x="70" y="130" fill="white" fontSize="14" opacity="0.3">&#9733;</text>
 
                 {/* Bottom bar */}
                 <rect x="120" y="260" width="160" height="8" rx="4" fill="white" opacity="0.15" />
@@ -143,6 +143,54 @@ export default function DistributorSection() {
 }
 
 function DistributorFormModal({ onClose }: { onClose: () => void }) {
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMessage("");
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      fullName: formData.get("fullName"),
+      businessName: formData.get("businessName"),
+      mobile: formData.get("mobile"),
+      email: formData.get("email"),
+      city: formData.get("city"),
+      state: formData.get("state"),
+      businessType: formData.get("businessType"),
+      investment: formData.get("investment"),
+      message: formData.get("message"),
+      consent: formData.get("consent"),
+      website: formData.get("website"),
+    };
+
+    try {
+      const res = await fetch("/api/distributor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        setStatus("success");
+        (e.currentTarget as HTMLFormElement).reset();
+        setTimeout(() => {
+          onClose();
+          setStatus("idle");
+        }, 2000);
+      } else {
+        const result = await res.json().catch(() => ({ message: "Something went wrong" }));
+        setStatus("error");
+        setErrorMessage(result.message || "Please check your details and try again.");
+      }
+    } catch {
+      setStatus("error");
+      setErrorMessage("Network error. Please try again.");
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <motion.div
@@ -173,7 +221,7 @@ function DistributorFormModal({ onClose }: { onClose: () => void }) {
             </motion.button>
           </div>
 
-          <form action="#" method="POST" className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Honeypot */}
             <div className="hidden" aria-hidden="true">
               <label htmlFor="website">Website</label>
@@ -288,10 +336,10 @@ function DistributorFormModal({ onClose }: { onClose: () => void }) {
                   className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-[#2563eb] transition-all bg-white"
                 >
                   <option value="">Select</option>
-                  <option value="1-5">₹1 Lakh - ₹5 Lakhs</option>
-                  <option value="5-10">₹5 Lakhs - ₹10 Lakhs</option>
-                  <option value="10-25">₹10 Lakhs - ₹25 Lakhs</option>
-                  <option value="25+">₹25 Lakhs+</option>
+                  <option value="1-5">&#8377;1 Lakh - &#8377;5 Lakhs</option>
+                  <option value="5-10">&#8377;5 Lakhs - &#8377;10 Lakhs</option>
+                  <option value="10-25">&#8377;10 Lakhs - &#8377;25 Lakhs</option>
+                  <option value="25+">&#8377;25 Lakhs+</option>
                 </select>
               </div>
             </div>
@@ -321,11 +369,22 @@ function DistributorFormModal({ onClose }: { onClose: () => void }) {
               </span>
             </label>
 
+            {status === "error" && (
+              <p className="text-red-500 text-[13px] text-center -mt-1">
+                {errorMessage}
+              </p>
+            )}
+
             <button
               type="submit"
-              className="w-full py-3 bg-[#2563eb] text-white font-bold text-[15px] rounded-full hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200"
+              disabled={status === "loading" || status === "success"}
+              className="w-full py-3 bg-[#2563eb] text-white font-bold text-[15px] rounded-full hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 disabled:opacity-60"
             >
-              Submit Application
+              {status === "loading"
+                ? "Submitting..."
+                : status === "success"
+                ? "Application Submitted!"
+                : "Submit Application"}
             </button>
           </form>
         </div>

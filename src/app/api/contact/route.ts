@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     if (body["contact-website"]) {
       return NextResponse.json(
         { message: "Spam detected" },
-        { status: 200 }
+        { status: 409 }
       );
     }
 

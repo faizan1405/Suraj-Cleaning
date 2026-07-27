@@ -8,6 +8,7 @@ import type { CompanyInfo } from "@/data/company";
 export default function ContactSection() {
   const [company, setCompany] = useState<CompanyInfo | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     fetch("/api/admin/data/company", { cache: "no-store" })
@@ -20,6 +21,7 @@ export default function ContactSection() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus("loading");
+    setErrorMessage("");
 
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -27,6 +29,7 @@ export default function ContactSection() {
       email: formData.get("email"),
       phone: formData.get("phone"),
       message: formData.get("message"),
+      "contact-website": formData.get("contact-website"),
     };
 
     try {
@@ -40,13 +43,19 @@ export default function ContactSection() {
         setStatus("success");
         (e.target as HTMLFormElement).reset();
       } else {
+        const result = await res.json().catch(() => ({ message: "Something went wrong" }));
         setStatus("error");
+        setErrorMessage(result.message || "Something went wrong. Please try again.");
       }
     } catch {
       setStatus("error");
+      setErrorMessage("Network error. Please try again.");
     }
 
-    setTimeout(() => setStatus("idle"), 4000);
+    setTimeout(() => {
+      setStatus("idle");
+      setErrorMessage("");
+    }, 4000);
   };
 
   if (!company) {
@@ -286,7 +295,7 @@ export default function ContactSection() {
                 )}
                 {status === "error" && (
                   <p className="text-red-500 text-[13px] text-center">
-                    Something went wrong. Please try again.
+                    {errorMessage}
                   </p>
                 )}
               </div>

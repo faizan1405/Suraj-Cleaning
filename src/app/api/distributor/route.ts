@@ -7,7 +7,10 @@ export async function POST(request: Request) {
 
     // Honeypot check
     if (body.website) {
-      return NextResponse.json({ message: "Spam detected" }, { status: 200 });
+      return NextResponse.json(
+        { message: "Spam detected" },
+        { status: 409 }
+      );
     }
 
     if (!body.fullName || !body.mobile || !body.businessName) {
