@@ -144,7 +144,7 @@ export default function HeroSection() {
             </motion.div>
           </motion.div>
 
-          {/* Right Image - parallax-like floating animation */}
+          {/* Right side - product grid montage */}
           <motion.div
             initial={{ opacity: 0, scale: 0.92, rotate: -2 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
@@ -154,13 +154,37 @@ export default function HeroSection() {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative bg-gradient-to-br from-blue-50 via-white to-blue-100/50 rounded-[28px] overflow-hidden shadow-xl"
+              className="relative bg-gradient-to-br from-blue-50 via-white to-blue-100/50 rounded-[28px] overflow-hidden shadow-xl p-6 md:p-8"
             >
-              <img
-                src="/images/hero-products.jpg"
-                alt="Swaraj Cleaning Products - Hygix, Clearon, Supreme, Fabrix and more"
-                className="w-full h-auto object-contain"
-              />
+              <div className="grid grid-cols-3 gap-4">
+                {[
+                  { src: "/images/product-hygix.svg", name: "Hygix", alt: "Hygix Toilet Cleaner" },
+                  { src: "/images/product-clearon.svg", name: "Clearon", alt: "Clearon Glass Cleaner" },
+                  { src: "/images/product-supreme.svg", name: "Supreme", alt: "Supreme Floor Cleaner" },
+                  { src: "/images/product-fabrix.svg", name: "Fabrix", alt: "Fabrix Fabric Freshener" },
+                  { src: "/images/product-handpure.svg", name: "HandPure", alt: "HandPure Hand Sanitizer" },
+                  { src: "/images/product-dish-sheen.svg", name: "Dish Sheen", alt: "Dish Sheen Dishwash Gel" },
+                ].map((product, i) => (
+                  <motion.div
+                    key={product.name}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.4 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                    className="group flex flex-col items-center"
+                  >
+                    <div className="w-full aspect-square bg-white rounded-2xl shadow-sm border border-slate-100/80 p-2 transition-all duration-300 group-hover:shadow-md group-hover:border-blue-100/60 group-hover:-translate-y-1">
+                      <img
+                        src={product.src}
+                        alt={product.alt}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-[11px] md:text-xs font-semibold text-slate-500 mt-2 tracking-wide">
+                      {product.name}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
             </motion.div>
           </motion.div>
         </div>
