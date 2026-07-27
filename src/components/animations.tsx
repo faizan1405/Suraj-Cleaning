@@ -6,11 +6,16 @@ import {
   useScroll,
   useTransform,
   type HTMLMotionProps,
+  type Variants,
 } from "framer-motion";
 import { useRef, type ReactNode } from "react";
 
 /* ---------- Shared viewport defaults ---------- */
 const baseViewport = { once: true, margin: "-60px" } as const;
+
+/* ---------- Typed easing curves ---------- */
+const cubicEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
+const maskEase: [number, number, number, number] = [0.76, 0, 0.24, 1];
 
 /* ---------- Reveal variants ---------- */
 export const fadeUp = {
@@ -74,7 +79,7 @@ export function Reveal({
       whileInView="show"
       viewport={{ once, amount }}
       variants={variants}
-      transition={{ duration, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+      transition={{ duration, delay, ease: cubicEase }}
     >
       {children}
     </MotionTag>
@@ -118,7 +123,7 @@ export function TextReveal({
     show: {
       y: "0%",
       opacity: 1,
-      transition: { duration, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      transition: { duration, ease: cubicEase },
     },
   };
   const MotionTag = motion[As] as typeof motion.h2;
@@ -174,7 +179,7 @@ export function CharReveal({
     show: {
       y: "0%",
       opacity: 1,
-      transition: { duration, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+      transition: { duration, ease: cubicEase },
     },
   };
   return (
@@ -222,7 +227,7 @@ export function MaskReveal({
         initial={{ y: "101%" }}
         whileInView={{ y: "0%" }}
         viewport={baseViewport}
-        transition={{ duration, delay, ease: [0.76, 0, 0.24, 1] as [number, number, number, number] }}
+        transition={{ duration, delay, ease: maskEase }}
       >
         {children}
       </motion.div>
@@ -253,7 +258,7 @@ export function ImageReveal({
       initial={{ opacity: 0, scale: 1.08 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={baseViewport}
-      transition={{ duration: 0.9, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+      transition={{ duration: 0.9, delay, ease: cubicEase }}
       whileHover={hover ? { scale } : undefined}
     >
       {children}
@@ -390,7 +395,7 @@ export function StaggerItem({
         show: {
           opacity: 1,
           y: 0,
-          transition: { duration, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
+          transition: { duration, ease: cubicEase },
         },
       }}
       {...rest}

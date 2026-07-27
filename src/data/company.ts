@@ -26,7 +26,7 @@ export async function getCompany(): Promise<CompanyInfo> {
   try {
     const res = await fetch("/api/admin/data/company", { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch company");
-    cachedCompany = res.json();
+    cachedCompany = await res.json();
     return cachedCompany!;
   } catch {
     console.error("Error fetching company, returning default");
