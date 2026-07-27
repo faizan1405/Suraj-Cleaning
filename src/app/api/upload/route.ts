@@ -7,6 +7,9 @@ cloudinary.config({
   apiSecret: process.env.CLOUDINARY_API_SECRET,
 });
 
+export const runtime = "nodejs";
+export const maxDuration = 60;
+
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -17,29 +20,32 @@ export async function POST(request: Request) {
     }
 
     if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
-      return NextResponse.json({ error: "Cloudinary not configured" }, { status: 500 });
+      console.error("Cloudinary env vars missing:", {
+        cloudName: !!process.env.CLOUDINARY_CLOUD_NAME,
+        apiKey: !!process.env.CLOUDINARY_API_KEY,
+        apiSecret: !!process.env.CLOUDINARY_API_SECRET,
+      });
+      return NextResponse.json({ error: "Server not configured. Contact support." }, { status: 500 });
     }
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
     const result = await new Promise<{ secure_url: string }>((resolve, reject) => {
-      cloudinary.uploader.upload_stream(
-        {
-          folder: "suraj-cleaning/admin",
-          resource_type: "auto",
-        },
+      const upload = cloudinary.uploader.upload_stream(
+        { folder: "suraj-cleaning/admin" },
         (error, result) => {
           if (error) reject(error);
-          else if (result) resolve(result);
-          else reject(new Error("Upload failed"));
+          else if (result?.secure_url) resolve({ secure_url: result.secure_url });
+          else reject(new Error("Upload failed: no result"));
         }
-      ).end(buffer);
+      );
+      upload.end(buffer);
     });
 
     return NextResponse.json({ url: result.secure_url });
-  } catch (error) {
-    console.error("Cloudinary upload error:", error);
-    return NextResponse.json({ error: "Failed to upload image" }, { status: 500 });
+  } catch (error: any) {
+    console.error("Upload API error:", error?.message || error);
+    return NextResponse.json({ error: error?.message || "Upload failed" }, { status: 500 });
   }
 }
