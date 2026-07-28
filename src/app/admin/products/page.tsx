@@ -94,11 +94,18 @@ export default function AdminProducts() {
   };
 
   const handleDelete = async (id: string) => {
-    await fetch("/api/admin/data/products", {
+    const delRes = await fetch("/api/admin/data/products", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
     });
+
+    if (!delRes.ok) {
+      const err = await delRes.json().catch(() => ({}));
+      alert(err.error || "Failed to delete product. Please try again.");
+      return;
+    }
+
     setProducts((prev) => prev.filter((p) => p.id !== id));
   };
 

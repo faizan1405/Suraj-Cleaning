@@ -66,6 +66,8 @@ async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
       }
 
       const items = data as Record<string, unknown>[];
+      const ids = items.map((item) => item.id);
+
       if (items.length === 0) {
         await collection.deleteMany({});
         return;
@@ -82,6 +84,13 @@ async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
         },
       }));
       await collection.bulkWrite(operations, { ordered: false });
+
+      // Delete any documents whose `id` is NOT in the new array.
+      // `replaceOne` only replaces matching docs — it never removes removed ones.
+      // Without this, deleted items leave ghost docs that reappear on next read.
+      if (ids.length > 0) {
+        await collection.deleteMany({ id: { $nin: ids } });
+      }
       return;
     } catch (error) {
       if (attempt < 2) {

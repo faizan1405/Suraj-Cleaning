@@ -9,8 +9,7 @@ function MapEmbed({ address }: { address: string }) {
   const [loaded, setLoaded] = useState(false);
   const [timeoutReached, setTimeoutReached] = useState(false);
 
-  const encodedAddress = encodeURIComponent(address);
-  const mapSrc = `https://maps.google.com/maps?q=${encodedAddress}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+  const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent("Swaraj Enterprises Narikombu")}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
 
   // Safety timeout: force-show the map after 5 seconds even if onLoad hasn't fired
   useEffect(() => {
