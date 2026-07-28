@@ -155,12 +155,12 @@ export default function HeroSection() {
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
               className="relative"
-              style={{ borderRadius: 0, padding: 0, background: 'none', overflow: 'visible' }}
+              style={{ borderRadius: 24, padding: 0, background: 'none', overflow: 'hidden' }}
             >
               <img
                 src="/images/hero-products.jpg"
                 alt="Swaraj Cleaning Products - Hygix, Clearon, Supreme, Fabrix and more"
-                className="w-auto h-auto max-h-[700px] object-contain"
+                className="w-auto h-auto max-h-[700px] object-contain rounded-[20px]"
               />
             </motion.div>
           </motion.div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const benefits = [
   "Attractive Profit Margin",
@@ -18,13 +19,14 @@ export default function DistributorSection() {
     <section id="distributor" className="py-[72px] md:py-[88px]">
       <div className="mx-auto max-w-[1260px] px-5 md:px-8">
         <div className="bg-[#2563eb] rounded-[28px] overflow-hidden">
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 p-8 md:p-12 lg:p-14">
+          <div className="grid lg:grid-cols-2">
             {/* Left Content */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: "-40px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="p-8 md:p-12 lg:p-14"
             >
               <motion.span
                 animate={{ y: [0, -6, 0] }}
@@ -33,19 +35,8 @@ export default function DistributorSection() {
               >
                 GROW WITH SWARAJ
               </motion.span>
-              <h2 className="text-[28px] md:text-[36px] font-bold text-white mb-3">
-                {"Become a Distributor".split(" ").map((word, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ opacity: 0, y: 12 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ delay: 0.3 + i * 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="inline-block"
-                  >
-                    {word}{" "}
-                  </motion.span>
-                ))}
+              <h2 className="text-[28px] md:text-[36px] font-bold text-white mb-3 whitespace-pre-line">
+                {"Become a Distributor"}
               </h2>
               <p className="text-white/80 text-[15px] mb-8">
                 Low Investment | High Margin | Marketing Support | Fast Delivery
@@ -79,21 +70,23 @@ export default function DistributorSection() {
               </motion.button>
             </motion.div>
 
-            {/* Right - Image/Illustration */}
+            {/* Right - Full-Bleed Image */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="hidden lg:flex items-center justify-center"
+              className="hidden lg:block relative min-h-[420px] md:min-h-[520px]"
             >
               <img
-                src="/images/Distributor Image.jpeg"
+                src="/images/distributor.jpg"
                 alt="Distributor network map showing regional coverage and distribution hubs connected to a central location"
-                className="w-full h-full object-contain max-h-[520px] drop-shadow-2xl"
+                className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
               />
+              {/* Subtle blue overlay for text readability and brand consistency */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb]/30 to-transparent pointer-events-none" />
             </motion.div>
           </div>
         </div>
