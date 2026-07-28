@@ -137,7 +137,7 @@ export default function ContactSection() {
     );
   }
 
-  const headingText = "Get in Touch with Us";
+  const headingText = "Get in Touch";
 
   return (
     <section id="contact" className="py-[72px] md:py-[88px] bg-white">
