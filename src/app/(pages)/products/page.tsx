@@ -1,72 +1,47 @@
 import { getProducts } from "@/data/products";
-import Image from "next/image";
 import type { Product } from "@/data/products";
-import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, Filter } from "lucide-react";
-
-function ProductCard({
-  product,
-  index,
-}: {
-  product: Product;
-  index: number;
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{ delay: index * 0.06, duration: 0.5 }}
-      className="bg-white border border-slate-100 rounded-[20px] overflow-hidden card-lift flex flex-col"
-    >
-      <div className="relative aspect-square bg-[#f8fafc] overflow-hidden">
-        <Image
-          src={product.image}
-          alt={product.name}
-          fill
-          className="object-contain p-4 img-zoom"
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-        />
-        {product.bestSeller && (
-          <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#2563eb] text-white text-[10px] font-bold rounded-full">
-            Best Seller
-          </span>
-        )}
-      </div>
-      <div className="p-4 flex flex-col flex-1">
-        <span className="text-[11px] font-medium text-[#2563eb] mb-0.5">
-          {product.category}
-        </span>
-        <h3 className="text-[15px] font-bold text-[#0f172a] mb-1">
-          {product.name}
-        </h3>
-        <p className="text-[12px] text-[#64748b] mb-3 line-clamp-2">
-          {product.shortDescription}
-        </p>
-        <div className="flex items-center justify-between mt-auto">
-          <span className="text-[18px] font-bold text-[#2563eb]">
-            ₹{product.price}
-          </span>
-          <Link
-            href={`/products/${product.slug}`}
-            className="text-[13px] font-semibold text-white bg-[#2563eb] px-3.5 py-1.5 rounded-full hover:bg-[#1d4ed8] transition-colors"
-          >
-            View
-          </Link>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+import { ProductCard } from "@/components/products/ProductCard";
+import ProductsPageHeader from "@/components/products/ProductsPageHeader";
 
 export default async function ProductsPage({
   searchParams,
 }: {
   searchParams: Promise<{ category?: string }>;
 }) {
-  const { category: categoryFilter } = await searchParams;
-  const products = await getProducts();
+  let products: Product[] = [];
+  let categoryFilter: string | undefined;
+  let renderError = false;
+
+  try {
+    const params = await searchParams;
+    categoryFilter = params.category;
+    products = await getProducts();
+  } catch {
+    renderError = true;
+  }
+
+  if (renderError) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center px-5">
+        <div className="text-center">
+          <h1 className="text-[28px] font-bold text-[#0f172a] mb-3">
+            Unable to Load Products
+          </h1>
+          <p className="text-[15px] text-[#64748b] mb-6 max-w-md">
+            We are having trouble loading our products right now. Please try refreshing the page.
+          </p>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-7 py-3.5 bg-[#2563eb] text-white font-bold text-[15px] rounded-full hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200"
+          >
+            Go Back Home
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const activeProducts = products.filter((p) => p.active);
   const categories = Array.from(
@@ -78,33 +53,7 @@ export default async function ProductsPage({
 
   return (
     <div>
-      {/* Page Header */}
-      <section className="pt-[120px] pb-[40px] md:pt-[140px] md:pb-[50px] bg-white">
-        <div className="mx-auto max-w-[1260px] px-5 md:px-8 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-[32px] md:text-[44px] font-bold text-[#0f172a] mb-3"
-          >
-            Our Products
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-[15px] md:text-[16px] text-[#64748b] max-w-lg mx-auto"
-          >
-            Discover our range of premium cleaning solutions for every need.
-          </motion.p>
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="w-12 h-1 bg-[#2563eb] rounded-full mx-auto mt-4"
-          />
-        </div>
-      </section>
+      <ProductsPageHeader />
 
       {/* Category Filter */}
       <section className="py-6 bg-white border-b border-slate-50 sticky top-[72px] md:top-[80px] z-30">
