@@ -14,7 +14,7 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-white pt-[100px] md:pt-[120px] pb-[60px] md:pb-[80px]"
+      className="relative overflow-hidden bg-white min-h-screen flex items-stretch"
     >
       {/* Decorative background elements */}
       <motion.div
@@ -33,8 +33,8 @@ export default function HeroSection() {
         className="absolute top-40 left-[30%] w-[200px] h-[200px] bg-amber-100/30 rounded-full blur-2xl pointer-events-none"
       />
 
-      <div className="mx-auto max-w-[1260px] px-5 md:px-8">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-center">
+      <div className="mx-auto max-w-[1260px] px-5 md:px-8 w-full h-full">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-8 items-stretch h-full">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -154,7 +154,7 @@ export default function HeroSection() {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative w-full h-full rounded-[24px] overflow-hidden"
+              className="relative w-full h-full overflow-hidden"
             >
               <img
                 src="/images/hero-products.jpg"
