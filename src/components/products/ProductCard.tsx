@@ -47,9 +47,10 @@ export function ProductCard({
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
         />
         {product.bestSeller && (
-          <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#2563eb] text-white text-[10px] font-bold rounded-full">
-            Best Seller
-          </span>
+          <span className="absolute top-3 left-3 px-2.5 py-1 bg-[#2563eb] text-white text-[10px] font-bold rounded-full">Best Seller</span>
+        )}
+        {product.badge && (
+          <span className="absolute top-3 right-3 px-2.5 py-1 bg-orange-500 text-white text-[10px] font-bold rounded-full">{product.badge}</span>
         )}
         {!inStock && (
           <div className="absolute inset-0 bg-white/60 flex items-center justify-center">
@@ -58,10 +59,15 @@ export function ProductCard({
         )}
       </div>
       <div className="p-4 flex flex-col flex-1">
-        <span className="text-[11px] font-medium text-[#2563eb] mb-0.5">
-          {product.category}
-        </span>
-        <h3 className="text-[15px] font-bold text-[#0f172a] mb-1">
+        <div className="flex items-start justify-between gap-2">
+          <span className="text-[11px] font-medium text-[#2563eb]">
+            {product.category}
+          </span>
+          {product.badge && (
+            <span className="text-[10px] font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-full whitespace-nowrap">{product.badge}</span>
+          )}
+        </div>
+        <h3 className="text-[15px] font-bold text-[#0f172a] mt-1 mb-1">
           {product.name}
         </h3>
         <p className="text-[12px] text-[#64748b] mb-3 line-clamp-2">

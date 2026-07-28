@@ -86,6 +86,7 @@ export default function AdminProducts() {
     { key: "featured", label: "Featured", render: (item) => item.featured ? "Yes" : "No" },
     { key: "bestSeller", label: "Best Seller", render: (item) => item.bestSeller ? "Yes" : "No" },
     { key: "active", label: "Active", render: (item) => item.active ? "Yes" : "No" },
+    { key: "badge", label: "Badge", render: (item) => item.badge || "—" },
   ];
 
   const fields: FieldConfig[] = [
@@ -96,6 +97,7 @@ export default function AdminProducts() {
     { name: "description", label: "Full Description", type: "textarea", rows: 3, placeholder: "Full product description" },
     { name: "price", label: "Price (₹)", type: "number", required: true, placeholder: "99" },
     { name: "stock", label: "Stock Quantity", type: "number", placeholder: "0 = out of stock" },
+    { name: "badge", label: "Badge / Label (e.g. Combo, Best Value)", type: "text", placeholder: "Combo Offer" },
     { name: "sizes", label: "Sizes (comma separated)", type: "text", placeholder: "500ml, 1L" },
     { name: "image", label: "Product Image", type: "image-upload", placeholder: "/images/product-name.webp" },
     { name: "gallery", label: "Product Gallery", type: "multi-image-upload" },

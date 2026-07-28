@@ -40,5 +40,6 @@ export function normalizeProduct(raw: Record<string, unknown>): Product {
     bestSeller: Boolean(raw.bestSeller),
     active: Boolean(raw.active),
     stock: typeof raw.stock === "number" ? raw.stock : Number(raw.stock) || 0,
+    badge: typeof raw.badge === "string" ? raw.badge : undefined,
   } as Product;
 }

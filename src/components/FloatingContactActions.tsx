@@ -1,11 +1,12 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MessageCircle, Phone, Mail } from "lucide-react";
+import { MessageCircle, Phone, PhoneCall, Mail } from "lucide-react";
 
 // Hardcoded fallback values — static support links
 const phoneRaw = "919844734939";
-const email = "swarajenterprisesco@gmail.com";
+const phoneRaw2 = "9188246816784";
+const email = "swarajenterprises.co@gmail.com";
 const supportWhatsAppMessage = "Hi, I need support with my order.";
 
 export default function FloatingContactActions() {
@@ -51,7 +52,26 @@ export default function FloatingContactActions() {
             <Phone className="w-4 h-4 text-[#2563eb]" />
           </div>
           <span className="text-[13px] font-semibold whitespace-nowrap arrow-nudge">
-            Call Now
+            +91 98447 34939
+          </span>
+        </motion.a>
+
+        {/* Call 2 */}
+        <motion.a
+          href={`tel:${phoneRaw2}`}
+          aria-label="Call Now"
+          className="group flex items-center gap-2.5 bg-[#2563eb] text-white pl-3 pr-4 py-2.5 rounded-full shadow-lg btn-shine"
+          initial={{ opacity: 0, x: 40 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          whileHover={{ x: -6, scale: 1.06 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center">
+            <PhoneCall className="w-4 h-4 text-[#2563eb]" />
+          </div>
+          <span className="text-[13px] font-semibold whitespace-nowrap arrow-nudge">
+            +91 82468 16784
           </span>
         </motion.a>
 
@@ -93,7 +113,14 @@ export default function FloatingContactActions() {
             {
               href: `tel:${phoneRaw}`,
               icon: <Phone className="w-5 h-5 text-[#2563eb]" />,
-              label: "Call",
+              label: "Call 1",
+              color: "text-[#2563eb]",
+              bg: "bg-blue-50",
+            },
+            {
+              href: `tel:${phoneRaw2}`,
+              icon: <PhoneCall className="w-5 h-5 text-[#2563eb]" />,
+              label: "Call 2",
               color: "text-[#2563eb]",
               bg: "bg-blue-50",
             },

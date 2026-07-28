@@ -15,4 +15,5 @@ export interface Product extends Record<string, unknown> {
   bestSeller: boolean;
   active: boolean;
   stock: number;
+  badge?: string;
 }

@@ -106,7 +106,7 @@ export default function RootLayout({
                 addressCountry: "IN",
               },
               telephone: "+919844734939",
-              email: "swarajenterprisesco@gmail.com",
+              email: "swarajenterprises.co@gmail.com",
               openingHours: "Mo-Sa 09:00-19:00",
             }),
           }}

@@ -26,7 +26,7 @@ const defaultCompany = {
   address: "Bantwala, Dakshina Kannada, Karnataka, India",
   phone: "+91 98447 34939",
   phoneRaw: "919844734939",
-  email: "swarajenterprisesco@gmail.com",
+  email: "swarajenterprises.co@gmail.com",
   hours: "Mon - Sat: 9:00 AM - 7:00 PM",
 };
 
