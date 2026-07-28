@@ -80,22 +80,7 @@ export default function ContactSection() {
     fetch("/api/admin/data/company", { cache: "no-store" })
       .then((res) => res.ok ? res.json() : null)
       .then((data) => {
-        if (data) setCompany(prev => {
-          const merged = { ...defaultCompany, ...data };
-          // If the API returns a single `phone` field with two numbers separated by a comma,
-          // split them into `phone` and `phone2` for display.
-          if (merged.phone && !merged.phone2) {
-            const parts = merged.phone.split(",").map((s: string) => s.trim()).filter(Boolean);
-            if (parts.length >= 2) {
-              merged.phone = parts[0];
-              merged.phone2 = parts[1];
-              if (!merged.phone2Raw) merged.phone2Raw = defaultCompany.phone2Raw;
-            }
-          }
-          if (!merged.phone2 && defaultCompany.phone2) merged.phone2 = defaultCompany.phone2;
-          if (!data.social?.whatsapp && defaultCompany.social?.whatsapp) merged.social = { ...merged.social, whatsapp: defaultCompany.social.whatsapp };
-          return merged;
-        });
+        if (data) setCompany({ ...defaultCompany, ...data, social: { ...defaultCompany.social, ...data.social } });
       });
   }, []);
 
@@ -217,23 +202,16 @@ export default function ContactSection() {
                   <p className="text-[14px] font-medium text-[#0f172a]">
                     Phone
                   </p>
-                  <p className="text-[13px] text-[#64748b]">{company.phone}</p>
-                </div>
-              </motion.a>
-
-              <motion.a
-                whileHover={{ x: 4 }}
-                href={`tel:${company.phone2Raw}`}
-                className="flex items-start gap-3 group"
-              >
-                <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition-colors">
-                  <Phone className="w-5 h-5 text-[#2563eb] icon-pop" />
-                </div>
-                <div>
-                  <p className="text-[14px] font-medium text-[#0f172a]">
-                    Phone
-                  </p>
-                  <p className="text-[13px] text-[#64748b]">{company.phone2}</p>
+                  {company.phone.split(",").map((num: string, i: number) => {
+                    const cleaned = num.trim();
+                    if (!cleaned) return null;
+                    const digits = cleaned.replace(/\D/g, "");
+                    return (
+                      <p key={i} className="text-[13px] text-[#64748b]">
+                        <a href={`tel:+${digits}`} className="hover:text-[#2563eb] transition-colors">{cleaned}</a>
+                      </p>
+                    );
+                  })}
                 </div>
               </motion.a>
 

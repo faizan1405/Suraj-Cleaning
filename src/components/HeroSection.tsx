@@ -14,7 +14,7 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-white min-h-screen"
+      className="relative overflow-hidden bg-white min-h-screen flex items-center"
     >
       {/* Decorative background elements */}
       <motion.div
