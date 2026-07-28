@@ -227,7 +227,7 @@ function ProductModal({
                     name: "Swaraj Enterprises",
                     description: product.name,
                     order_id: orderId,
-                    image: "/images/logo.png",
+                    image: "/images/Logo.png",
                     handler: function (response: {
                       razorpay_payment_id: string;
                       razorpay_order_id: string;
