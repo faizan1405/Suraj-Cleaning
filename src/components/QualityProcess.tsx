@@ -55,16 +55,16 @@ export default function QualityProcess() {
 
         {/* Desktop: Horizontal timeline */}
         <div className="hidden md:block relative">
-          {/* Background line - spans full width */}
-          <div className="absolute top-[32px] left-0 right-0 h-[3px] bg-blue-100 rounded-full" />
+          {/* Background line - spans between circle centers */}
+          <div className="absolute top-[32px] left-[6%] right-[6%] h-[3px] bg-blue-100 rounded-full z-0" />
           {/* Progress line */}
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute top-[32px] left-0 h-[3px] bg-[#2563eb] rounded-full origin-left"
-            style={{ width: "100%" }}
+            className="absolute top-[32px] left-[6%] h-[3px] bg-[#2563eb] rounded-full origin-left z-0"
+            style={{ width: "88%" }}
           />
 
           <div className="relative flex items-start justify-between">
@@ -93,7 +93,7 @@ export default function QualityProcess() {
                     />
                   </motion.div>
                   {/* Number badge */}
-                  <span className="absolute -top-0.5 -right-0.5 w-6 h-6 bg-[#2563eb] text-white text-[11px] font-bold rounded-full flex items-center justify-center shadow-sm border-2 border-white">
+                  <span className="absolute -top-1 -right-1 w-7 h-7 bg-[#2563eb] text-white text-xs font-bold rounded-full flex items-center justify-center shadow-md border-2 border-white z-20">
                     {step.stepNumber}
                   </span>
                 </div>

@@ -149,7 +149,7 @@ export default function Footer() {
                   transition={{ duration: 0.35, delay: 0.15 + i * 0.05 }}
                 >
                   <a
-                    href={`/products?category=${cat.slug}`}
+                    href={`/products?category=${encodeURIComponent(cat.name)}`}
                     className="text-[13px] text-slate-400 hover:text-white transition-colors relative nav-underline inline-block"
                   >
                     {cat.name}

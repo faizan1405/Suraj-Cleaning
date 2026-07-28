@@ -5,7 +5,7 @@ import BestSellingProducts from "@/components/BestSellingProducts";
 import DistributorSection from "@/components/DistributorSection";
 import TrustBenefits from "@/components/TrustBenefits";
 import Testimonials from "@/components/Testimonials";
-import QualityProcess from "@/components/QualityProcess";
+import QualityProcessSection from "@/components/QualityProcessSection";
 import NewsletterSection from "@/components/NewsletterSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -20,7 +20,7 @@ export default function Home() {
       <DistributorSection />
       <TrustBenefits />
       <Testimonials />
-      <QualityProcess />
+      <QualityProcessSection />
       <NewsletterSection />
       <ContactSection />
       <Footer />

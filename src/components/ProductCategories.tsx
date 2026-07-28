@@ -72,7 +72,7 @@ export default function ProductCategories() {
             {categories.map((cat, i) => (
               <motion.a
                 key={cat.id}
-                href={`/products?category=${cat.slug}`}
+                href={`/products?category=${encodeURIComponent(cat.name)}`}
                 initial={isInView ? false : { opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getProducts } from "@/data/products";
 import type { Product } from "@/data/products";
 import Link from "next/link";
@@ -18,7 +20,9 @@ export default async function ProductsPage({
     const params = await searchParams;
     categoryFilter = params.category;
     products = await getProducts();
-  } catch {
+    console.log("[ProductsPage] getProducts returned:", products.length, "products");
+  } catch (err) {
+    console.error("[ProductsPage] Error:", err);
     renderError = true;
   }
 

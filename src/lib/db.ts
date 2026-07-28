@@ -59,11 +59,23 @@ async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
         return;
       }
 
-      await collection.deleteMany({});
       const items = data as Record<string, unknown>[];
-      if (items.length > 0) {
-        await collection.insertMany(items);
+      if (items.length === 0) {
+        await collection.deleteMany({});
+        return;
       }
+
+      // Upsert each item by its `id` field so existing rows are replaced in place
+      // and concurrent submissions never delete data mid-write. MongoDB will
+      // generate `_id` automatically since items don't carry one.
+      const operations = items.map((item) => ({
+        replaceOne: {
+          filter: { id: item.id },
+          replacement: item,
+          upsert: true,
+        },
+      }));
+      await collection.bulkWrite(operations, { ordered: false });
       return;
     } catch (error) {
       if (attempt < 2) {

@@ -129,7 +129,6 @@ function DistributorFormModal({ onClose }: { onClose: () => void }) {
 
       if (res.ok) {
         setStatus("success");
-        (e.currentTarget as HTMLFormElement).reset();
         setTimeout(() => {
           onClose();
           setStatus("idle");
@@ -141,7 +140,7 @@ function DistributorFormModal({ onClose }: { onClose: () => void }) {
       }
     } catch {
       setStatus("error");
-      setErrorMessage("Network error. Please try again.");
+      setErrorMessage("Something went wrong. Please try again.");
     }
   };
 
