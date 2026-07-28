@@ -5,6 +5,8 @@ export interface CompanyInfo {
   address: string;
   phone: string;
   phoneRaw: string;
+  phone2?: string;
+  phone2Raw?: string;
   email: string;
   hours: string;
   social: {
@@ -37,6 +39,8 @@ export async function getCompany(): Promise<CompanyInfo> {
       address: "Post & Village, Aberottu House, Narikombu, Karnataka 574231",
       phone: "+91 98447 34939",
       phoneRaw: "919844734939",
+      phone2: "+91 82468 16784",
+      phone2Raw: "9188246816784",
       email: "swarajenterprises.co@gmail.com",
       hours: "Mon - Sat: 9:00 AM - 7:00 PM",
       social: { whatsapp: "https://wa.me/919844734939" },

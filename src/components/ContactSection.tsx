@@ -161,7 +161,7 @@ export default function ContactSection() {
             </motion.span>
             <h2 className="text-[28px] md:text-[36px] font-bold text-[#0f172a] mb-4">
               {headingText.split(" ").map((word, i, arr) => (
-                <span key={i} className="inline-block whitespace-nowrap">
+                <span key={i} className="inline-block">
                   <motion.span
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -219,6 +219,22 @@ export default function ContactSection() {
                     Phone
                   </p>
                   <p className="text-[13px] text-[#64748b]">{company.phone}</p>
+                </div>
+              </motion.a>
+
+              <motion.a
+                whileHover={{ x: 4 }}
+                href={`tel:${company.phone2Raw}`}
+                className="flex items-start gap-3 group"
+              >
+                <div className="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center shrink-0 group-hover:bg-blue-100 transition-colors">
+                  <Phone className="w-5 h-5 text-[#2563eb] icon-pop" />
+                </div>
+                <div>
+                  <p className="text-[14px] font-medium text-[#0f172a]">
+                    Phone
+                  </p>
+                  <p className="text-[13px] text-[#64748b]">{company.phone2}</p>
                 </div>
               </motion.a>
 
