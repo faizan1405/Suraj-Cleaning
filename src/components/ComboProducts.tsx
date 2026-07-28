@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Product } from "@/data/product-types";
 import { ProductImage } from "@/components/products/ProductImage";
-import { useCart } from "@/contexts/CartContext";
 
 function ProductCard({
   product,
@@ -196,7 +195,7 @@ export default function ComboProducts() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/admin/data/products", { cache: "no-store" })
+    fetch("/api/products/combo", { cache: "no-store" })
       .then((res) => res.ok ? res.json() : [])
       .then((data: Product[]) => {
         setProducts(data);
@@ -205,9 +204,7 @@ export default function ComboProducts() {
       .catch(() => setLoading(false));
   }, []);
 
-  const comboProducts = products.filter(
-    (p) => p.active && p.badge && p.badge.toLowerCase().includes("combo")
-  );
+  const comboProducts = products;
 
   const headingWords = "COMBO OFFERS".split(" ");
 

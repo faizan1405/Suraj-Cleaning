@@ -72,41 +72,35 @@ export default function Footer() {
               <span className="text-[11px] font-semibold tracking-[0.3em] text-blue-400 block -mt-1">
                 ENTERPRISES
               </span>
-              <p className="mt-2">
-                <a href="https://www.instagram.com/swaraj_enterprises.co?igsh=MTBkaTFzM24xbjMwMw==" target="_blank" rel="noopener noreferrer" className="text-[13px] text-slate-400 hover:text-white transition-colors">
-                  Follow us on Instagram →
-                </a>
+              <p className="mt-2 text-[13px] text-slate-400">
+                {company.description}
               </p>
             </div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-[13px] text-slate-400 leading-relaxed mb-5"
-            >
-              {company.description}
-            </motion.p>
-            <div className="flex gap-3">
-              {socialIcons.map((s, i) => (
-                <motion.a
-                  key={s.name}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.name}
-                  className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-[#2563eb] transition-colors"
-                  initial={{ opacity: 0, scale: 0.7 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
-                  whileHover={{ scale: 1.15, rotate: -8 }}
-                >
-                  <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white/70" aria-hidden="true">
-                    <path d={s.path} />
-                  </svg>
-                </motion.a>
-              ))}
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-3">
+                {socialIcons.map((s, i) => (
+                  <motion.a
+                    key={s.name}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.name}
+                    className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center hover:bg-[#2563eb] transition-colors"
+                    initial={{ opacity: 0, scale: 0.7 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
+                    whileHover={{ scale: 1.15, rotate: -8 }}
+                  >
+                    <svg viewBox="0 0 24 24" className="w-4 h-4 fill-white/70" aria-hidden="true">
+                      <path d={s.path} />
+                    </svg>
+                  </motion.a>
+                ))}
+              </div>
+              <a href="https://www.instagram.com/swaraj_enterprises.co?igsh=MTBkaTFzM24xbjMwMw==" target="_blank" rel="noopener noreferrer" className="text-[13px] text-slate-400 hover:text-white transition-colors">
+                Follow us on Instagram →
+              </a>
             </div>
           </motion.div>
 
