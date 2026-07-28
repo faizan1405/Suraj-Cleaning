@@ -139,7 +139,7 @@ export default function AboutView({
             </p>
             <p className="text-[15px] md:text-[16px] text-[#64748b] leading-relaxed mb-6">
               The name &ldquo;Swaraj&rdquo; is inspired by the combination of Swathi and Sooraj,
-              reflecting the vision, dedication, and values behind our journey. Swathi, the
+              reflecting the vision, dedication, and values behind our journey. Swathi Sooraj, the
               founder of Swaraj Enterprises, established the company with a mission to
               provide trusted products that meet the highest standards of quality and
               customer satisfaction.
@@ -230,7 +230,7 @@ export default function AboutView({
             <p className="text-[15px] md:text-[16px] text-[#64748b] leading-relaxed mb-6">
               The name &ldquo;Swaraj&rdquo; is a meaningful combination of Swathi and Sooraj,
               symbolizing the shared vision, dedication, and values that inspired this
-              journey. Founded by Swathi, Swaraj Enterprises was established with a simple
+              journey. Founded by Swathi Sooraj, Swaraj Enterprises was established with a simple
               yet powerful mission&mdash;to manufacture high-quality, affordable, and
               reliable household and cleaning products that people can trust every day.
             </p>
@@ -292,7 +292,7 @@ export default function AboutView({
               <div className="relative w-[260px] h-[260px] md:w-[300px] md:h-[300px] rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-100">
                 <Image
                   src="/images/founder-swathi.jpg"
-                  alt="Swathi - Founder & Managing Director of Swaraj Enterprises"
+                  alt="Swathi Sooraj - Founder & Managing Director of Swaraj Enterprises"
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 260px, 300px"
@@ -309,7 +309,7 @@ export default function AboutView({
               transition={{ duration: 0.7, delay: 0.1 }}
             >
               <h3 className="text-[26px] md:text-[32px] font-bold text-[#0f172a] mb-1">
-                Swathi
+                Swathi Sooraj
               </h3>
               <p className="text-[15px] font-semibold text-[#2563eb] mb-1">
                 Founder &amp; Managing Director
@@ -318,7 +318,7 @@ export default function AboutView({
                 MBA (Finance)
               </p>
               <p className="text-[15px] text-[#64748b] leading-relaxed mb-4">
-                Swathi is the visionary founder of Swaraj Enterprises and holds a Master
+                Swathi Sooraj is the visionary founder of Swaraj Enterprises and holds a Master
                 of Business Administration (MBA) in Finance. With a strong foundation in
                 finance and business management, she established Swaraj Enterprises with
                 a vision to manufacture high-quality, reliable, and affordable household
