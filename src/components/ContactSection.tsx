@@ -80,7 +80,12 @@ export default function ContactSection() {
     fetch("/api/admin/data/company", { cache: "no-store" })
       .then((res) => res.ok ? res.json() : null)
       .then((data) => {
-        if (data) setCompany({ ...defaultCompany, ...data, social: { ...defaultCompany.social, ...data.social } });
+        if (data) setCompany(prev => {
+          const merged = { ...defaultCompany, ...data };
+          if (!data.phone2 && defaultCompany.phone2) merged.phone2 = defaultCompany.phone2;
+          if (!data.social?.whatsapp && defaultCompany.social?.whatsapp) merged.social = { ...merged.social, whatsapp: defaultCompany.social.whatsapp };
+          return merged;
+        });
       });
   }, []);
 
