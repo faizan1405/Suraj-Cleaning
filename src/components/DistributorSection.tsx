@@ -18,77 +18,73 @@ export default function DistributorSection() {
   return (
     <section id="distributor" className="py-[72px] md:py-[88px]">
       <div className="mx-auto max-w-[1260px] px-5 md:px-8">
-        <div className="bg-[#2563eb] rounded-[28px] overflow-hidden">
-          <div className="grid lg:grid-cols-2 items-stretch">
-            {/* Left Content */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="p-8 md:p-12 lg:p-14"
+        <div className="relative overflow-hidden rounded-[28px] bg-[#2563eb]">
+          {/* Full-bleed background image */}
+          <img
+            src="/images/distributor-img1.jpg"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover object-[65%_center] lg:object-right hidden lg:block"
+            loading="lazy"
+          />
+
+          {/* Blue gradient overlay */}
+          <div
+            className="absolute inset-0 z-[1] bg-[linear-gradient(90deg,rgba(37,96,224,0.98)_0%,rgba(37,96,224,0.93)_35%,rgba(37,96,224,0.50)_55%,rgba(37,96,224,0.08)_75%,rgba(37,96,224,0)_100%)] pointer-events-none"
+          />
+
+          {/* Content above image and overlay */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-[2] p-8 md:p-12 lg:p-14 max-w-[600px]"
+          >
+            <motion.span
+              animate={{ y: [0, -6, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+              className="inline-block px-4 py-1.5 bg-white/15 text-white text-[11px] font-bold tracking-[0.2em] uppercase rounded-full mb-4"
             >
-              <motion.span
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="inline-block px-4 py-1.5 bg-white/15 text-white text-[11px] font-bold tracking-[0.2em] uppercase rounded-full mb-4"
-              >
-                GROW WITH SWARAJ
-              </motion.span>
-              <h2 className="text-[28px] md:text-[36px] font-bold text-white mb-3 whitespace-pre-line">
-                {"Become a Distributor"}
-              </h2>
-              <p className="text-white/80 text-[15px] mb-8">
-                Low Investment | High Margin | Marketing Support | Fast Delivery
-              </p>
+              GROW WITH SWARAJ
+            </motion.span>
+            <h2 className="text-[28px] md:text-[36px] font-bold text-white mb-3 whitespace-pre-line">
+              {"Become a Distributor"}
+            </h2>
+            <p className="text-white/80 text-[15px] mb-8">
+              Low Investment | High Margin | Marketing Support | Fast Delivery
+            </p>
 
-              <ul className="space-y-3 mb-8">
-                {benefits.map((b, i) => (
-                  <motion.li
-                    key={i}
-                    initial={{ opacity: 0, x: -10 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ delay: 0.4 + i * 0.08, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="flex items-center gap-3 text-white text-[14px]"
-                  >
-                    <span className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center shrink-0">
-                      <Check className="w-3 h-3 text-white" />
-                    </span>
-                    {b}
-                  </motion.li>
-                ))}
-              </ul>
+            <ul className="space-y-3 mb-8">
+              {benefits.map((b, i) => (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{
+                    delay: 0.4 + i * 0.08,
+                    duration: 0.4,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className="flex items-center gap-3 text-white text-[14px]"
+                >
+                  <span className="w-5 h-5 bg-white/20 rounded-full flex items-center justify-center shrink-0">
+                    <Check className="w-3 h-3 text-white" />
+                  </span>
+                  {b}
+                </motion.li>
+              ))}
+            </ul>
 
-              <motion.button
-                whileHover={{ y: -3 }}
-                onClick={() => setFormOpen(true)}
-                className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#2563eb] font-bold text-[15px] rounded-full hover:bg-blue-50 transition-colors shadow-lg btn-shine"
-              >
-                Apply Now
-                <ArrowRight className="w-4 h-4" />
-              </motion.button>
-            </motion.div>
-
-            {/* Right - Full-Bleed Image */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="hidden lg:block h-full min-h-[400px] overflow-hidden relative"
+            <motion.button
+              whileHover={{ y: -3 }}
+              onClick={() => setFormOpen(true)}
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-[#2563eb] font-bold text-[15px] rounded-full hover:bg-blue-50 transition-colors shadow-lg btn-shine"
             >
-              <img
-                src="/images/distributor-img1.jpg"
-                alt="Distributor network map showing regional coverage and distribution hubs connected to a central location"
-                className="absolute inset-0 w-full h-full object-cover"
-                loading="lazy"
-              />
-              {/* Subtle blue overlay for text readability and brand consistency */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#2563eb]/30 to-transparent pointer-events-none" />
-            </motion.div>
-          </div>
+              Apply Now
+              <ArrowRight className="w-4 h-4" />
+            </motion.button>
+          </motion.div>
         </div>
       </div>
 
