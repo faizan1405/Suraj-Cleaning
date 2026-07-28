@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, ChevronLeft, ChevronRight, ShoppingCart, Share2 } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, ShoppingCart, Share2, ChevronDown } from "lucide-react";
 import type { Product } from "@/data/products";
 import { ProductImage } from "./ProductImage";
 import { useCart } from "@/contexts/CartContext";
@@ -19,6 +19,7 @@ export default function ProductDetailView({
   const [currentImage, setCurrentImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState<string>("");
 
   const gallery =
     product.gallery && product.gallery.length > 0
@@ -26,6 +27,19 @@ export default function ProductDetailView({
       : [product.image];
   const hasMultiple = gallery.length > 1;
   const inStock = Number(product.stock ?? 0) > 0;
+  const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
+
+  // Auto-select first variant
+  if (hasVariants && !selectedVariant) {
+    setSelectedVariant(product.variants![0].name);
+  }
+
+  const currentVariant = hasVariants
+    ? product.variants!.find(v => v.name === selectedVariant) ?? product.variants![0]
+    : null;
+  const currentPrice = currentVariant ? currentVariant.price : product.price;
+  const currentStock = currentVariant ? currentVariant.stock : Number(product.stock ?? 0);
+  const isInStock = currentStock > 0;
 
   const prevImage = () => {
     setCurrentImage((prev) =>
@@ -39,7 +53,7 @@ export default function ProductDetailView({
   };
 
   const handleAddToCart = () => {
-    addItem({ productId: product.id, name: product.name, price: product.price, image: product.image }, quantity);
+    addItem({ productId: product.id, name: product.name, price: currentPrice, image: product.image, size: selectedVariant || undefined }, quantity);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
@@ -147,14 +161,41 @@ export default function ProductDetailView({
 
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-[36px] font-bold text-[#2563eb]">
-                  ₹{product.price}
+                  ₹{currentPrice}
                 </span>
-                <span className="text-[14px] text-[#94a3b8]">
-                  per {product.sizes[0]}
-                </span>
+                {!hasVariants && (
+                  <span className="text-[14px] text-[#94a3b8]">
+                    per {product.sizes[0]}
+                  </span>
+                )}
+                {hasVariants && currentVariant && (
+                  <span className="text-[14px] text-[#94a3b8]">
+                    — {currentVariant.name}
+                  </span>
+                )}
               </div>
 
-              {product.sizes.length > 1 && (
+              {hasVariants ? (
+                <div className="mb-6">
+                  <h4 className="text-[13px] font-bold text-[#0f172a] mb-2 uppercase tracking-wide">
+                    Select Variant
+                  </h4>
+                  <div className="relative max-w-sm">
+                    <select
+                      value={selectedVariant}
+                      onChange={(e) => setSelectedVariant(e.target.value)}
+                      className="w-full appearance-none px-4 py-3 pr-10 text-[14px] font-medium bg-slate-50 border border-slate-200 rounded-xl text-[#334155] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer"
+                    >
+                      {product.variants!.map((v) => (
+                        <option key={v.name} value={v.name}>
+                          {v.name} — ₹{v.price} {v.stock === 0 ? "(Sold Out)" : `(${v.stock} in stock)`}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 pointer-events-none" />
+                  </div>
+                </div>
+              ) : (
                 <div className="mb-6">
                   <h4 className="text-[13px] font-bold text-[#0f172a] mb-2 uppercase tracking-wide">
                     Available Sizes
@@ -172,7 +213,7 @@ export default function ProductDetailView({
                 </div>
               )}
 
-              {inStock && (
+              {isInStock && (
                 <div className="mb-6">
                   <h4 className="text-[13px] font-bold text-[#0f172a] mb-2 uppercase tracking-wide">Quantity</h4>
                   <div className="flex items-center gap-3">
@@ -181,7 +222,9 @@ export default function ProductDetailView({
                       <span className="w-10 text-center text-[14px] font-bold">{quantity}</span>
                       <button onClick={() => setQuantity((q) => q + 1)} className="w-9 h-9 flex items-center justify-center hover:bg-slate-50 transition-colors text-slate-700 font-semibold" aria-label="Increase quantity">+</button>
                     </div>
-                    <span className="text-[12px] text-[#64748b]">In stock: {product.stock}</span>
+                    <span className="text-[12px] text-[#64748b]">
+                      {hasVariants ? `${currentStock} in stock` : `In stock: ${product.stock}`}
+                    </span>
                   </div>
                 </div>
               )}
@@ -189,17 +232,17 @@ export default function ProductDetailView({
               <div className="flex flex-wrap gap-3 mb-8">
                 <button
                   onClick={handleAddToCart}
-                  disabled={!inStock}
+                  disabled={!isInStock}
                   className={`inline-flex items-center gap-2 px-6 py-3 text-[14px] font-semibold rounded-full transition-colors shadow-md ${
                     added
                       ? "bg-green-500 text-white"
-                      : inStock
+                      : isInStock
                         ? "bg-[#2563eb] text-white hover:bg-[#1d4ed8]"
                         : "bg-slate-300 text-slate-500 cursor-not-allowed"
                   }`}
                 >
                   <ShoppingCart className="w-4 h-4" />
-                  {added ? "Added to Cart!" : inStock ? `Add to Cart — ₹${(product.price * quantity).toFixed(2)}` : "Out of Stock"}
+                  {added ? "Added to Cart!" : isInStock ? `Add to Cart — ₹${(currentPrice * quantity).toFixed(2)}` : "Out of Stock"}
                 </button>
                 <Link
                   href="/cart"

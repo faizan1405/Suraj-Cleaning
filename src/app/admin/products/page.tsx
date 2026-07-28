@@ -38,6 +38,20 @@ export default function AdminProducts() {
     const isEdit = !!editingItem;
     const method = isEdit ? "PUT" : "POST";
 
+    // Parse variants from text format "Name:Price:Stock" to structured array
+    if (typeof data.variants === "string" && data.variants.trim()) {
+      const parsed = data.variants.trim().split("\n").map((line) => {
+        const parts = line.split(":").map((s) => s.trim()).filter(Boolean);
+        if (parts.length >= 2) {
+          return { name: parts[0], price: Number(parts[1]) || 0, stock: Number(parts[2]) || 0 };
+        }
+        return null;
+      }).filter(Boolean);
+      data.variants = parsed;
+    } else if (typeof data.variants === "string" && !data.variants.trim()) {
+      delete data.variants;
+    }
+
     const saveRes = await fetch("/api/admin/data/products", {
       method,
       headers: { "Content-Type": "application/json" },
@@ -62,6 +76,15 @@ export default function AdminProducts() {
 
   const handleEdit = (item: Product) => {
     setEditingItem(item);
+    // Convert variants array to text format for the textarea
+    if (Array.isArray(item.variants) && item.variants.length > 0) {
+      item = {
+        ...item,
+        variantsText: item.variants.map(v => `${v.name}:${v.price}:${v.stock}`).join("\n"),
+      };
+    } else {
+      item = { ...item, variantsText: "" };
+    }
     setModalOpen(true);
   };
 
@@ -98,6 +121,7 @@ export default function AdminProducts() {
     { name: "price", label: "Price (₹)", type: "number", required: true, placeholder: "99" },
     { name: "stock", label: "Stock Quantity", type: "number", placeholder: "0 = out of stock" },
     { name: "badge", label: "Badge / Label (e.g. Combo, Best Value)", type: "text", placeholder: "Combo Offer" },
+    { name: "variants", label: "Variants (one per line: Name:Price:Stock)", type: "textarea", rows: 4, placeholder: "500ml:99:50\n1L:179:30\n2L:329:20" },
     { name: "sizes", label: "Sizes (comma separated)", type: "text", placeholder: "500ml, 1L" },
     { name: "image", label: "Product Image", type: "image-upload", placeholder: "/images/product-name.webp" },
     { name: "gallery", label: "Product Gallery", type: "multi-image-upload" },

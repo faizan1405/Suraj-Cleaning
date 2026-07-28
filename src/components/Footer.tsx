@@ -26,6 +26,8 @@ const defaultCompany = {
   address: "Bantwala, Dakshina Kannada, Karnataka, India",
   phone: "+91 98447 34939",
   phoneRaw: "919844734939",
+  phone2: "+91 82468 16784",
+  phone2Raw: "9188246816784",
   email: "swarajenterprises.co@gmail.com",
   hours: "Mon - Sat: 9:00 AM - 7:00 PM",
 };
@@ -70,6 +72,11 @@ export default function Footer() {
               <span className="text-[11px] font-semibold tracking-[0.3em] text-blue-400 block -mt-1">
                 ENTERPRISES
               </span>
+              <p className="mt-2">
+                <a href="https://www.instagram.com/swaraj_enterprises.co?igsh=MTBkaTFzM24xbjMwMw==" target="_blank" rel="noopener noreferrer" className="text-[13px] text-slate-400 hover:text-white transition-colors">
+                  Follow us on Instagram →
+                </a>
+              </p>
             </div>
             <motion.p
               initial={{ opacity: 0 }}
@@ -171,8 +178,9 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3.5">
               {[
-                { icon: MapPin, text: company.address, href: `https://maps.google.com/?q=Bantwala,Dakshina+Kannada,Karnataka,India` },
+                { icon: MapPin, text: company.address, href: "https://share.google/jDEWCaJnqWXhbuuQS" },
                 { icon: Phone, text: company.phone, href: `tel:${company.phoneRaw}` },
+                ...(company.phone2 ? [{ icon: Phone, text: company.phone2, href: `tel:${company.phone2Raw}` }] : []),
                 { icon: Mail, text: company.email, href: `mailto:${company.email}` },
               ].map((item, i) => (
                 <motion.li

@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ShoppingCart, Check } from "lucide-react";
+import { ShoppingCart, Check, ChevronDown } from "lucide-react";
 import type { Product } from "@/data/products";
 import { useCart } from "@/contexts/CartContext";
 
@@ -17,18 +17,32 @@ export function ProductCard({
 }) {
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
+  const [selectedVariant, setSelectedVariant] = useState<string>("");
   const sizeLabel = product.sizes?.[0] ?? "Standard";
   const benefits = Array.isArray(product.benefits) ? product.benefits : [];
   const directions = Array.isArray(product.directions) ? product.directions : [];
   const productImage = product.image && product.image.trim() ? product.image : "/images/product-placeholder.png";
   const inStock = Number(product.stock ?? 0) > 0;
+  const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
+
+  // Auto-select first variant
+  if (hasVariants && !selectedVariant) {
+    setSelectedVariant(product.variants![0].name);
+  }
+
+  const currentVariant = hasVariants
+    ? product.variants!.find(v => v.name === selectedVariant) ?? product.variants![0]
+    : null;
+  const currentPrice = currentVariant ? currentVariant.price : product.price;
+  const currentStock = currentVariant ? currentVariant.stock : Number(product.stock ?? 0);
+  const isInStock = currentStock > 0;
 
   const handleAdd = useCallback(() => {
-    if (!inStock) return;
-    addItem({ productId: product.id, name: product.name, price: product.price, image: product.image });
+    if (!isInStock) return;
+    addItem({ productId: product.id, name: product.name, price: currentPrice, image: product.image, size: selectedVariant || undefined });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
-  }, [addItem, product.id, product.name, product.price, product.image, inStock]);
+  }, [addItem, product.id, product.name, currentPrice, product.image, selectedVariant, isInStock]);
 
   return (
     <motion.div
@@ -73,25 +87,47 @@ export function ProductCard({
         <p className="text-[12px] text-[#64748b] mb-3 line-clamp-2">
           {product.shortDescription}
         </p>
+
+        {/* Variant selector */}
+        {hasVariants && (
+          <div className="mb-3">
+            <label className="text-[11px] font-semibold text-slate-500 mb-1 block uppercase tracking-wide">Select Variant</label>
+            <div className="relative">
+              <select
+                value={selectedVariant}
+                onChange={(e) => setSelectedVariant(e.target.value)}
+                className="w-full appearance-none px-3 py-2 pr-8 text-[13px] font-medium bg-slate-50 border border-slate-200 rounded-xl text-[#334155] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all cursor-pointer"
+              >
+                {product.variants!.map((v) => (
+                  <option key={v.name} value={v.name}>
+                    {v.name} — ₹{v.price} {v.stock === 0 ? "(Sold Out)" : ""}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+            </div>
+          </div>
+        )}
+
         <div className="flex items-center justify-between mt-auto gap-2">
           <span className="text-[18px] font-bold text-[#2563eb]">
-            ₹{product.price}
+            ₹{currentPrice}
           </span>
           <div className="flex items-center gap-2">
             <button
               onClick={handleAdd}
-              disabled={!inStock}
+              disabled={!isInStock}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold transition-all ${
                 added
                   ? "bg-green-500 text-white"
-                  : inStock
+                  : isInStock
                     ? "bg-[#2563eb] text-white hover:bg-[#1d4ed8]"
                     : "bg-slate-100 text-slate-400 cursor-not-allowed"
               }`}
               aria-label="Add to cart"
             >
               {added ? <Check className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />}
-              {added ? "Added" : inStock ? "Add" : "Sold Out"}
+              {added ? "Added" : isInStock ? "Add" : "Sold Out"}
             </button>
             <Link
               href={`/products/${product.slug}`}

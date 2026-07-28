@@ -16,4 +16,11 @@ export interface Product extends Record<string, unknown> {
   active: boolean;
   stock: number;
   badge?: string;
+  variants?: Variant[];
+}
+
+export interface Variant {
+  name: string;
+  price: number;
+  stock: number;
 }

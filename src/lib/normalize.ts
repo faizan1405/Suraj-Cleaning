@@ -1,13 +1,8 @@
-import type { Product } from "../data/products";
+import type { Product, Variant } from "../data/products";
 
 /**
  * Normalizes a raw product document from MongoDB/admin panel so that
  * the frontend rendering code never sees a missing or wrong-typed field.
- *
- * - sizes : string | string[] → string[]
- * - benefits : string | string[] → string[]
- * - directions : string | string[] → string[]
- * - image : string | undefined → string (fallback placeholder)
  */
 export function normalizeProduct(raw: Record<string, unknown>): Product {
   const toStrArray = (val: unknown): string[] => {
@@ -17,8 +12,19 @@ export function normalizeProduct(raw: Record<string, unknown>): Product {
   };
 
   const sizes = toStrArray(raw.sizes);
-  const benefits = toStrArray(raw.benefits);
-  const directions = toStrArray(raw.directions);
+
+  let variants: Variant[] | undefined;
+  if (Array.isArray(raw.variants)) {
+    variants = raw.variants
+      .filter((v): v is Record<string, unknown> => typeof v === "object" && v !== null)
+      .map((v) => ({
+        name: String(v.name ?? ""),
+        price: typeof v.price === "number" ? v.price : Number(v.price) || 0,
+        stock: typeof v.stock === "number" ? v.stock : Number(v.stock) || 0,
+      }))
+      .filter((v) => v.name.length > 0);
+    if (variants.length === 0) variants = undefined;
+  }
 
   return {
     ...raw,
@@ -34,12 +40,13 @@ export function normalizeProduct(raw: Record<string, unknown>): Product {
       ? raw.image.trim()
       : "/images/product-placeholder.png",
     gallery: Array.isArray(raw.gallery) ? raw.gallery.map(String) : [],
-    benefits: benefits.length > 0 ? benefits : ["Quality product"],
-    directions: directions.length > 0 ? directions : ["Use as directed."],
+    benefits: toStrArray(raw.benefits).length > 0 ? toStrArray(raw.benefits) : ["Quality product"],
+    directions: toStrArray(raw.directions).length > 0 ? toStrArray(raw.directions) : ["Use as directed."],
     featured: Boolean(raw.featured),
     bestSeller: Boolean(raw.bestSeller),
     active: Boolean(raw.active),
     stock: typeof raw.stock === "number" ? raw.stock : Number(raw.stock) || 0,
     badge: typeof raw.badge === "string" ? raw.badge : undefined,
+    variants,
   } as Product;
 }

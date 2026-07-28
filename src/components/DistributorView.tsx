@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 const benefits = [
   "Attractive Profit Margin",
@@ -108,6 +109,15 @@ export default function DistributorView() {
                 transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
                 className="flex flex-col justify-center gap-5"
               >
+                <div className="relative rounded-[20px] overflow-hidden aspect-[4/3]">
+                  <Image
+                    src="/images/distributor-img1.jpg"
+                    alt="Swaraj Enterprises distribution"
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
                 <div className="bg-white/10 backdrop-blur-sm rounded-[20px] p-6">
                   <h3 className="text-white font-bold text-[18px] mb-4">Why Choose Us?</h3>
                   <div className="space-y-3">

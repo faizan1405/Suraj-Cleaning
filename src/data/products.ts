@@ -2,6 +2,7 @@ import { readJsonFile } from "@/lib/db";
 import { normalizeProduct } from "@/lib/normalize";
 import type { Product } from "./product-types";
 export type { Product } from "./product-types";
+export type { Variant } from "./product-types";
 
 /**
  * Read products directly from the data layer. Server-side only.

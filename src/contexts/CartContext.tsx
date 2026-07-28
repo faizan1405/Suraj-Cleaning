@@ -73,12 +73,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((prev) => prev.filter((i) => i.productId !== productId));
   }, []);
 
-  const updateQuantity = useCallback((productId: string, quantity: number) => {
+  const updateQuantity = useCallback((productId: string, quantity: number, size?: string) => {
     if (quantity < 1) {
       removeItem(productId);
       return;
     }
-    setItems((prev) => prev.map((i) => i.productId === productId ? { ...i, quantity } : i));
+    setItems((prev) => prev.map((i) => i.productId === productId && i.size === size ? { ...i, quantity } : i));
   }, [removeItem]);
 
   const clearCart = useCallback(() => {
