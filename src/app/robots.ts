@@ -1,5 +1,5 @@
 export default function robots() {
-  const base = "https://swarajenterprises.com";
+  const base = "https://www.swarajenterprises.co";
 
   return {
     rules: [

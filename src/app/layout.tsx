@@ -17,7 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://swarajenterprises.com"),
+  metadataBase: new URL("https://www.swarajenterprises.co"),
   title: {
     default: "Swaraj Enterprises - Premium Cleaning Solutions | Clean Homes, Happy Lives",
     template: "%s | Swaraj Enterprises",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://swarajenterprises.com",
+    url: "https://www.swarajenterprises.co",
     siteName: "Swaraj Enterprises",
     title: "Swaraj Enterprises - Premium Cleaning Solutions",
     description:
