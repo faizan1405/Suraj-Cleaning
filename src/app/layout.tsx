@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Inter } from "next/font/google";
+import { CartProvider } from "@/contexts/CartContext";
 import "./globals.css";
 import PublicLayout from "@/components/PublicLayout";
 import GlobalErrorBoundary from "@/components/GlobalErrorBoundary";
@@ -113,7 +114,9 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col font-body text-[var(--text)]">
         <GlobalErrorBoundary>
-          <PublicLayout>{children}</PublicLayout>
+          <CartProvider>
+            <PublicLayout>{children}</PublicLayout>
+          </CartProvider>
         </GlobalErrorBoundary>
       </body>
     </html>

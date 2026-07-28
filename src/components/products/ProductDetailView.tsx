@@ -6,22 +6,26 @@ import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, ShoppingCart, Share2 } from "lucide-react";
 import type { Product } from "@/data/products";
 import { ProductImage } from "./ProductImage";
+import { useCart } from "@/contexts/CartContext";
 
 export default function ProductDetailView({
   product,
   relatedProducts,
-  whatsappNumber,
 }: {
   product: Product;
   relatedProducts: Product[];
-  whatsappNumber: string;
 }) {
+  const { addItem } = useCart();
   const [currentImage, setCurrentImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [added, setAdded] = useState(false);
+
   const gallery =
     product.gallery && product.gallery.length > 0
       ? product.gallery
       : [product.image];
   const hasMultiple = gallery.length > 1;
+  const inStock = Number(product.stock ?? 0) > 0;
 
   const prevImage = () => {
     setCurrentImage((prev) =>
@@ -34,10 +38,11 @@ export default function ProductDetailView({
     );
   };
 
-  const whatsappMessage = encodeURIComponent(
-    `Hi, I'm interested in ${product.name} (₹${product.price}). Can you share more details?`
-  );
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+  const handleAddToCart = () => {
+    addItem({ productId: product.id, name: product.name, price: product.price, image: product.image }, quantity);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
 
   return (
     <div>
@@ -167,16 +172,41 @@ export default function ProductDetailView({
                 </div>
               )}
 
+              {inStock && (
+                <div className="mb-6">
+                  <h4 className="text-[13px] font-bold text-[#0f172a] mb-2 uppercase tracking-wide">Quantity</h4>
+                  <div className="flex items-center gap-3">
+                    <div className="inline-flex items-center border border-slate-200 rounded-full overflow-hidden">
+                      <button onClick={() => setQuantity((q) => Math.max(1, q - 1))} className="w-9 h-9 flex items-center justify-center hover:bg-slate-50 transition-colors text-slate-700 font-semibold" aria-label="Decrease quantity">−</button>
+                      <span className="w-10 text-center text-[14px] font-bold">{quantity}</span>
+                      <button onClick={() => setQuantity((q) => q + 1)} className="w-9 h-9 flex items-center justify-center hover:bg-slate-50 transition-colors text-slate-700 font-semibold" aria-label="Increase quantity">+</button>
+                    </div>
+                    <span className="text-[12px] text-[#64748b]">In stock: {product.stock}</span>
+                  </div>
+                </div>
+              )}
+
               <div className="flex flex-wrap gap-3 mb-8">
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-green-500 text-white text-[14px] font-semibold rounded-full hover:bg-green-600 transition-colors shadow-md"
+                <button
+                  onClick={handleAddToCart}
+                  disabled={!inStock}
+                  className={`inline-flex items-center gap-2 px-6 py-3 text-[14px] font-semibold rounded-full transition-colors shadow-md ${
+                    added
+                      ? "bg-green-500 text-white"
+                      : inStock
+                        ? "bg-[#2563eb] text-white hover:bg-[#1d4ed8]"
+                        : "bg-slate-300 text-slate-500 cursor-not-allowed"
+                  }`}
                 >
                   <ShoppingCart className="w-4 h-4" />
-                  Order on WhatsApp
-                </a>
+                  {added ? "Added to Cart!" : inStock ? `Add to Cart — ₹${(product.price * quantity).toFixed(2)}` : "Out of Stock"}
+                </button>
+                <Link
+                  href="/cart"
+                  className="inline-flex items-center gap-2 px-5 py-3 bg-slate-100 text-[#334155] text-[14px] font-semibold rounded-full hover:bg-slate-200 transition-colors"
+                >
+                  View Cart
+                </Link>
                 <button
                   onClick={() => {
                     if (navigator.share) {
@@ -189,10 +219,9 @@ export default function ProductDetailView({
                       navigator.clipboard.writeText(window.location.href);
                     }
                   }}
-                  className="inline-flex items-center gap-2 px-5 py-3 bg-slate-100 text-[#334155] text-[14px] font-semibold rounded-full hover:bg-slate-200 transition-colors"
+                  className="inline-flex items-center gap-2 px-4 py-3 bg-white text-[#334155] text-[14px] font-semibold rounded-full border border-slate-200 hover:bg-slate-50 transition-colors"
                 >
                   <Share2 className="w-4 h-4" />
-                  Share
                 </button>
               </div>
 

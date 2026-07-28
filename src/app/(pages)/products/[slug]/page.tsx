@@ -61,7 +61,6 @@ export default async function ProductDetailPage({
     <ProductDetailView
       product={product}
       relatedProducts={relatedProducts}
-      whatsappNumber={company.phoneRaw}
     />
   );
 }

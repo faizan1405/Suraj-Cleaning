@@ -1,29 +1,10 @@
 import { readJsonFile } from "@/lib/db";
 import { normalizeProduct } from "@/lib/normalize";
-
-export interface Product extends Record<string, unknown> {
-  id: string;
-  slug: string;
-  name: string;
-  category: string;
-  shortDescription: string;
-  description: string;
-  price: number;
-  sizes: string[];
-  image: string;
-  gallery?: string[];
-  benefits: string[];
-  directions: string[];
-  featured: boolean;
-  bestSeller: boolean;
-  active: boolean;
-}
+import type { Product } from "./product-types";
+export type { Product } from "./product-types";
 
 /**
- * Read products directly from the data layer. Going through `fetch('/api/...')`
- * doesn't work on the server in Next.js 16 — relative URLs throw ERR_INVALID_URL
- * under Turbopack, leaving the products page empty even though the admin panel
- * has them. Reading the JSON store directly is also faster (no HTTP hop).
+ * Read products directly from the data layer. Server-side only.
  */
 export async function getProducts(): Promise<Product[]> {
   try {
@@ -36,8 +17,8 @@ export async function getProducts(): Promise<Product[]> {
   }
 }
 
-export async function getProductBySlug(slug: string): Promise<Product | undefined> {
-  const products = await getProducts();
+export async function getProductBySlug(slug: string, preloadedProducts?: Product[]): Promise<Product | undefined> {
+  const products = preloadedProducts ?? await getProducts();
   return products.find((p) => p.slug === slug);
 }
 

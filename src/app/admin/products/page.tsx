@@ -95,6 +95,7 @@ export default function AdminProducts() {
     { name: "shortDescription", label: "Short Description", type: "text", required: true, placeholder: "Brief tagline" },
     { name: "description", label: "Full Description", type: "textarea", rows: 3, placeholder: "Full product description" },
     { name: "price", label: "Price (₹)", type: "number", required: true, placeholder: "99" },
+    { name: "stock", label: "Stock Quantity", type: "number", placeholder: "0 = out of stock" },
     { name: "sizes", label: "Sizes (comma separated)", type: "text", placeholder: "500ml, 1L" },
     { name: "image", label: "Product Image", type: "image-upload", placeholder: "/images/product-name.webp" },
     { name: "gallery", label: "Product Gallery", type: "multi-image-upload" },

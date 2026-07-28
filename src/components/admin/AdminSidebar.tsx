@@ -16,10 +16,12 @@ import {
   X,
   ChevronRight,
   ChevronDown,
+  ClipboardList,
 } from "lucide-react";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  { href: "/admin/orders", label: "Orders", icon: ClipboardList },
   { href: "/admin/products", label: "Products", icon: Package },
   { href: "/admin/categories", label: "Categories", icon: FolderTree },
   { href: "/admin/testimonials", label: "Testimonials", icon: MessageSquare },
@@ -30,6 +32,7 @@ const navItems = [
 
 const sectionLabels: Record<string, string> = {
   Dashboard: "Overview",
+  Orders: "Sales",
   Products: "Catalog",
   Categories: "Catalog",
   Testimonials: "Social Proof",

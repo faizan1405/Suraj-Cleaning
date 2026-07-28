@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
-import type { Product } from "@/data/products";
+import type { Product } from "@/data/product-types";
 import { ProductImage } from "@/components/products/ProductImage";
+import { useCart } from "@/contexts/CartContext";
 
 function ProductCard({
   product,
@@ -58,11 +59,14 @@ function ProductModal({
   product,
   relatedProducts,
   onClose,
+  onAdd,
 }: {
   product: Product;
   relatedProducts: Product[];
   onClose: () => void;
+  onAdd?: () => void;
 }) {
+  const [modalAdded, setModalAdded] = useState(false);
   const sizeLabel = product.sizes?.[0] ?? "Standard";
   const benefits = Array.isArray(product.benefits) ? product.benefits : [];
   const directions = Array.isArray(product.directions) ? product.directions : [];
@@ -152,69 +156,14 @@ function ProductModal({
             </div>
 
             <button
-              onClick={async () => {
-                if (!product) return;
-                try {
-                  const res = await fetch("/api/checkout", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      amount: product.price,
-                      productName: product.name,
-                      productId: product.id,
-                    }),
-                  });
-
-                  if (!res.ok) throw new Error("Failed to create order");
-
-                  const { orderId, keyId, amount, currency } = await res.json();
-
-                  const options = {
-                    key: keyId,
-                    amount: amount,
-                    currency: currency,
-                    name: "Swaraj Enterprises",
-                    description: product.name,
-                    order_id: orderId,
-                    image: "/images/logo.png",
-                    handler: function (response: {
-                      razorpay_payment_id: string;
-                      razorpay_order_id: string;
-                      razorpay_signature: string;
-                    }) {
-                      window.location.href = `/order-success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}`;
-                    },
-                    prefill: {
-                      name: "",
-                      email: "",
-                      contact: "",
-                    },
-                    theme: {
-                      color: "#2563eb",
-                    },
-                  };
-
-                  if (!(window as any).Razorpay) {
-                    await new Promise<void>((resolve, reject) => {
-                      const script = document.createElement("script");
-                      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-                      script.async = true;
-                      script.onload = () => resolve();
-                      script.onerror = () => reject(new Error("Failed to load Razorpay"));
-                      document.body.appendChild(script);
-                    });
-                  }
-
-                  const rzp = new (window as any).Razorpay(options);
-                  rzp.open();
-                } catch (err) {
-                  console.error("Payment initiation failed:", err);
-                  alert("Unable to start payment. Please try again.");
-                }
+              onClick={() => {
+                if (modalAdded) return;
+                setModalAdded(true);
+                setTimeout(() => setModalAdded(false), 2000);
               }}
               className="btn-shine inline-flex items-center gap-2 px-6 py-2.5 bg-[#2563eb] text-white text-[13px] font-semibold rounded-full hover:bg-[#1d4ed8] transition-colors"
             >
-              Buy Now
+              {modalAdded ? "Added!" : `Add to Cart · ₹${numericPrice}`}
             </button>
           </div>
         </div>
@@ -249,6 +198,8 @@ export default function BestSellingProducts() {
   const [loading, setLoading] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { addItem } = useCart();
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const scroll = useCallback((direction: "left" | "right") => {
     if (!scrollRef.current) return;

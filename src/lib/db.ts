@@ -9,9 +9,15 @@ const COLLECTION_MAP: Record<string, string> = {
   "submissions/contact.json": "contact",
   "submissions/distributor.json": "distributor",
   "submissions/newsletter.json": "newsletter",
+  "orders.json": "orders",
 };
 
 const SINGLETON_COLLECTIONS = new Set(["company.json"]);
+
+const INDEX_MAP: Record<string, Record<string, 1 | -1>> = {
+  products: { category: 1, slug: 1, active: 1, bestSeller: 1, "stock": 1 },
+  orders: { "customer.email": 1, status: 1, paymentStatus: 1, razorpayOrderId: 1, createdAt: -1 },
+};
 
 function getCollectionName(relativePath: string): string {
   const name = COLLECTION_MAP[relativePath];
@@ -88,3 +94,22 @@ async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
 }
 
 export { resetDb, readJsonFile, writeJsonFile };
+
+/** Create indexes for known collections. Called once at app startup. */
+export async function ensureIndexes(): Promise<void> {
+  try {
+    const db = await getDb();
+    for (const [collName, indexes] of Object.entries(INDEX_MAP)) {
+      const coll = db.collection(collName);
+      for (const [field, direction] of Object.entries(indexes)) {
+        try {
+          await coll.createIndex({ [field]: direction } as Record<string, 1>);
+        } catch {
+          // Index may already exist
+        }
+      }
+    }
+  } catch {
+    // Silently skip index creation if DB is unavailable
+  }
+}

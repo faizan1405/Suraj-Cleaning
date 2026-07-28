@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import type { NavigationItem } from "@/data/navigation";
 import { cn } from "@/lib/utils";
+import CartIcon from "@/components/CartIcon";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -112,6 +113,9 @@ export default function Header() {
           >
             <span className="relative">Get in Touch</span>
           </motion.a>
+
+          {/* Cart icon */}
+          <CartIcon />
 
           {/* Mobile hamburger */}
           <motion.button
