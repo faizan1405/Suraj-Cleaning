@@ -160,7 +160,7 @@ export default function HeroSection() {
               <img
                 src="/images/1 her.jpeg"
                 alt="Swaraj Cleaning Products - Lavender Air Freshener, Hygix, Florenta, Handpure, Dishsheen, Clearon, Fabrix, Laundryx, Blackguard"
-                className="absolute inset-0 w-full h-full object-cover object-center rounded-[20px]"
+                className="w-full h-auto max-h-[480px] object-contain rounded-[20px]"
               />
             </motion.div>
           </motion.div>
