@@ -44,7 +44,7 @@ export default function NewsletterSection() {
   const headingText = "Stay Updated with Offers & New Launches";
 
   return (
-    <section className="py-[72px] md:py-[88px] bg-[#2563eb]">
+    <section className="py-[72px] md:py-[88px] bg-[#2563eb] mb-8 md:mb-12">
       <div className="mx-auto max-w-[1260px] px-5 md:px-8">
         <div className="max-w-xl mx-auto text-center">
           <h2 className="text-[24px] md:text-[30px] font-bold text-white mb-4">

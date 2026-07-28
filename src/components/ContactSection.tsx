@@ -82,7 +82,17 @@ export default function ContactSection() {
       .then((data) => {
         if (data) setCompany(prev => {
           const merged = { ...defaultCompany, ...data };
-          if (!data.phone2 && defaultCompany.phone2) merged.phone2 = defaultCompany.phone2;
+          // If the API returns a single `phone` field with two numbers separated by a comma,
+          // split them into `phone` and `phone2` for display.
+          if (merged.phone && !merged.phone2) {
+            const parts = merged.phone.split(",").map((s: string) => s.trim()).filter(Boolean);
+            if (parts.length >= 2) {
+              merged.phone = parts[0];
+              merged.phone2 = parts[1];
+              if (!merged.phone2Raw) merged.phone2Raw = defaultCompany.phone2Raw;
+            }
+          }
+          if (!merged.phone2 && defaultCompany.phone2) merged.phone2 = defaultCompany.phone2;
           if (!data.social?.whatsapp && defaultCompany.social?.whatsapp) merged.social = { ...merged.social, whatsapp: defaultCompany.social.whatsapp };
           return merged;
         });
