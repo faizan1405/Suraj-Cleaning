@@ -189,7 +189,7 @@ export default function ContactSection() {
             <div className="space-y-4">
               <motion.a
                 whileHover={{ x: 4 }}
-                href="https://maps.google.com/?q=Post+%26+Village,Aberottu+House,Narikombu,Karnataka+574231"
+                href="https://maps.google.com/?q=Swaraj+Enterprises+Narikombu"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 group"

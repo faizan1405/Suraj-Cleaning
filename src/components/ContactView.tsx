@@ -194,7 +194,7 @@ export default function ContactView({ company }: { company: CompanyInfo }) {
                     icon: MapPin,
                     title: "Our Address",
                     text: company.address,
-                    href: `https://maps.google.com/?q=${encodeURIComponent(company.address)}`,
+                    href: `https://maps.google.com/?q=Swaraj+Enterprises+Narikombu`,
                     external: true,
                   },
                   {

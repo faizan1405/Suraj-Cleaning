@@ -178,7 +178,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3.5">
               {[
-                { icon: MapPin, text: company.address, href: "https://share.google/jDEWCaJnqWXhbuuQS" },
+                { icon: MapPin, text: company.address, href: "https://maps.google.com/?q=Swaraj+Enterprises+Narikombu" },
                 { icon: Phone, text: company.phone, href: `tel:${company.phoneRaw}` },
                 ...(company.phone2 ? [{ icon: Phone, text: company.phone2, href: `tel:${company.phone2Raw}` }] : []),
                 { icon: Mail, text: company.email, href: `mailto:${company.email}` },
