@@ -63,9 +63,9 @@ export default function MegaPackSection() {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mb-8">
               {[
-                { label: "Products in Pack", value: "5+" },
-                { label: "Categories", value: "4+" },
-                { label: "Savings Upto", value: "30" },
+                { label: "Products in Pack", value: "6+" },
+                { label: "Categories", value: "6+" },
+                { label: "Savings Upto", value: "50%" },
                 { label: "Trusted By", value: "10K" },
               ].map((stat, i) => (
                 <motion.div
@@ -107,10 +107,10 @@ export default function MegaPackSection() {
           >
             <div className="relative rounded-[24px] overflow-hidden aspect-[5/4] bg-slate-100">
               <Image
-                src="https://res.cloudinary.com/dgnavpt3k/image/upload/v1785233805/suraj-cleaning/admin/wviz5uxm8ff3gfbidqjx.png"
-                alt="Swaraj Mega Pack – curated bundle of premium cleaning essentials"
+                src="/images/mega-pack-combo.jpg"
+                alt="Swaraj Mega Home Care Combo Pack – 6 Essential Cleaning Products at ₹200"
                 fill
-                className="object-contain"
+                className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
               {/* Mega Pack badge */}
