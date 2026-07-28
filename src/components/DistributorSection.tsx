@@ -88,47 +88,12 @@ export default function DistributorSection() {
               transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
               className="hidden lg:flex items-center justify-center"
             >
-              <svg
-                viewBox="0 0 400 350"
-                className="w-full max-w-[400px]"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {/* Business growth illustration */}
-                <rect x="80" y="100" width="240" height="160" rx="16" fill="white" opacity="0.15" />
-                <rect x="100" y="120" width="200" height="120" rx="12" fill="white" opacity="0.1" />
-
-                {/* Handshake / Business */}
-                <circle cx="200" cy="160" r="30" fill="white" opacity="0.2" />
-                <path d="M185 165 Q200 175 215 165" stroke="white" strokeWidth="3" fill="none" opacity="0.5" />
-                <circle cx="190" cy="155" r="3" fill="white" opacity="0.5" />
-                <circle cx="210" cy="155" r="3" fill="white" opacity="0.5" />
-
-                {/* Chart growth */}
-                <polyline
-                  points="120,240 160,220 200,190 240,200 280,150"
-                  stroke="white"
-                  strokeWidth="3"
-                  fill="none"
-                  opacity="0.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle cx="280" cy="150" r="5" fill="#f59e0b" />
-                <circle cx="200" cy="190" r="4" fill="#fbbf24" opacity="0.7" />
-
-                {/* Upward arrows */}
-                <path d="M260 100 L270 85 L280 100" stroke="white" strokeWidth="2" fill="none" opacity="0.4" />
-                <path d="M130 110 L140 95 L150 110" stroke="white" strokeWidth="2" fill="none" opacity="0.3" />
-
-                {/* Stars */}
-                <text x="310" y="80" fill="white" fontSize="18" opacity="0.3">&#9733;</text>
-                <text x="70" y="130" fill="white" fontSize="14" opacity="0.3">&#9733;</text>
-
-                {/* Bottom bar */}
-                <rect x="120" y="260" width="160" height="8" rx="4" fill="white" opacity="0.15" />
-                <rect x="140" y="270" width="120" height="6" rx="3" fill="white" opacity="0.1" />
-              </svg>
+              <img
+                src="/images/distributor-map.svg"
+                alt="Distributor network map showing regional coverage and distribution hubs connected to a central location"
+                className="w-full max-w-[420px] h-auto drop-shadow-2xl"
+                loading="lazy"
+              />
             </motion.div>
           </div>
         </div>
