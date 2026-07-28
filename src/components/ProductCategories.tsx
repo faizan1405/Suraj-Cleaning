@@ -112,14 +112,14 @@ export default function ProductCategories() {
           <button
             onClick={() => scroll("left")}
             aria-label="Scroll categories left"
-            className="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-slate-100 items-center justify-center text-slate-600 hover:text-[#2563eb] hover:shadow-xl transition-all opacity-0 group-hover/arrows:opacity-100 focus:opacity-100"
+            className="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-slate-100 items-center justify-center text-slate-600 hover:text-[#2563eb] hover:shadow-xl transition-all"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => scroll("right")}
             aria-label="Scroll categories right"
-            className="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-slate-100 items-center justify-center text-slate-600 hover:text-[#2563eb] hover:shadow-xl transition-all opacity-0 group-hover/arrows:opacity-100 focus:opacity-100"
+            className="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white shadow-lg border border-slate-100 items-center justify-center text-slate-600 hover:text-[#2563eb] hover:shadow-xl transition-all"
           >
             <ChevronRight className="w-5 h-5" />
           </button>

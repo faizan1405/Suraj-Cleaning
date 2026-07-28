@@ -80,7 +80,7 @@ export default function DistributorSection() {
               className="hidden lg:block relative min-h-[420px] md:min-h-[520px]"
             >
               <img
-                src="/images/distributor.jpg"
+                src="/images/distributor-img1.jpg"
                 alt="Distributor network map showing regional coverage and distribution hubs connected to a central location"
                 className="absolute inset-0 w-full h-full object-cover"
                 loading="lazy"
