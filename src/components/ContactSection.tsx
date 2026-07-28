@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, MapPin, Phone, Mail, Clock } from "lucide-react";
 import type { CompanyInfo } from "@/data/company";
+import defaultCompany from "@/data/company.json";
 
 function MapEmbed({ address }: { address: string }) {
   const [loaded, setLoaded] = useState(false);
@@ -79,7 +80,7 @@ export default function ContactSection() {
     fetch("/api/admin/data/company", { cache: "no-store" })
       .then((res) => res.ok ? res.json() : null)
       .then((data) => {
-        if (data) setCompany(data);
+        if (data) setCompany({ ...defaultCompany, ...data, social: { ...defaultCompany.social, ...data.social } });
       });
   }, []);
 
@@ -160,24 +161,7 @@ export default function ContactSection() {
               CONTACT US
             </motion.span>
             <h2 className="text-[28px] md:text-[36px] font-bold text-[#0f172a] mb-4">
-              {headingText.split(" ").map((word, i, arr) => (
-                <span key={i} className="inline-block">
-                  <motion.span
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-40px" }}
-                    transition={{ delay: i * 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    className="inline-block"
-                  >
-                    {word}
-                  </motion.span>
-                  {i < arr.length - 1 ? (
-                    <span className="inline-block w-[0.3em]"></span>
-                  ) : (
-                    ""
-                  )}
-                </span>
-              ))}
+              Get in Touch
             </h2>
             <p className="text-[15px] text-[#64748b] leading-relaxed mb-8">
               Have questions about our products or want to become a distributor?
