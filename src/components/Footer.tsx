@@ -26,8 +26,6 @@ const defaultCompany = {
   address: "Post & Village, Aberottu House, Narikombu, Karnataka 574231",
   phone: "+91 98447 34939",
   phoneRaw: "919844734939",
-  phone2: "+91 82468 16784",
-  phone2Raw: "9188246816784",
   email: "swarajenterprises.co@gmail.com",
   hours: "Mon - Sat: 9:00 AM - 7:00 PM",
 };
@@ -174,7 +172,6 @@ export default function Footer() {
               {[
                 { icon: MapPin, text: company.address, href: "https://maps.google.com/?q=Swaraj+Enterprises+Narikombu" },
                 { icon: Phone, text: company.phone, href: `tel:${company.phoneRaw}` },
-                ...(company.phone2 ? [{ icon: Phone, text: company.phone2, href: `tel:${company.phone2Raw}` }] : []),
                 { icon: Mail, text: company.email, href: `mailto:${company.email}` },
               ].map((item, i) => (
                 <motion.li
