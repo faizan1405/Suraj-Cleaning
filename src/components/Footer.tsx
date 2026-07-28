@@ -23,7 +23,7 @@ const defaultCategories = [
 
 const defaultCompany = {
   description: "Your trusted partner for premium cleaning solutions. Clean Homes, Happy Lives.",
-  address: "Bantwala, Dakshina Kannada, Karnataka, India",
+  address: "Post & Village, Aberottu House, Narikombu, Karnataka 574231",
   phone: "+91 98447 34939",
   phoneRaw: "919844734939",
   phone2: "+91 82468 16784",

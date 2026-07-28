@@ -34,7 +34,7 @@ export async function getCompany(): Promise<CompanyInfo> {
       name: "Swaraj Enterprises",
       tagline: "Clean Homes, Happy Lives",
       description: "Your trusted partner for premium cleaning solutions.",
-      address: "Aberottu Narikombu Post & Village, Bantwala Tq, Dakshina Kannada - 574231",
+      address: "Post & Village, Aberottu House, Narikombu, Karnataka 574231",
       phone: "+91 98447 34939",
       phoneRaw: "919844734939",
       email: "swarajenterprises.co@gmail.com",

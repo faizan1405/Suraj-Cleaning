@@ -172,7 +172,11 @@ export default function ContactSection() {
                   >
                     {word}
                   </motion.span>
-                  {i < arr.length - 1 ? " " : ""}
+                  {i < arr.length - 1 ? (
+                    <span className="inline-block w-[0.3em]"></span>
+                  ) : (
+                    ""
+                  )}
                 </span>
               ))}
             </h2>
@@ -185,7 +189,7 @@ export default function ContactSection() {
             <div className="space-y-4">
               <motion.a
                 whileHover={{ x: 4 }}
-                href="https://maps.google.com/?q=Bantwala,Dakshina+Kannada,Karnataka,India"
+                href="https://maps.google.com/?q=Post+%26+Village,Aberottu+House,Narikombu,Karnataka+574231"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 group"

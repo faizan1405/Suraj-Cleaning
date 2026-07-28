@@ -40,6 +40,10 @@ export const metadata: Metadata = {
     "India",
   ],
   authors: [{ name: "Swaraj Enterprises" }],
+  icons: {
+    icon: "/images/Logo.png",
+    apple: "/images/Logo.png",
+  },
   openGraph: {
     type: "website",
     locale: "en_IN",
@@ -101,8 +105,10 @@ export default function RootLayout({
                 "Premium cleaning solutions - Floor Care, Bathroom Care, Kitchen Care, Laundry Care, Personal Care",
               address: {
                 "@type": "PostalAddress",
-                addressLocality: "Bantwala",
+                streetAddress: "Aberottu House, Narikombu",
+                addressLocality: "Narikombu",
                 addressRegion: "Karnataka",
+                postalCode: "574231",
                 addressCountry: "IN",
               },
               telephone: "+919844734939",

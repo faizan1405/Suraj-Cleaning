@@ -2,6 +2,7 @@ import HeroSection from "@/components/HeroSection";
 import ProductCategories from "@/components/ProductCategories";
 import AboutSection from "@/components/AboutSection";
 import BestSellingProducts from "@/components/BestSellingProducts";
+import ComboProducts from "@/components/ComboProducts";
 import DistributorSection from "@/components/DistributorSection";
 import TrustBenefits from "@/components/TrustBenefits";
 import Testimonials from "@/components/Testimonials";
@@ -17,6 +18,7 @@ export default function Home() {
       <ProductCategories />
       <AboutSection />
       <BestSellingProducts />
+      <ComboProducts />
       <DistributorSection />
       <TrustBenefits />
       <Testimonials />
