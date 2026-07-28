@@ -1,5 +1,6 @@
 import HeroSection from "@/components/HeroSection";
 import ProductCategories from "@/components/ProductCategories";
+import MegaPackSection from "@/components/MegaPackSection";
 import AboutSection from "@/components/AboutSection";
 import BestSellingProducts from "@/components/BestSellingProducts";
 import ComboProducts from "@/components/ComboProducts";
@@ -16,6 +17,7 @@ export default function Home() {
     <div>
       <HeroSection />
       <ProductCategories />
+      <MegaPackSection />
       <AboutSection />
       <BestSellingProducts />
       <ComboProducts />
