@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { readJsonFile } from "@/lib/data-store";
+import { readJsonFile } from "@/lib/db";
 import { normalizeProduct } from "@/lib/normalize";
 
 export async function GET() {
@@ -10,7 +10,7 @@ export async function GET() {
     if (!Array.isArray(raw)) return NextResponse.json([]);
     const products = raw.map(normalizeProduct);
     const combos = products.filter(
-      (p) => p.active && p.badge && /combo/i.test(p.badge)
+      (p) => p.active && (p.badge && /combo/i.test(p.badge) || /combo/i.test(p.category))
     );
     return NextResponse.json(combos);
   } catch {
