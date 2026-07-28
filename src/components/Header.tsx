@@ -77,7 +77,7 @@ export default function Header() {
             <img
               src="/images/Logo.png"
               alt="Swaraj Enterprises"
-              className="h-[64px] md:h-[72px] w-auto object-contain"
+              className="h-[72px] md:h-[80px] w-auto object-contain"
             />
           </motion.a>
 
