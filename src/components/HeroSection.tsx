@@ -149,18 +149,18 @@ export default function HeroSection() {
             initial={{ opacity: 0, scale: 0.92, rotate: -2 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="relative"
+            className="relative h-full min-h-[400px] md:min-h-[500px] lg:min-h-[560px]"
           >
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative"
-              style={{ borderRadius: 24, padding: 0, background: 'none', overflow: 'hidden' }}
+              className="relative w-full h-full rounded-[24px] overflow-hidden"
             >
               <img
-                src="/images/1 her.jpeg"
+                src="/images/hero-products.jpg"
                 alt="Swaraj Cleaning Products - Lavender Air Freshener, Hygix, Florenta, Handpure, Dishsheen, Clearon, Fabrix, Laundryx, Blackguard"
-                className="w-full h-auto max-h-[480px] object-contain rounded-[20px]"
+                className="w-full h-full object-cover object-center"
+                loading="eager"
               />
             </motion.div>
           </motion.div>
