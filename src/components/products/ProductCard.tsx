@@ -12,6 +12,10 @@ export function ProductCard({
   product: Product;
   index: number;
 }) {
+  const sizeLabel = product.sizes?.[0] ?? "Standard";
+  const benefits = Array.isArray(product.benefits) ? product.benefits : [];
+  const directions = Array.isArray(product.directions) ? product.directions : [];
+  const productImage = product.image && product.image.trim() ? product.image : "/images/product-placeholder.png";
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -22,7 +26,7 @@ export function ProductCard({
     >
       <div className="relative aspect-square bg-[#f8fafc] overflow-hidden">
         <Image
-          src={product.image}
+          src={productImage}
           alt={product.name}
           fill
           className="object-contain p-4 img-zoom"

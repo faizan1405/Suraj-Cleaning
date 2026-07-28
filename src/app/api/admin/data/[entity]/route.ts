@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 import { readJsonFile, writeJsonFile } from "@/lib/db";
+import { normalizeProduct } from "@/lib/normalize";
 
 const ENTITY_FILES: Record<string, string> = {
   products: "products.json",
@@ -30,6 +31,14 @@ export async function GET(
     const { entity } = await params;
     const file = getEntityFile(entity);
     const data = await readJsonFile(file);
+
+    // Normalize products so the frontend never sees undefined sizes,
+    // string-instead-of-array benefits/directions, or missing images.
+    if (entity === "products") {
+      const items = Array.isArray(data) ? data : [];
+      return NextResponse.json(items.map(normalizeProduct));
+    }
+
     return NextResponse.json(data);
   } catch (error) {
     console.error("GET /api/admin/data:", error);
@@ -56,7 +65,8 @@ export async function POST(
     }
 
     const current = (await readJsonFile<any[]>(file)) || [];
-    const newItem = { ...body.data, id: body.id || crypto.randomUUID() };
+    const rawItem = { ...body.data, id: body.id || crypto.randomUUID() };
+    const newItem = entity === "products" ? normalizeProduct(rawItem) : rawItem;
     current.push(newItem);
     await writeJsonFile(file, current);
     return NextResponse.json({ success: true, data: newItem }, { status: 201 });
@@ -89,7 +99,12 @@ export async function PUT(
     if (index === -1) {
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }
-    current[index] = { ...current[index], ...body.data };
+    const merged = { ...current[index], ...body.data };
+    if (entity === "products") {
+      current[index] = normalizeProduct(merged);
+    } else {
+      current[index] = merged;
+    }
     await writeJsonFile(file, current);
     return NextResponse.json({ success: true, data: current[index] });
   } catch (error) {

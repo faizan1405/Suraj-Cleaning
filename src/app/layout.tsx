@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import PublicLayout from "@/components/PublicLayout";
+import GlobalErrorBoundary from "@/components/GlobalErrorBoundary";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -111,7 +112,9 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col font-body text-[var(--text)]">
-        <PublicLayout>{children}</PublicLayout>
+        <GlobalErrorBoundary>
+          <PublicLayout>{children}</PublicLayout>
+        </GlobalErrorBoundary>
       </body>
     </html>
   );

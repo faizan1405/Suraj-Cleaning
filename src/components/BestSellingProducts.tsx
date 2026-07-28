@@ -37,10 +37,10 @@ function ProductCard({
           {product.name}
         </h3>
         <p className="text-[12px] text-[#64748b] mb-1">{product.category}</p>
-        <p className="text-[12px] text-[#94a3b8] mb-3">{product.sizes[0]}</p>
+        <p className="text-[12px] text-[#94a3b8] mb-3">{product.sizes?.[0] ?? "Standard"}</p>
         <div className="flex items-center justify-between mt-auto">
           <span className="text-[18px] font-bold text-[#2563eb]">
-            ₹{product.price}
+            ₹{typeof product.price === "number" ? product.price : Number(product.price) || 0}
           </span>
           <button
             onClick={() => onViewDetails(product)}
@@ -63,6 +63,11 @@ function ProductModal({
   relatedProducts: Product[];
   onClose: () => void;
 }) {
+  const sizeLabel = product.sizes?.[0] ?? "Standard";
+  const benefits = Array.isArray(product.benefits) ? product.benefits : [];
+  const directions = Array.isArray(product.directions) ? product.directions : [];
+  const productImage = product.image && product.image.trim() ? product.image : "/images/product-placeholder.png";
+  const numericPrice = typeof product.price === "number" ? product.price : Number(product.price) || 0;
   return (
     <div
       className="fixed inset-0 z-[60] flex items-center justify-center p-4"
@@ -91,7 +96,7 @@ function ProductModal({
         <div className="grid md:grid-cols-2">
           <div className="relative aspect-square bg-[#f8fafc] p-6">
             <ProductImage
-              src={product.image}
+              src={productImage}
               alt={product.name}
               className="object-contain"
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -111,10 +116,10 @@ function ProductModal({
 
             <div className="flex items-baseline gap-2 mb-5">
               <span className="text-[28px] font-bold text-[#2563eb]">
-                ₹{product.price}
+                ₹{numericPrice}
               </span>
               <span className="text-[13px] text-[#94a3b8]">
-                / {product.sizes[0]}
+                / {sizeLabel}
               </span>
             </div>
 
@@ -123,7 +128,7 @@ function ProductModal({
                 Key Benefits
               </h4>
               <ul className="space-y-1.5">
-                {product.benefits.map((b, i) => (
+                {benefits.map((b, i) => (
                   <li key={i} className="flex items-start gap-2 text-[13px] text-[#475569]">
                     <span className="text-green-500 mt-0.5 shrink-0">✔</span>
                     {b}
@@ -137,7 +142,7 @@ function ProductModal({
                 How to Use
               </h4>
               <ol className="space-y-1">
-                {product.directions.map((d, i) => (
+                {directions.map((d, i) => (
                   <li key={i} className="flex items-start gap-2 text-[13px] text-[#475569]">
                     <span className="text-[#2563eb] font-bold shrink-0">{i + 1}.</span>
                     {d}
