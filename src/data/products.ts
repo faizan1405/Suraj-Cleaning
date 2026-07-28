@@ -1,3 +1,4 @@
+import { readJsonFile } from "@/lib/db";
 import { normalizeProduct } from "@/lib/normalize";
 
 export interface Product extends Record<string, unknown> {
@@ -18,13 +19,17 @@ export interface Product extends Record<string, unknown> {
   active: boolean;
 }
 
+/**
+ * Read products directly from the data layer. Going through `fetch('/api/...')`
+ * doesn't work on the server in Next.js 16 — relative URLs throw ERR_INVALID_URL
+ * under Turbopack, leaving the products page empty even though the admin panel
+ * has them. Reading the JSON store directly is also faster (no HTTP hop).
+ */
 export async function getProducts(): Promise<Product[]> {
   try {
-    const res = await fetch("/api/admin/data/products", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch products");
-    const data = await res.json();
-    if (!Array.isArray(data)) return [];
-    return data.map((p: Record<string, unknown>) => normalizeProduct(p));
+    const raw = await readJsonFile<Record<string, unknown>[]>("products.json");
+    if (!Array.isArray(raw)) return [];
+    return raw.map(normalizeProduct);
   } catch (err) {
     console.error("Error fetching products:", err);
     return [];

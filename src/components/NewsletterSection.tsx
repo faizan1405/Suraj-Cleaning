@@ -32,7 +32,7 @@ export default function NewsletterSection() {
       }
     } catch {
       setStatus("error");
-      setErrorMessage("Network error. Please try again.");
+      setErrorMessage("Something went wrong. Please try again.");
     }
 
     setTimeout(() => {
@@ -47,25 +47,27 @@ export default function NewsletterSection() {
     <section className="py-[72px] md:py-[88px] bg-[#2563eb]">
       <div className="mx-auto max-w-[1260px] px-5 md:px-8">
         <div className="max-w-xl mx-auto text-center">
-          <h2 className="text-[24px] md:text-[30px] font-bold text-white mb-3">
-            {headingText.split(" ").map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ delay: i * 0.05, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                className="inline-block"
-              >
-                {word}{i < headingText.split(" ").length - 1 ? " " : ""}
-              </motion.span>
+          <h2 className="text-[24px] md:text-[30px] font-bold text-white mb-4">
+            {headingText.split(" ").map((word, i, arr) => (
+              <span key={i} className="inline-block whitespace-nowrap">
+                <motion.span
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{ delay: i * 0.05, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="inline-block"
+                >
+                  {word}
+                </motion.span>
+                {i < arr.length - 1 ? " " : ""}
+              </span>
             ))}
           </h2>
           <p className="text-white/75 text-[15px] mb-8">
             Subscribe to our newsletter and never miss an update.
           </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
             {/* Honeypot */}
             <div className="hidden" aria-hidden="true">
               <label htmlFor="website">Website</label>

@@ -88,8 +88,9 @@ export default function ContactSection() {
     e.preventDefault();
     setStatus("loading");
     setErrorMessage("");
+    const form = e.currentTarget;
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
@@ -107,7 +108,7 @@ export default function ContactSection() {
 
       if (res.ok) {
         setStatus("success");
-        (e.target as HTMLFormElement).reset();
+        form.reset();
       } else {
         const result = await res.json().catch(() => ({ message: "Something went wrong" }));
         setStatus("error");
@@ -115,7 +116,7 @@ export default function ContactSection() {
       }
     } catch {
       setStatus("error");
-      setErrorMessage("Network error. Please try again.");
+      setErrorMessage("Something went wrong. Please try again.");
     }
 
     setTimeout(() => {
@@ -160,17 +161,19 @@ export default function ContactSection() {
               CONTACT US
             </motion.span>
             <h2 className="text-[28px] md:text-[36px] font-bold text-[#0f172a] mb-4">
-              {headingText.split(" ").map((word, i) => (
-                <motion.span
-                  key={i}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ delay: i * 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                  className="inline-block"
-                >
-                  {word}{i < headingText.split(" ").length - 1 ? " " : ""}
-                </motion.span>
+              {headingText.split(" ").map((word, i, arr) => (
+                <span key={i} className="inline-block whitespace-nowrap">
+                  <motion.span
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ delay: i * 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    className="inline-block"
+                  >
+                    {word}
+                  </motion.span>
+                  {i < arr.length - 1 ? " " : ""}
+                </span>
               ))}
             </h2>
             <p className="text-[15px] text-[#64748b] leading-relaxed mb-8">
