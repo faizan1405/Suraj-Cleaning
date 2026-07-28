@@ -19,7 +19,7 @@ export default function DistributorSection() {
     <section id="distributor" className="py-[72px] md:py-[88px]">
       <div className="mx-auto max-w-[1260px] px-5 md:px-8">
         <div className="bg-[#2563eb] rounded-[28px] overflow-hidden">
-          <div className="grid lg:grid-cols-2">
+          <div className="grid lg:grid-cols-2 items-stretch">
             {/* Left Content */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -77,7 +77,7 @@ export default function DistributorSection() {
               viewport={{ once: true }}
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 0.6, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-              className="hidden lg:block relative min-h-[420px] md:min-h-[520px]"
+              className="hidden lg:block h-full min-h-[400px] overflow-hidden relative"
             >
               <img
                 src="/images/distributor-img1.jpg"
