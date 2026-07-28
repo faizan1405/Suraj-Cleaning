@@ -158,9 +158,9 @@ export default function HeroSection() {
               style={{ borderRadius: 24, padding: 0, background: 'none', overflow: 'hidden' }}
             >
               <img
-                src="/images/hero-products.jpg"
-                alt="Swaraj Cleaning Products - Hygix, Clearon, Supreme, Fabrix and more"
-                className="w-auto h-auto max-h-[700px] object-contain rounded-[20px]"
+                src="/images/1 her.jpeg"
+                alt="Swaraj Cleaning Products - Lavender Air Freshener, Hygix, Florenta, Handpure, Dishsheen, Clearon, Fabrix, Laundryx, Blackguard"
+                className="absolute inset-0 w-full h-full object-cover object-center rounded-[20px]"
               />
             </motion.div>
           </motion.div>

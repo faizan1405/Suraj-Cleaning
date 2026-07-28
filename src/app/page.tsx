@@ -9,7 +9,6 @@ import TrustBenefits from "@/components/TrustBenefits";
 import Testimonials from "@/components/Testimonials";
 import QualityProcessSection from "@/components/QualityProcessSection";
 import NewsletterSection from "@/components/NewsletterSection";
-import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -26,7 +25,6 @@ export default function Home() {
       <Testimonials />
       <QualityProcessSection />
       <NewsletterSection />
-      <ContactSection />
       <Footer />
     </div>
   );
