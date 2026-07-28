@@ -43,7 +43,7 @@ export default function DistributorSection() {
                     transition={{ delay: 0.3 + i * 0.06, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                     className="inline-block"
                   >
-                    {word}{i < 4 ? " " : ""}
+                    {word}{" "}
                   </motion.span>
                 ))}
               </h2>
@@ -91,7 +91,7 @@ export default function DistributorSection() {
               <img
                 src="/images/Distributor Image.jpeg"
                 alt="Distributor network map showing regional coverage and distribution hubs connected to a central location"
-                className="w-full max-w-[420px] h-auto drop-shadow-2xl"
+                className="w-full h-full object-contain max-h-[520px] drop-shadow-2xl"
                 loading="lazy"
               />
             </motion.div>

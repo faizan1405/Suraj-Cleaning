@@ -289,7 +289,7 @@ export default function AdminFormModal({
   };
 
   const renderField = (field: FieldConfig) => {
-    const value = formData[field.name] ?? "";
+    const value = formData[field.name] ?? (field.name === "active" ? true : "");
 
     switch (field.type) {
       case "image-upload":
