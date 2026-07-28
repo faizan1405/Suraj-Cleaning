@@ -63,9 +63,9 @@ export default function MegaPackSection() {
             {/* Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 mb-8">
               {[
-                { label: "Products in Pack", value: "6+" },
-                { label: "Categories", value: "6+" },
-                { label: "Savings Upto", value: "50%" },
+                { label: "Products in Pack", value: "6" },
+                { label: "Categories", value: "6" },
+                { label: "Savings Upto", value: "50" },
                 { label: "Trusted By", value: "10K" },
               ].map((stat, i) => (
                 <motion.div
