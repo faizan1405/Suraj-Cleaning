@@ -1,3 +1,6 @@
+import { normalizeProduct } from "@/lib/normalize";
+import fallbackData from "@/data/products.json";
+
 export interface Product extends Record<string, unknown> {
   id: string;
   slug: string;
@@ -16,14 +19,25 @@ export interface Product extends Record<string, unknown> {
   active: boolean;
 }
 
+// Fallback products loaded from the local JSON file when the MongoDB-backed
+// API is unavailable or returns no data.
+const FALLBACK_PRODUCTS: Product[] = (fallbackData as Record<string, unknown>[]).map((p) =>
+  normalizeProduct(p)
+);
+
 export async function getProducts(): Promise<Product[]> {
   try {
     const res = await fetch("/api/admin/data/products", { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch products");
-    return res.json();
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) {
+      console.warn("Products API returned empty, falling back to local data");
+      return FALLBACK_PRODUCTS;
+    }
+    return (data as Record<string, unknown>[]).map(normalizeProduct);
   } catch {
-    console.error("Error fetching products, returning empty array");
-    return [];
+    console.error("Error fetching products, falling back to local data");
+    return FALLBACK_PRODUCTS;
   }
 }
 

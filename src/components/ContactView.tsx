@@ -7,10 +7,21 @@ import type { CompanyInfo } from "@/data/company";
 
 function MapEmbed({ address }: { address: string }) {
   const [loaded, setLoaded] = useState(false);
-  const mapSrc =
-    "https://maps.google.com/maps?q=" +
-    encodeURIComponent(address) +
-    "&t=&z=14&ie=UTF8&iwloc=&output=embed";
+  const [timeoutReached, setTimeoutReached] = useState(false);
+
+  const encodedAddress = encodeURIComponent(address);
+  const mapSrc = `https://maps.google.com/maps?q=${encodedAddress}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+
+  // Safety timeout: force-show the map after 5 seconds even if onLoad hasn't fired
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!loaded) {
+        setTimeoutReached(true);
+        setLoaded(true);
+      }
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [loaded]);
 
   return (
     <motion.div
@@ -20,26 +31,42 @@ function MapEmbed({ address }: { address: string }) {
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="relative w-full h-[350px] md:h-[450px] rounded-[24px] overflow-hidden shadow-lg border border-slate-100"
     >
+      {/* Loading indicator — shown until map is loaded */}
       {!loaded && (
-        <div className="absolute inset-0 bg-slate-100 animate-pulse rounded-[24px] flex items-center justify-center">
+        <div className="absolute inset-0 bg-slate-100 animate-pulse rounded-[24px] flex items-center justify-center z-10">
           <div className="text-center">
             <MapPin className="w-8 h-8 text-slate-300 mx-auto mb-2" />
             <p className="text-[13px] text-slate-400">Loading map...</p>
           </div>
         </div>
       )}
-      <iframe
-        title="Our Location"
-        src={mapSrc}
-        width="100%"
-        height="100%"
-        style={{ border: 0, display: loaded ? "block" : "none" }}
-        allowFullScreen
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        onLoad={() => setLoaded(true)}
-        className="rounded-[24px]"
-      />
+      {/* iframe is always in the DOM but hidden via pointer-events + visibility until loaded */}
+      {!loaded ? (
+        <iframe
+          title="Our Location"
+          src={mapSrc}
+          width="100%"
+          height="100%"
+          style={{ border: 0, position: "absolute", inset: 0, visibility: "hidden", pointerEvents: "none" }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          onLoad={() => setLoaded(true)}
+          className="rounded-[24px]"
+        />
+      ) : (
+        <iframe
+          title="Our Location"
+          src={mapSrc}
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="rounded-[24px]"
+        />
+      )}
     </motion.div>
   );
 }

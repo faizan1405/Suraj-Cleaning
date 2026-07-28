@@ -89,7 +89,7 @@ export default function DistributorSection() {
               className="hidden lg:flex items-center justify-center"
             >
               <img
-                src="/images/distributor-map.svg"
+                src="/images/Distributor Image.jpeg"
                 alt="Distributor network map showing regional coverage and distribution hubs connected to a central location"
                 className="w-full max-w-[420px] h-auto drop-shadow-2xl"
                 loading="lazy"

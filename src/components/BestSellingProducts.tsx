@@ -381,7 +381,7 @@ export default function BestSellingProducts() {
 
         <div className="text-center mt-10">
           <a
-            href="#"
+            href="/products"
             className="inline-flex items-center gap-2 text-[#2563eb] font-semibold text-[15px] hover:gap-3 transition-all"
           >
             View All Products <ArrowRight className="w-4 h-4" />

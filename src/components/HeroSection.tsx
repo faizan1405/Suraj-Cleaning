@@ -116,7 +116,7 @@ export default function HeroSection() {
               className="flex flex-wrap gap-3.5"
             >
               <motion.a
-                href="#products"
+                href="/products"
                 whileHover={{ y: -4, scale: 1.03 }}
                 whileTap={{ scale: 0.97, y: 0 }}
                 transition={{ type: "spring", stiffness: 400, damping: 22 }}
@@ -154,12 +154,13 @@ export default function HeroSection() {
             <motion.div
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-              className="relative bg-gradient-to-br from-blue-50 via-white to-blue-100/50 rounded-[28px] p-4 sm:p-6 overflow-hidden"
+              className="relative"
+              style={{ borderRadius: 0, padding: 0, background: 'none', overflow: 'visible' }}
             >
               <img
                 src="/images/hero-products.jpg"
                 alt="Swaraj Cleaning Products - Hygix, Clearon, Supreme, Fabrix and more"
-                className="w-full h-auto max-h-[600px] object-contain"
+                className="w-auto h-auto max-h-[700px] object-contain"
               />
             </motion.div>
           </motion.div>

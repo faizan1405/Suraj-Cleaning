@@ -74,12 +74,12 @@ export default function AboutSection() {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            <div className="relative rounded-[24px] overflow-hidden aspect-[4/3] bg-slate-100">
+            <div className="relative rounded-[24px] overflow-hidden aspect-[5/4] bg-slate-100">
               <Image
                 src="/images/about-products.jpeg"
                 alt="Swaraj Enterprises product range - Hygix, Handpure, Dishsheen, Clearon"
                 fill
-                className="object-contain p-4"
+                className="object-contain"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
               {/* Made in India badge */}
@@ -170,7 +170,7 @@ export default function AboutSection() {
             </div>
 
             <motion.a
-              href="#"
+              href="/about"
               whileHover={{ y: -3 }}
               className="inline-flex items-center gap-2 px-6 py-3 bg-[#2563eb] text-white font-semibold text-[14px] rounded-full hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 btn-shine"
             >
