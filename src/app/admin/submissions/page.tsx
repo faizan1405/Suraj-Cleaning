@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-import { Inbox, Mail, User, FileText, Trash2, Calendar, Clock } from "lucide-react";
+import { Inbox, Mail, User, FileText, Trash2 } from "lucide-react";
+import { PageHeader, Badge, EmptyState } from "@/components/admin/AdminUI";
 
 type SubmissionType = "contact" | "distributor" | "newsletter";
 
@@ -10,7 +11,6 @@ export default function AdminSubmissions() {
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<SubmissionType>("contact");
-
 
   useEffect(() => {
     fetch("/api/admin/submissions")
@@ -66,10 +66,10 @@ export default function AdminSubmissions() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-[22px] font-bold text-slate-900 tracking-tight">Submissions</h2>
-        <p className="text-[14px] text-slate-500 mt-1">View form submissions from visitors.</p>
-      </div>
+      <PageHeader
+        title="Submissions"
+        subtitle="View form submissions from visitors."
+      />
 
       {/* Tabs */}
       <div className="flex gap-1 mb-6 bg-slate-100 p-1 rounded-xl w-fit">
@@ -102,38 +102,36 @@ export default function AdminSubmissions() {
       {loading ? (
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-white rounded-2xl border border-slate-200/80 p-5 animate-pulse">
+            <div key={i} className="ad-card p-5 animate-pulse">
               <div className="h-4 bg-slate-100 rounded w-1/3 mb-3" />
               <div className="h-3 bg-slate-100 rounded w-2/3" />
             </div>
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-slate-200/80 p-16 text-center">
-          <div className="w-14 h-14 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-4">
-            <Inbox className="w-6 h-6 text-slate-400" />
-          </div>
-          <p className="text-[14px] text-slate-500 font-medium">No submissions yet.</p>
-          <p className="text-[13px] text-slate-400 mt-1">Submissions will appear here when visitors fill out forms.</p>
+        <div className="ad-card">
+          <EmptyState
+            icon={Inbox}
+            title="No submissions yet."
+            description="Submissions will appear here when visitors fill out forms."
+          />
         </div>
       ) : (
         <div className="space-y-3">
           {filtered.map((item) => {
             const TabIcon = activeTab === "contact" ? Mail : activeTab === "distributor" ? User : FileText;
             return (
-              <div key={item.id} className="bg-white rounded-2xl border border-slate-200/80 p-5 hover:shadow-md hover:border-slate-300 transition-all">
+              <div key={item.id} className="ad-card p-5 stat-lift">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-100 flex items-center justify-center">
                       <TabIcon className="w-4 h-4 text-slate-500" />
                     </div>
-                    <div className="flex items-center gap-1.5 text-[12px] text-slate-400">
-                      <Calendar className="w-3 h-3" />
-                      <span className="font-medium">{new Date(item.submittedAt).toLocaleDateString()}</span>
-                      <span className="text-slate-300">|</span>
-                      <Clock className="w-3 h-3" />
-                      <span className="font-medium">{new Date(item.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                    </div>
+                    <p className="text-[12px] text-slate-500 font-medium">
+                      {new Date(item.submittedAt).toLocaleDateString("en-IN", { dateStyle: "medium" })}
+                      <span className="text-slate-300 mx-1.5">|</span>
+                      {new Date(item.submittedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
                   </div>
                   <button
                     onClick={() => handleDelete(item.id)}

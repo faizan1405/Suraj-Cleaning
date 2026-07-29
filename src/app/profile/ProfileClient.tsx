@@ -107,9 +107,9 @@ const INDIAN_STATES = [
   "Jammu and Kashmir", "Ladakh", "Lakshadweep", "Puducherry",
 ];
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(amount);
-}
+import { formatPriceIN } from "@/lib/currency";
+
+/* ─── (existing imports above stay) ─── */
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
@@ -459,7 +459,7 @@ export default function ProfileClient({ initialUser, initialProfile }: { initial
                     <div className="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center mb-3">
                       <Package className="w-5 h-5 text-green-600" />
                     </div>
-                    <p className="text-[24px] font-bold text-slate-900">{formatCurrency(orderStats.totalSpent)}</p>
+                    <p className="text-[24px] font-bold text-slate-900">{formatPriceIN(orderStats.totalSpent)}</p>
                     <p className="text-[12px] text-slate-500 font-medium">Total Spent</p>
                   </div>
                   <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm">
@@ -516,7 +516,7 @@ export default function ProfileClient({ initialUser, initialProfile }: { initial
                             <p className="text-[11px] text-slate-500">{formatDate(order.createdAt)}</p>
                           </div>
                           <div className="text-right">
-                            <p className="text-[13px] font-bold text-slate-700">{formatCurrency(order.total)}</p>
+                            <p className="text-[13px] font-bold text-slate-700">{formatPriceIN(order.total)}</p>
                             <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${STATUS_COLORS[order.status] || "bg-slate-100 text-slate-600"}`}>
                               {order.status.replace("_", " ")}
                             </span>
@@ -591,7 +591,7 @@ export default function ProfileClient({ initialUser, initialProfile }: { initial
 
                         <div className="flex items-center justify-between pt-3 border-t border-slate-100">
                           <span className="text-[12px] text-slate-500">{order.items.reduce((s, i) => s + i.quantity, 0)} items</span>
-                          <span className="text-[14px] font-bold text-slate-900">{formatCurrency(order.total)}</span>
+                          <span className="text-[14px] font-bold text-slate-900">{formatPriceIN(order.total)}</span>
                         </div>
                       </a>
                     ))}

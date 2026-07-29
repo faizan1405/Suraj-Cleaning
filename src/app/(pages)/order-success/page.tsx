@@ -1,5 +1,6 @@
 import { getOrderById } from "@/data/orders";
 import Link from "next/link";
+import { formatPrice } from "@/lib/currency";
 
 export default async function OrderSuccessPage({
   searchParams,
@@ -38,13 +39,13 @@ export default async function OrderSuccessPage({
                 <p className="text-[12px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Order ID</p>
                 <p className="text-[14px] font-mono font-bold text-[#2563eb] mb-4">{order.id}</p>
                 <p className="text-[13px] text-slate-600 mb-1"><strong>Delivery:</strong> {order.customer.address}, {order.customer.city} - {order.customer.pincode}</p>
-                <p className="text-[13px] text-slate-600 mb-3"><strong>Total:</strong> <span className="font-bold text-[#0f172a]">₹{order.total.toFixed(2)}</span></p>
+                <p className="text-[13px] text-slate-600 mb-3"><strong>Total:</strong> <span className="font-bold text-[#0f172a]">{formatPrice(order.total)}</span></p>
                 <div className="border-t border-slate-200 pt-3">
                   <p className="text-[11px] text-slate-400 mb-2">Items:</p>
                   {order.items.map((item) => (
                     <div key={item.productId} className="flex items-center justify-between text-[12px] mb-1">
                       <span className="text-slate-600">{item.name} × {item.quantity}</span>
-                      <span className="font-medium">₹{item.subtotal.toFixed(2)}</span>
+                      <span className="font-medium">{formatPrice(item.subtotal)}</span>
                     </div>
                   ))}
                 </div>

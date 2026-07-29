@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ArrowLeft } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { shipping, payments } from "@/config/site";
+import { formatPrice } from "@/lib/currency";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalItems, totalPrice } = useCart();
@@ -96,7 +97,7 @@ export default function CartPage() {
                     <div className="flex-1 min-w-0">
                       <h3 className="text-[14px] font-bold text-[#0f172a] truncate">{item.name}</h3>
                       {item.size && <p className="text-[12px] text-[#64748b]">Size: {item.size}</p>}
-                      <p className="text-[15px] font-bold text-[#2563eb] mt-1">₹{item.price}</p>
+                      <p className="text-[15px] font-bold text-[#2563eb] mt-1">{formatPrice(item.price)}</p>
                       {isOutOfStock && <p className="text-[12px] text-red-600 font-medium mt-1">Out of stock</p>}
                       {isOverStocked && <p className="text-[12px] text-red-600 font-medium mt-1">Only {available} left</p>}
                     </div>
@@ -127,7 +128,7 @@ export default function CartPage() {
                           <Plus className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                      <p className="text-[14px] font-bold text-[#0f172a]">₹{(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-[14px] font-bold text-[#0f172a]">{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   </motion.div>
                 );
@@ -142,19 +143,19 @@ export default function CartPage() {
               <div className="space-y-2.5 mb-5">
                 <div className="flex justify-between text-[13px]">
                   <span className="text-[#64748b]">Subtotal</span>
-                  <span className="font-medium">₹{subtotal.toFixed(2)}</span>
+                  <span className="font-medium">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-[13px]">
                   <span className="text-[#64748b]">Delivery</span>
-                  <span className="font-medium">{deliveryFee === 0 ? "FREE" : `₹${deliveryFee}`}</span>
+                  <span className="font-medium">{deliveryFee === 0 ? "FREE" : formatPrice(deliveryFee)}</span>
                 </div>
                 <div className="flex justify-between text-[13px]">
                   <span className="text-[#64748b]">Tax</span>
-                  <span className="font-medium">₹{taxAmount.toFixed(2)}</span>
+                  <span className="font-medium">{formatPrice(taxAmount)}</span>
                 </div>
                 <div className="border-t border-slate-200 pt-2.5 flex justify-between">
                   <span className="text-[15px] font-bold text-[#0f172a]">Total</span>
-                  <span className="text-[15px] font-bold text-[#2563eb]">₹{grandTotal.toFixed(2)}</span>
+                  <span className="text-[15px] font-bold text-[#2563eb]">{formatPrice(grandTotal)}</span>
                 </div>
               </div>
               <button

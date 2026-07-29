@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { Loader2, Pencil, Trash2, ChevronUp, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Badge, EmptyState } from "@/components/admin/AdminUI";
 
 export interface Column<T> {
   key: string;
   label: string;
   render?: (item: T) => React.ReactNode;
+  align?: "left" | "center" | "right";
 }
 
 interface AdminDataTableProps<T> {
@@ -17,6 +19,7 @@ interface AdminDataTableProps<T> {
   onDelete?: (id: string) => void;
   loading?: boolean;
   emptyMessage?: string;
+  emptyIcon?: React.ComponentType<{ className?: string }>;
 }
 
 export default function AdminDataTable<T extends Record<string, any>>({
@@ -26,6 +29,7 @@ export default function AdminDataTable<T extends Record<string, any>>({
   onDelete,
   loading = false,
   emptyMessage = "No items found",
+  emptyIcon: EmptyIcon,
 }: AdminDataTableProps<T>) {
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [sortKey, setSortKey] = useState<string | null>(null);
@@ -62,8 +66,8 @@ export default function AdminDataTable<T extends Record<string, any>>({
 
   if (loading) {
     return (
-      <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden">
-        <div className="p-10 flex items-center justify-center gap-3">
+      <div className="ad-card p-10">
+        <div className="flex items-center justify-center gap-3">
           <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
           <span className="text-[14px] text-slate-500 font-medium">Loading data...</span>
         </div>
@@ -73,31 +77,32 @@ export default function AdminDataTable<T extends Record<string, any>>({
 
   return (
     <>
-      <div className="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
+      <div className="ad-card overflow-hidden">
+        <div className="admin-table-wrap">
+          <table className="w-full text-left admin-table">
             <thead>
               <tr className="border-b border-slate-100 bg-slate-50/50">
                 {columns.map((col) => (
                   <th
                     key={col.key}
+                    className="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider cursor-pointer select-none hover:text-slate-700 transition-colors"
                     onClick={() => handleSort(col.key)}
-                    className="px-5 py-3.5 text-[11px] font-bold text-slate-500 uppercase tracking-wider cursor-pointer hover:text-blue-600 whitespace-nowrap select-none transition-colors group"
+                    style={{ textAlign: col.align ?? "left" }}
                   >
-                    <div className="flex items-center gap-1.5">
+                    <span className="inline-flex items-center gap-1.5">
                       {col.label}
                       <span className={cn(
-                        "flex flex-col items-center opacity-0 group-hover:opacity-100 transition-opacity",
-                        sortKey === col.key && "opacity-100 text-blue-600"
+                        "flex flex-col items-center transition-opacity",
+                        sortKey === col.key ? "opacity-100 text-blue-600" : "opacity-0 group-hover:opacity-100"
                       )}>
                         <ChevronUp className={cn("w-3 h-3 -mb-1", sortKey === col.key && sortDir === "desc" && "text-slate-300")} />
                         <ChevronDown className={cn("w-3 h-3 -mt-1", sortKey === col.key && sortDir === "asc" && "text-slate-300")} />
                       </span>
-                    </div>
+                    </span>
                   </th>
                 ))}
                 {(onEdit || onDelete) && (
-                  <th className="px-5 py-3.5 text-[11px] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap w-[130px]">
+                  <th className="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap w-[130px]">
                     Actions
                   </th>
                 )}
@@ -106,22 +111,26 @@ export default function AdminDataTable<T extends Record<string, any>>({
             <tbody className="divide-y divide-slate-100">
               {sortedData.length === 0 ? (
                 <tr>
-                  <td colSpan={columns.length + 1} className="px-5 py-16 text-center">
-                    <div className="flex flex-col items-center">
-                      <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-3">
+                  <td colSpan={columns.length + 1} className="px-5">
+                    <EmptyState
+                      icon={EmptyIcon || (() => (
                         <svg className="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                           <path d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                         </svg>
-                      </div>
-                      <p className="text-[14px] text-slate-500 font-medium">{emptyMessage}</p>
-                    </div>
+                      ))}
+                      title={emptyMessage}
+                    />
                   </td>
                 </tr>
               ) : (
                 sortedData.map((item) => (
                   <tr key={String(item.id)} className="hover:bg-slate-50/80 transition-colors group/row">
                     {columns.map((col) => (
-                      <td key={col.key} className="px-5 py-3.5 text-[13px] text-slate-600">
+                      <td
+                        key={col.key}
+                        className="px-5 py-3.5 text-[13px] text-slate-600"
+                        style={{ textAlign: col.align ?? "left" }}
+                      >
                         {col.render ? col.render(item) : String(item[col.key] ?? "")}
                       </td>
                     ))}
@@ -172,13 +181,13 @@ export default function AdminDataTable<T extends Record<string, any>>({
             <div className="flex gap-3">
               <button
                 onClick={() => setDeleteId(null)}
-                className="flex-1 py-2.5 text-[14px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+                className="admin-btn admin-btn-secondary flex-1"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
-                className="flex-1 py-2.5 text-[14px] font-semibold text-white bg-red-600 hover:bg-red-700 rounded-xl transition-colors shadow-sm shadow-red-600/20"
+                className="admin-btn admin-btn-danger flex-1"
               >
                 Delete
               </button>

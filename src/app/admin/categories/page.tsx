@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import AdminDataTable, { Column } from "@/components/admin/AdminDataTable";
 import AdminFormModal, { FieldConfig } from "@/components/admin/AdminFormModal";
 import type { Category } from "@/data/categories";
+import { PageHeader } from "@/components/admin/AdminUI";
 import { Plus } from "lucide-react";
 
 export default function AdminCategories() {
@@ -12,7 +13,6 @@ export default function AdminCategories() {
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<Category | null>(null);
-
 
   useEffect(() => {
     fetch("/api/admin/data/categories")
@@ -53,16 +53,15 @@ export default function AdminCategories() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-[22px] font-bold text-slate-900 tracking-tight">Categories</h2>
-        <p className="text-[14px] text-slate-500 mt-1">Manage your product categories.</p>
-      </div>
-
-      <div className="mb-6">
-        <button onClick={handleAdd} className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-[14px] font-semibold rounded-xl hover:bg-slate-800 transition-colors shadow-sm shadow-slate-900/10">
-          <Plus className="w-4 h-4" /> Add Category
-        </button>
-      </div>
+      <PageHeader
+        title="Categories"
+        subtitle="Manage your product categories."
+        action={
+          <button onClick={handleAdd} className="admin-btn admin-btn-primary">
+            <Plus className="w-4 h-4" /> Add Category
+          </button>
+        }
+      />
 
       <AdminDataTable columns={columns} data={data} onEdit={handleEdit} onDelete={handleDelete} loading={loading} />
 

@@ -122,13 +122,13 @@ export default function LoginPage() {
                   onChange={(e) => setUsername(e.target.value)}
                   required
                   autoFocus
-                  className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-slate-50/50 hover:bg-white hover:border-slate-300 placeholder:text-slate-400"
+                  className="admin-input"
                   placeholder="Enter your username"
                 />
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-[13px] font-semibold text-slate-700 mb-2">
+                <label htmlFor="password" className="admin-label">
                   Password
                 </label>
                 <div className="relative">
@@ -138,7 +138,7 @@ export default function LoginPage() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    className="w-full px-4 py-2.5 pr-11 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-slate-50/50 hover:bg-white hover:border-slate-300 placeholder:text-slate-400"
+                    className="admin-input pr-11"
                     placeholder="Enter your password"
                   />
                   <button
@@ -167,7 +167,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2.5 bg-slate-900 text-white font-semibold text-[14px] rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-slate-900/10"
+                className="admin-btn-primary admin-btn admin-btn-lg w-full shadow-lg shadow-slate-900/10"
               >
                 {loading ? (
                   <>

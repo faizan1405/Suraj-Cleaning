@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   Truck,
   Award,
-  DollarSign,
+  CircleDollarSign,
   ShieldCheck,
   Headphones,
 } from "lucide-react";
@@ -12,7 +12,7 @@ import {
 const items = [
   { icon: Truck, label: "Fast & Safe Delivery" },
   { icon: Award, label: "Premium Quality" },
-  { icon: DollarSign, label: "Affordable Prices" },
+  { icon: CircleDollarSign, label: "Affordable Prices" },
   { icon: ShieldCheck, label: "Secure Packaging" },
   { icon: Headphones, label: "24/7 Customer Support" },
 ];

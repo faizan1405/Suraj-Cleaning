@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, X, ChevronLeft, ChevronRight } from "lucide-react";
 import type { Product } from "@/data/products";
+import { formatPrice } from "@/lib/currency";
 
 import { ProductImage } from "./ProductImage";
 
@@ -51,7 +52,7 @@ function ProductCard({
         </p>
         <div className="flex items-center justify-between mt-auto">
           <span className="text-[18px] font-bold text-[#2563eb]">
-            ₹{product.price}
+            {formatPrice(product.price)}
           </span>
           <button
             onClick={() => onView(product)}
@@ -167,7 +168,7 @@ function ProductModal({
 
             <div className="flex items-baseline gap-2 mb-5">
               <span className="text-[28px] font-bold text-[#2563eb]">
-                ₹{product.price}
+                {formatPrice(product.price)}
               </span>
               <span className="text-[13px] text-[#94a3b8]">
                 / {product.sizes[0]}
@@ -283,7 +284,7 @@ function ProductModal({
                   </div>
                   <div className="min-w-0">
                     <p className="text-[13px] font-bold text-[#0f172a] truncate">{rp.name}</p>
-                    <p className="text-[12px] text-[#2563eb] font-semibold">₹{rp.price}</p>
+                    <p className="text-[12px] text-[#2563eb] font-semibold">{formatPrice(rp.price)}</p>
                   </div>
                 </div>
               ))}

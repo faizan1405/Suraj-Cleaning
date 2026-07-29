@@ -94,7 +94,7 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
       <div className="grid grid-cols-[auto_1fr_100px_80px_120px_80px_36px] gap-2 items-center px-2">
         <div className="w-5" />
         <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Size / Name</span>
-        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide text-center">Price (₹)</span>
+        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide text-center">Price</span>
         <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide text-center">Stock</span>
         <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">SKU</span>
         <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Image URL</span>
@@ -114,7 +114,7 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
               value={row.name}
               onChange={(e) => updateRow(row.id, "name", e.target.value)}
               placeholder="e.g. 500 ml"
-              className="px-3 py-2 text-[13px] border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white placeholder:text-slate-400"
+              className="admin-input text-[13px]"
             />
             <input
               type="number"
@@ -123,7 +123,7 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
               placeholder="0"
               min="0"
               step="0.01"
-              className="px-3 py-2 text-[13px] border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white placeholder:text-slate-400 text-center"
+              className="admin-input text-[13px] text-center"
             />
             <input
               type="number"
@@ -132,21 +132,21 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
               placeholder="0"
               min="0"
               step="1"
-              className="px-3 py-2 text-[13px] border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white placeholder:text-slate-400 text-center"
+              className="admin-input text-[13px] text-center"
             />
             <input
               type="text"
               value={row.sku}
               onChange={(e) => updateRow(row.id, "sku", e.target.value)}
               placeholder="SKU-001"
-              className="px-3 py-2 text-[13px] border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white placeholder:text-slate-400"
+              className="admin-input text-[13px]"
             />
             <input
               type="text"
               value={row.image}
               onChange={(e) => updateRow(row.id, "image", e.target.value)}
               placeholder="/images/..."
-              className="px-3 py-2 text-[13px] border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white placeholder:text-slate-400 text-[11px]"
+              className="admin-input text-[11px]"
             />
             <button
               type="button"

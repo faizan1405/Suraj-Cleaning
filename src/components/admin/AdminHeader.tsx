@@ -7,7 +7,7 @@ export default function AdminHeader({ onToggleSidebar }: { onToggleSidebar: () =
   const [showNotifications, setShowNotifications] = useState(false);
 
   return (
-    <header className="h-16 bg-white/80 backdrop-blur-md border-b border-slate-200/80 flex items-center justify-between px-6 sticky top-0 z-30">
+    <header className="h-16 bg-white/90 backdrop-blur-md border-b border-slate-200/80 flex items-center justify-between px-6 sticky top-0 z-30">
       {/* Left: menu + title */}
       <div className="flex items-center gap-4">
         <button
@@ -23,7 +23,7 @@ export default function AdminHeader({ onToggleSidebar }: { onToggleSidebar: () =
             <h1 className="text-[16px] font-bold text-slate-800 tracking-tight">
               Swaraj Enterprises
             </h1>
-            <p className="text-[11px] font-medium text-slate-400 tracking-wide">
+            <p className="text-[11px] font-semibold text-slate-400 tracking-wide">
               ADMIN DASHBOARD
             </p>
           </div>
@@ -31,9 +31,9 @@ export default function AdminHeader({ onToggleSidebar }: { onToggleSidebar: () =
       </div>
 
       {/* Right: actions */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1.5">
         {/* Search (visual only) */}
-        <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-[13px] text-slate-400 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 hover:text-slate-600 transition-colors min-w-[200px]">
+        <button className="hidden md:flex items-center gap-2 px-3 py-1.5 text-[13px] text-slate-400 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 hover:text-slate-600 transition-colors min-w-[200px]">
           <Search className="w-3.5 h-3.5" />
           <span>Search...</span>
           <kbd className="ml-auto text-[10px] font-mono text-slate-400 bg-white px-1.5 py-0.5 rounded border border-slate-200">⌘K</kbd>
@@ -69,7 +69,7 @@ export default function AdminHeader({ onToggleSidebar }: { onToggleSidebar: () =
         <div className="w-px h-8 bg-slate-200 mx-1" />
 
         {/* User avatar */}
-        <div className="flex items-center gap-2.5 pl-2">
+        <div className="flex items-center gap-2.5 pl-1">
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-sm shadow-blue-500/20">
             <span className="text-[13px] font-bold text-white">A</span>
           </div>

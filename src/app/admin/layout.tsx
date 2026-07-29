@@ -50,10 +50,10 @@ export default function AdminLayout({
 
   if (checking) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--surface)] flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-slate-200 border-t-blue-600 rounded-full animate-spin" />
-          <p className="text-[13px] text-slate-500 font-medium">Loading...</p>
+          <p className="text-[14px] text-slate-500 font-medium">Loading...</p>
         </div>
       </div>
     );
@@ -62,7 +62,7 @@ export default function AdminLayout({
   if (!authenticated) return null;
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
+    <div className="min-h-screen bg-[var(--surface)] flex">
       <AdminSidebar
         isOpen={sidebarOpen}
         onClose={() => setSidebarOpen(false)}

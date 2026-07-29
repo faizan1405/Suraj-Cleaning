@@ -69,7 +69,7 @@ function ImageUploadField({ value, onChange }: ImageUploadFieldProps) {
       const data = await res.json();
       setPreview(null);
       onChange(data.url);
-    } catch (err) {
+    } catch {
       alert("Failed to upload image. Please try again.");
       setPreview(null);
     } finally {
@@ -83,7 +83,6 @@ function ImageUploadField({ value, onChange }: ImageUploadFieldProps) {
   return (
     <div className="space-y-3">
       <div className="flex items-start gap-4">
-        {/* Preview */}
         <div className="w-24 h-24 rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden shrink-0">
           {displayImage ? (
             <img src={displayImage} alt="Preview" className="w-full h-full object-cover" />
@@ -91,9 +90,8 @@ function ImageUploadField({ value, onChange }: ImageUploadFieldProps) {
             <Upload className="w-6 h-6 text-slate-300" />
           )}
         </div>
-        {/* Upload button */}
         <div className="flex-1">
-          <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-[13px] font-semibold rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60 shadow-sm">
+          <label className="admin-btn admin-btn-primary cursor-pointer inline-flex">
             {uploading ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -178,7 +176,7 @@ function MultiImageUploadField({ value = [], onChange, maxImages = 8 }: MultiIma
       }
 
       onChange([...value, ...uploadedUrls]);
-    } catch (err) {
+    } catch {
       alert("Failed to upload one or more images. Please try again.");
     } finally {
       setUploading(false);
@@ -192,7 +190,6 @@ function MultiImageUploadField({ value = [], onChange, maxImages = 8 }: MultiIma
 
   return (
     <div className="space-y-3">
-      {/* Image grid */}
       {value.length > 0 && (
         <div className="grid grid-cols-4 gap-3">
           {value.map((url, index) => (
@@ -200,7 +197,6 @@ function MultiImageUploadField({ value = [], onChange, maxImages = 8 }: MultiIma
               <div className="aspect-square rounded-xl border border-slate-200 bg-slate-50 overflow-hidden">
                 <img src={url} alt={`Gallery ${index + 1}`} className="w-full h-full object-cover" />
               </div>
-              {/* Remove button */}
               <button
                 type="button"
                 onClick={() => handleRemove(index)}
@@ -209,7 +205,6 @@ function MultiImageUploadField({ value = [], onChange, maxImages = 8 }: MultiIma
               >
                 <X className="w-3 h-3" />
               </button>
-              {/* Primary badge */}
               {index === 0 && (
                 <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 bg-slate-900 text-white text-[10px] font-bold rounded-md">
                   Primary
@@ -220,9 +215,8 @@ function MultiImageUploadField({ value = [], onChange, maxImages = 8 }: MultiIma
         </div>
       )}
 
-      {/* Upload button */}
       {value.length < maxImages && (
-        <label className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-[13px] font-semibold rounded-xl hover:bg-slate-800 active:scale-[0.98] transition-all cursor-pointer disabled:opacity-60 shadow-sm">
+        <label className="admin-btn admin-btn-primary cursor-pointer inline-flex">
           {uploading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -245,7 +239,6 @@ function MultiImageUploadField({ value = [], onChange, maxImages = 8 }: MultiIma
         </label>
       )}
 
-      {/* Count */}
       <p className="text-[11px] text-slate-400 font-medium">
         {value.length} / {maxImages} images uploaded
       </p>
@@ -269,8 +262,6 @@ export default function AdminFormModal({
       setFormData(initialData);
     }
   }, [isOpen, initialData]);
-
-  if (!isOpen) return null;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -298,19 +289,9 @@ export default function AdminFormModal({
 
     switch (field.type) {
       case "image-upload":
-        return (
-          <ImageUploadField
-            value={String(value)}
-            onChange={(url) => setField(field.name, url)}
-          />
-        );
+        return <ImageUploadField value={String(value)} onChange={(url) => setField(field.name, url)} />;
       case "multi-image-upload":
-        return (
-          <MultiImageUploadField
-            value={Array.isArray(value) ? value : []}
-            onChange={(urls) => setField(field.name, urls)}
-          />
-        );
+        return <MultiImageUploadField value={Array.isArray(value) ? value : []} onChange={(urls) => setField(field.name, urls)} />;
       case "textarea":
         return (
           <textarea
@@ -320,7 +301,7 @@ export default function AdminFormModal({
             required={field.required}
             rows={field.rows || 3}
             placeholder={field.placeholder}
-            className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all resize-none bg-white hover:border-slate-300"
+            className="admin-textarea"
           />
         );
       case "select":
@@ -329,12 +310,10 @@ export default function AdminFormModal({
             id={field.name}
             value={String(value)}
             onChange={(e) => setField(field.name, e.target.value)}
-            className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white hover:border-slate-300"
+            className="admin-select"
           >
             {field.options?.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
+              <option key={opt.value} value={opt.value}>{opt.label}</option>
             ))}
           </select>
         );
@@ -366,16 +345,18 @@ export default function AdminFormModal({
             onChange={(e) => setField(field.name, e.target.value)}
             required={field.required}
             placeholder={field.placeholder}
-            className="w-full px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all bg-white hover:border-slate-300 placeholder:text-slate-400"
+            className="admin-input"
           />
         );
     }
   };
 
+  if (!isOpen) return null;
+
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-slate-900/50 backdrop-blur-sm transition-opacity" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-slate-200/80">
+      <div className="admin-modal-backdrop" onClick={onClose} />
+      <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col border border-slate-200/80 admin-modal-content">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
           <div>
@@ -391,30 +372,33 @@ export default function AdminFormModal({
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-5">
-          {fields.map((field, idx) => (
-            <div key={field.name}>
-              <label htmlFor={field.name} className="block text-[13px] font-semibold text-slate-700 mb-2">
-                {field.label}
-                {field.required && <span className="text-red-500 ml-1">*</span>}
-              </label>
-              {renderField(field)}
-            </div>
-          ))}
+        {/* Form — actions are inside for proper submit */}
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+          <div className="p-6 space-y-5 overflow-y-auto flex-1">
+            {fields.map((field) => (
+              <div key={field.name}>
+                <label htmlFor={field.name} className="admin-label">
+                  {field.label}
+                  {field.required && <span className="text-red-500 ml-1">*</span>}
+                </label>
+                {renderField(field)}
+              </div>
+            ))}
+          </div>
 
-          <div className="flex gap-3 pt-3">
+          {/* Footer actions */}
+          <div className="admin-modal-footer">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2.5 text-[14px] font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+              className="admin-btn admin-btn-secondary"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 py-2.5 text-[14px] font-semibold text-white bg-slate-900 hover:bg-slate-800 rounded-xl transition-all disabled:opacity-60 flex items-center justify-center gap-2 shadow-sm shadow-slate-900/10"
+              className="admin-btn admin-btn-primary"
             >
               {loading ? (
                 <>

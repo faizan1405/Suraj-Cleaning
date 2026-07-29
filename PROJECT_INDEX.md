@@ -111,12 +111,12 @@
 ### Admin Components (`src/components/admin/`)
 | File | Used By | Description |
 |------|---------|-------------|
-| `AdminDataTable.tsx` | All admin list pages | Generic table for CRUD |
-| `AdminFormModal.tsx` | All admin CRUD pages | Generic create/edit modal |
-| `AdminConfirmDialog.tsx` | All admin CRUD pages | Delete confirmation dialog |
+| `AdminDataTable.tsx` | All admin list pages | Generic table for CRUD with sorting, actions, delete confirm |
+| `AdminFormModal.tsx` | All admin CRUD pages | Generic create/edit modal with image upload |
+| `AdminUI.tsx` | All admin pages | Shared UI primitives: PageHeader, StatCard, Badge, Section, EmptyState, TableWrapper, Skeleton, LoadingSpinner |
 | `AdminHeader.tsx` | Admin layout | Admin top bar |
 | `AdminSidebar.tsx` | Admin layout | Admin navigation sidebar |
-| `VariantEditor.tsx` | Admin products | Variant editor for products |
+| `VariantEditor.tsx` | Admin products | Variant editor for products with consistent input styling |
 
 ### Shared / Utility Components
 | File | Used By | Description |

@@ -1,5 +1,6 @@
 import { getOrderById } from "@/data/orders";
 import { getSession } from "@/lib/auth";
+import { formatPrice } from "@/lib/currency";
 
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   confirmed: { bg: "bg-green-100", text: "text-green-700" },
@@ -94,9 +95,9 @@ export default async function OrderDetailPage({
                 <div className="flex-1">
                   <p className="text-[14px] font-bold text-[#0f172a]">{item.name}</p>
                   {item.size && <p className="text-[12px] text-[#64748b]">Size: {item.size}</p>}
-                  <p className="text-[12px] text-[#64748b]">Qty: {item.quantity} x &yen;{item.price}</p>
+                  <p className="text-[12px] text-[#64748b]">Qty: {item.quantity} x {formatPrice(item.price)}</p>
                 </div>
-                <p className="text-[14px] font-bold text-[#0f172a]">&yen;{item.subtotal.toFixed(2)}</p>
+                <p className="text-[14px] font-bold text-[#0f172a]">{formatPrice(item.subtotal)}</p>
               </div>
             ))}
           </div>
@@ -125,10 +126,10 @@ export default async function OrderDetailPage({
             <div className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-200/80">
               <h3 className="text-[14px] font-bold text-[#0f172a] mb-3">Summary</h3>
               <div className="space-y-1.5">
-                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Subtotal</span><span>&yen;{order.subtotal.toFixed(2)}</span></div>
-                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Delivery</span><span>{order.deliveryCharge === 0 ? "FREE" : `&yen;${order.deliveryCharge}`}</span></div>
-                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Tax</span><span>&yen;{order.taxAmount.toFixed(2)}</span></div>
-                <div className="flex justify-between pt-2 border-t border-slate-200 font-bold text-[15px]"><span>Total</span><span className="text-[#2563eb]">&yen;{order.total.toFixed(2)}</span></div>
+                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Subtotal</span><span>{formatPrice(order.subtotal)}</span></div>
+                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Delivery</span><span>{order.deliveryCharge === 0 ? "FREE" : formatPrice(order.deliveryCharge)}</span></div>
+                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Tax</span><span>{formatPrice(order.taxAmount)}</span></div>
+                <div className="flex justify-between pt-2 border-t border-slate-200 font-bold text-[15px]"><span>Total</span><span className="text-[#2563eb]">{formatPrice(order.total)}</span></div>
               </div>
             </div>
           </div>

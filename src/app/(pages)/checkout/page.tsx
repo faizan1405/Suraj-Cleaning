@@ -10,6 +10,7 @@ import { checkoutSchema, INDIAN_STATES } from "@/lib/order-schema";
 import type { CheckoutFormData } from "@/lib/order-schema";
 import { getRazorpayKeyId, isRazorpayConfigured } from "@/lib/razorpay";
 import { shipping, payments, business, contact } from "@/config/site";
+import { formatPrice } from "@/lib/currency";
 
 declare global {
   interface Window {
@@ -348,15 +349,15 @@ export default function CheckoutPage() {
                         <p className="text-[12px] font-medium text-[#0f172a] truncate">{item.name}</p>
                         <p className="text-[11px] text-[#64748b]">Qty: {item.quantity}</p>
                       </div>
-                      <p className="text-[12px] font-semibold shrink-0">₹{(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="text-[12px] font-semibold shrink-0">{formatPrice(item.price * item.quantity)}</p>
                     </div>
                   ))}
                 </div>
                 <div className="space-y-2 mb-4 border-t border-slate-200 pt-3">
-                  <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Subtotal</span><span className="font-medium">₹{subtotal.toFixed(2)}</span></div>
-                  <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Delivery</span><span className="font-medium">{deliveryFee === 0 ? "FREE" : `₹${deliveryFee}`}</span></div>
-                  <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Tax</span><span className="font-medium">₹{taxAmount.toFixed(2)}</span></div>
-                  <div className="flex justify-between pt-2 border-t border-slate-200"><span className="text-[15px] font-bold">Total</span><span className="text-[15px] font-bold text-[#2563eb]">₹{grandTotal.toFixed(2)}</span></div>
+                  <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Subtotal</span><span className="font-medium">{formatPrice(subtotal)}</span></div>
+                  <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Delivery</span><span className="font-medium">{deliveryFee === 0 ? "FREE" : formatPrice(deliveryFee)}</span></div>
+                  <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Tax</span><span className="font-medium">{formatPrice(taxAmount)}</span></div>
+                  <div className="flex justify-between pt-2 border-t border-slate-200"><span className="text-[15px] font-bold">Total</span><span className="text-[15px] font-bold text-[#2563eb]">{formatPrice(grandTotal)}</span></div>
                 </div>
                 <button
                   type="submit"
@@ -370,7 +371,7 @@ export default function CheckoutPage() {
                   ) : !razorpayReady ? (
                     "Payment Not Configured"
                   ) : (
-                    <>Pay ₹{grandTotal.toFixed(2)} <ShieldCheck className="w-4 h-4" /></>
+                    <>Pay {formatPrice(grandTotal)} <ShieldCheck className="w-4 h-4" /></>
                   )}
                 </button>
                 <p className="text-[11px] text-slate-400 text-center mt-3">

@@ -63,7 +63,7 @@ export default function AdminSidebar({ isOpen, onClose, onLogout }: AdminSidebar
       <aside
         className={cn(
           "fixed top-0 left-0 z-50 h-screen w-[260px] transition-transform duration-300 ease-in-out",
-          "bg-gradient-to-b from-slate-900 to-slate-800",
+          "bg-gradient-to-b from-slate-900 to-slate-800 admin-drawer",
           "lg:translate-x-0 lg:static lg:z-auto",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}

@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart, Check, ChevronDown } from "lucide-react";
 import type { Product } from "@/data/products";
+import { formatPrice } from "@/lib/currency";
 import { useCart } from "@/contexts/CartContext";
 
 export function ProductCard({
@@ -28,8 +29,8 @@ export function ProductCard({
   const maxVariantPrice = hasVariants ? Math.max(...variantPrices) : null;
   const displayPrice = hasVariants ? minVariantPrice! : product.price;
   const priceLabel = hasVariants && variantPrices.length > 1
-    ? `₹${displayPrice} – ₹${maxVariantPrice}`
-    : `₹${displayPrice}`;
+    ? `${formatPrice(displayPrice)} – ${formatPrice(maxVariantPrice!)}`
+    : formatPrice(displayPrice);
   const inStock = Number(product.stock ?? 0) > 0;
   const productImage = product.image && product.image.trim() ? product.image : "/images/product-placeholder.png";
 
@@ -119,7 +120,7 @@ export function ProductCard({
                 >
                   {product.variants!.map((v) => (
                     <option key={v.name} value={v.name}>
-                      {v.name} — ₹{v.price} {v.stock === 0 ? "(Sold Out)" : ""}
+                      {v.name} — {formatPrice(v.price)} {v.stock === 0 ? "(Sold Out)" : ""}
                     </option>
                   ))}
                 </select>
@@ -147,7 +148,7 @@ export function ProductCard({
               aria-label="Add to cart"
             >
               {added ? <Check className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />}
-              {added ? "Added" : isInStock ? `Add — ₹${currentPrice}` : "Sold Out"}
+              {added ? "Added" : isInStock ? `Add — ${formatPrice(currentPrice)}` : "Sold Out"}
             </button>
           </div>
         </div>

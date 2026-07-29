@@ -1,11 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { formatPrice } from "@/lib/currency";
 
 import AdminDataTable, { Column } from "@/components/admin/AdminDataTable";
 import AdminFormModal, { FieldConfig } from "@/components/admin/AdminFormModal";
-import VariantEditor, { type VariantRow } from "@/components/admin/VariantEditor";
+import VariantEditor from "@/components/admin/VariantEditor";
 import type { Product } from "@/data/products";
+import { PageHeader } from "@/components/admin/AdminUI";
 import { Plus } from "lucide-react";
 
 export default function AdminProducts() {
@@ -89,7 +91,7 @@ export default function AdminProducts() {
   const columns: Column<Product>[] = [
     { key: "name", label: "Name" },
     { key: "category", label: "Category" },
-    { key: "price", label: "Price", render: (item) => `₹${item.price}` },
+    { key: "price", label: "Price", render: (item) => formatPrice(item.price) },
     { key: "featured", label: "Featured", render: (item) => item.featured ? "Yes" : "No" },
     { key: "bestSeller", label: "Best Seller", render: (item) => item.bestSeller ? "Yes" : "No" },
     { key: "active", label: "Active", render: (item) => item.active ? "Yes" : "No" },
@@ -102,7 +104,7 @@ export default function AdminProducts() {
     { name: "category", label: "Category", type: "select", required: true, options: categories.map((c) => ({ value: c.name, label: c.name })) },
     { name: "shortDescription", label: "Short Description", type: "text", required: true, placeholder: "Brief tagline" },
     { name: "description", label: "Full Description", type: "textarea", rows: 3, placeholder: "Full product description" },
-    { name: "price", label: "Base Price (₹)", type: "number", required: true, placeholder: "99" },
+    { name: "price", label: "Base Price", type: "number", required: true, placeholder: "99" },
     { name: "stock", label: "Base Stock Quantity", type: "number", placeholder: "0 = out of stock" },
     { name: "badge", label: "Badge / Label (e.g. Combo, Best Value)", type: "text", placeholder: "Combo Offer" },
     {
@@ -131,19 +133,15 @@ export default function AdminProducts() {
 
   return (
     <div>
-      <div className="mb-6">
-        <h2 className="text-[22px] font-bold text-slate-900 tracking-tight">Products</h2>
-        <p className="text-[14px] text-slate-500 mt-1">Manage your product catalog.</p>
-      </div>
-
-      <div className="mb-6">
-        <button
-          onClick={handleAdd}
-          className="inline-flex items-center gap-2 px-4 py-2.5 bg-slate-900 text-white text-[14px] font-semibold rounded-xl hover:bg-slate-800 transition-colors shadow-sm shadow-slate-900/10"
-        >
-          <Plus className="w-4 h-4" /> Add Product
-        </button>
-      </div>
+      <PageHeader
+        title="Products"
+        subtitle="Manage your product catalog."
+        action={
+          <button onClick={handleAdd} className="admin-btn admin-btn-primary">
+            <Plus className="w-4 h-4" /> Add Product
+          </button>
+        }
+      />
 
       <AdminDataTable
         columns={columns}

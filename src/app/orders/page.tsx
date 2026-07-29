@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/auth";
 import { getOrdersByEmail } from "@/data/orders";
 import type { Order } from "@/data/orders";
+import { formatPrice } from "@/lib/currency";
 
 export const dynamic = "force-dynamic";
 
@@ -82,7 +83,7 @@ export default async function OrdersPage({
                 <div>
                   <p className="text-[13px] font-bold text-[#0f172a]">{order.id}</p>
                   <p className="text-[12px] text-[#64748b]">{new Date(order.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p>
-                  <p className="text-[12px] text-[#64748b]">{order.items.reduce((s, i) => s + i.quantity, 0)} items · ₹{order.total.toFixed(2)}</p>
+                  <p className="text-[12px] text-[#64748b]">{order.items.reduce((s, i) => s + i.quantity, 0)} items · {formatPrice(order.total)}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${

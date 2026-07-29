@@ -7,6 +7,7 @@ import { ArrowRight, ChevronLeft, ChevronRight, ShoppingCart, Share2, ChevronDow
 import type { Product } from "@/data/products";
 import { ProductImage } from "./ProductImage";
 import { useCart } from "@/contexts/CartContext";
+import { formatPrice } from "@/lib/currency";
 
 export default function ProductDetailView({
   product,
@@ -172,7 +173,7 @@ export default function ProductDetailView({
 
               <div className="flex items-baseline gap-3 mb-6">
                 <span className="text-[36px] font-bold text-[#2563eb]">
-                  ₹{currentPrice}
+                  {formatPrice(currentPrice)}
                 </span>
                 {!hasVariants && (
                   <span className="text-[14px] text-[#94a3b8]">
@@ -199,7 +200,7 @@ export default function ProductDetailView({
                     >
                       {product.variants!.map((v) => (
                         <option key={v.name} value={v.name}>
-                          {v.name} — ₹{v.price} {v.stock === 0 ? "(Sold Out)" : `(${v.stock} in stock)`}
+                          {v.name} — {formatPrice(v.price)} {v.stock === 0 ? "(Sold Out)" : `(${v.stock} in stock)`}
                         </option>
                       ))}
                     </select>
@@ -253,7 +254,7 @@ export default function ProductDetailView({
                   }`}
                 >
                   <ShoppingCart className="w-4 h-4" />
-                  {added ? "Added to Cart!" : isInStock ? `Add to Cart — ₹${(currentPrice * quantity).toFixed(2)}` : "Out of Stock"}
+                  {added ? "Added to Cart!" : isInStock ? `Add to Cart — ${formatPrice(currentPrice * quantity)}` : "Out of Stock"}
                 </button>
                 <Link
                   href="/cart"
@@ -360,7 +361,7 @@ export default function ProductDetailView({
                         {rp.shortDescription}
                       </p>
                       <span className="text-[18px] font-bold text-[#2563eb]">
-                        ₹{rp.price}
+                        {formatPrice(rp.price)}
                       </span>
                     </div>
                   </Link>
