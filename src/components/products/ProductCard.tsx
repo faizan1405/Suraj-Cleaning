@@ -18,12 +18,20 @@ export function ProductCard({
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<string>("");
-  const sizeLabel = product.sizes?.[0] ?? "Standard";
+  // Display price: show min price ("From ₹XXX") when variants exist,
+  // otherwise show the product's base price
+  const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
+  const variantPrices = hasVariants ? product.variants!.map((v) => v.price) : [];
+  const minVariantPrice = hasVariants ? Math.min(...variantPrices) : null;
+  const maxVariantPrice = hasVariants ? Math.max(...variantPrices) : null;
+  const displayPrice = hasVariants ? minVariantPrice! : product.price;
+  const priceLabel = hasVariants && variantPrices.length > 1
+    ? `₹${displayPrice} – ₹${maxVariantPrice}`
+    : `₹${displayPrice}`;
   const benefits = Array.isArray(product.benefits) ? product.benefits : [];
   const directions = Array.isArray(product.directions) ? product.directions : [];
   const productImage = product.image && product.image.trim() ? product.image : "/images/product-placeholder.png";
   const inStock = Number(product.stock ?? 0) > 0;
-  const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
 
   // Auto-select first variant
   if (hasVariants && !selectedVariant) {
@@ -116,9 +124,11 @@ export function ProductCard({
           )}
 
           <div className="flex items-center justify-between mt-auto gap-2">
-            <span className="text-[18px] font-bold text-[#2563eb]">
-              ₹{currentPrice}
-            </span>
+            <div className="flex flex-col">
+              <span className="text-[18px] font-bold text-[#2563eb]">
+                {priceLabel}
+              </span>
+            </div>
             <button
               onClick={handleAdd}
               disabled={!isInStock}
@@ -132,7 +142,7 @@ export function ProductCard({
               aria-label="Add to cart"
             >
               {added ? <Check className="w-3.5 h-3.5" /> : <ShoppingCart className="w-3.5 h-3.5" />}
-              {added ? "Added" : isInStock ? "Add" : "Sold Out"}
+              {added ? "Added" : isInStock ? `Add — ₹${currentPrice}` : "Sold Out"}
             </button>
           </div>
         </div>

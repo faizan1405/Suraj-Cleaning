@@ -10,7 +10,7 @@ import { useCart } from "@/contexts/CartContext";
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalItems, totalPrice } = useCart();
   const router = useRouter();
-  const [stockMap, setStockMap] = useState<Record<string, number>>({});
+  const [stockMap, setStockMap] = useState<Record<string, { productStock: number; variants: Array<{ name: string; stock: number }> }>>({});
 
   useEffect(() => {
     let cancelled = false;
@@ -20,9 +20,12 @@ export default function CartPage() {
         if (!res.ok) throw new Error();
         const products = await res.json();
         if (!cancelled) {
-          const map: Record<string, number> = {};
+          const map: Record<string, { productStock: number; variants: Array<{ name: string; stock: number }> }> = {};
           for (const p of products) {
-            map[p.id] = Number(p.stock ?? 0);
+            map[p.id] = {
+              productStock: Number(p.stock ?? 0),
+              variants: Array.isArray(p.variants) ? p.variants.map((v: any) => ({ name: v.name, stock: Number(v.stock ?? 0) })) : [],
+            };
           }
           setStockMap(map);
         }
@@ -69,7 +72,11 @@ export default function CartPage() {
           <div className="lg:col-span-2 space-y-4">
             <AnimatePresence>
               {items.map((item) => {
-                const available = stockMap[item.productId] ?? -1;
+                const stockInfo = stockMap[item.productId] ?? { productStock: -1, variants: [] };
+                const variantStock = item.size
+                  ? stockInfo.variants.find((v) => v.name === item.size)?.stock
+                  : undefined;
+                const available = variantStock ?? stockInfo.productStock;
                 const isOutOfStock = available === 0;
                 const isOverStocked = available > 0 && item.quantity > available;
 

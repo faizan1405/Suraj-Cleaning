@@ -13,6 +13,7 @@ export interface FieldConfig {
   options?: { value: string; label: string }[];
   rows?: number;
   placeholder?: string;
+  render?: (value: unknown, onChange: (val: unknown) => void, field: FieldConfig) => React.ReactNode;
 }
 
 interface AdminFormModalProps {
@@ -290,6 +291,10 @@ export default function AdminFormModal({
 
   const renderField = (field: FieldConfig) => {
     const value = formData[field.name] ?? (field.type === "checkbox" ? false : "");
+
+    if (field.render) {
+      return field.render(value, (val) => setField(field.name, val), field);
+    }
 
     switch (field.type) {
       case "image-upload":

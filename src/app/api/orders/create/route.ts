@@ -53,19 +53,38 @@ export async function POST(request: Request) {
         unavailable.push(ci.productId);
         continue;
       }
-      const stock = Number(product.stock ?? 0);
-      if (stock < ci.quantity || ci.quantity < 1) {
-        stockIssues.push({ productId: ci.productId, name: product.name, available: stock, requested: ci.quantity });
+
+      // Determine price and stock from variant if size is specified
+      let itemPrice: number;
+      let itemStock: number;
+
+      if (ci.size && Array.isArray(product.variants) && product.variants.length > 0) {
+        const variant = product.variants.find((v: any) => v.name === ci.size);
+        if (variant) {
+          itemPrice = typeof variant.price === "number" ? variant.price : Number(variant.price) || product.price;
+          itemStock = typeof variant.stock === "number" ? variant.stock : Number(variant.stock) || 0;
+        } else {
+          // Variant name not found — fall back to product-level
+          itemPrice = product.price;
+          itemStock = Number(product.stock ?? 0);
+        }
+      } else {
+        itemPrice = product.price;
+        itemStock = Number(product.stock ?? 0);
+      }
+
+      if (itemStock < ci.quantity || ci.quantity < 1) {
+        stockIssues.push({ productId: ci.productId, name: product.name, available: itemStock, requested: ci.quantity });
         continue;
       }
       items.push({
         productId: ci.productId,
         name: product.name,
-        price: product.price,
+        price: itemPrice,
         quantity: ci.quantity,
         image: product.image,
         size: ci.size,
-        subtotal: product.price * ci.quantity,
+        subtotal: itemPrice * ci.quantity,
       });
     }
 
