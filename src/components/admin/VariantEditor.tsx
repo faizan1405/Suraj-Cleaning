@@ -90,19 +90,22 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
 
   return (
     <div className="space-y-3">
-      {/* Header row */}
-      <div className="grid grid-cols-[auto_1fr_100px_80px_120px_80px_36px] gap-2 items-center px-2">
-        <div className="w-5" />
-        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Size / Name</span>
-        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide text-center">Price</span>
-        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide text-center">Stock</span>
-        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">SKU</span>
-        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Image URL</span>
-        <div className="w-9" />
-      </div>
+      {/* Header + Variant rows in scrollable wrapper */}
+      <div className="overflow-x-auto -mx-1">
+        <div className="min-w-[640px]">
+          {/* Header row */}
+          <div className="grid grid-cols-[auto_1fr_100px_80px_120px_80px_36px] gap-2 items-center px-2">
+            <div className="w-5" />
+            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Size / Name</span>
+            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide text-center">Price</span>
+            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide text-center">Stock</span>
+            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">SKU</span>
+            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Image URL</span>
+            <div className="w-9" />
+          </div>
 
-      {/* Variant rows */}
-      <div className="space-y-2">
+          {/* Variant rows */}
+          <div className="space-y-2 mt-2">
         {rows.map((row) => (
           <div
             key={row.id}
@@ -158,6 +161,8 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
             </button>
           </div>
         ))}
+          </div>
+        </div>
       </div>
 
       {/* Add Variant button */}

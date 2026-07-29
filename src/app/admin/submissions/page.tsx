@@ -48,13 +48,9 @@ export default function AdminSubmissions() {
   };
 
   const handleDelete = async (id: string) => {
-    const typeMap: Record<string, string> = {
-      contact: "submissions/contact.json",
-      distributor: "submissions/distributor.json",
-      newsletter: "submissions/newsletter.json",
-    };
+    const prefix = id.startsWith("dist_") ? "distributor" : id.startsWith("news_") ? "newsletter" : "contact";
 
-    const res = await fetch(`/api/admin/data/${Object.keys(typeMap).find(k => id.startsWith(k === "distributor" ? "dist" : k === "newsletter" ? "news" : "contact")) || "contact"}`, {
+    const res = await fetch(`/api/admin/data/${prefix}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),

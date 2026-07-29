@@ -81,7 +81,7 @@ export default function AdminDataTable<T extends Record<string, any>>({
         <div className="admin-table-wrap">
           <table className="w-full text-left admin-table">
             <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/50">
+              <tr className="border-b border-slate-100 bg-slate-50/50 group/sort">
                 {columns.map((col) => (
                   <th
                     key={col.key}
@@ -93,7 +93,7 @@ export default function AdminDataTable<T extends Record<string, any>>({
                       {col.label}
                       <span className={cn(
                         "flex flex-col items-center transition-opacity",
-                        sortKey === col.key ? "opacity-100 text-blue-600" : "opacity-0 group-hover:opacity-100"
+                        sortKey === col.key ? "opacity-100 text-blue-600" : "opacity-0 group-hover/sort:opacity-100"
                       )}>
                         <ChevronUp className={cn("w-3 h-3 -mb-1", sortKey === col.key && sortDir === "desc" && "text-slate-300")} />
                         <ChevronDown className={cn("w-3 h-3 -mt-1", sortKey === col.key && sortDir === "asc" && "text-slate-300")} />

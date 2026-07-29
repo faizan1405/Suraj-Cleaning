@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Package, FolderTree, MessageSquare, Settings, Inbox, Users } from "lucide-react";
-import { PageHeader, StatCard } from "@/components/admin/AdminUI";
+import { PageHeader, StatCard, LoadingSpinner } from "@/components/admin/AdminUI";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({
@@ -67,16 +67,8 @@ export default function AdminDashboard() {
       />
 
       {loading ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-            <div key={i} className="ad-card p-5 animate-pulse">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-10 h-10 rounded-xl bg-slate-100" />
-                <div className="h-4 bg-slate-100 rounded w-1/2" />
-              </div>
-              <div className="h-8 bg-slate-100 rounded w-1/3" />
-            </div>
-          ))}
+        <div className="ad-card p-8">
+          <LoadingSpinner text="Loading dashboard data..." />
         </div>
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
