@@ -1,13 +1,21 @@
+import { getSession } from "@/lib/auth";
 import { getOrdersByEmail } from "@/data/orders";
 import type { Order } from "@/data/orders";
+
+export const dynamic = "force-dynamic";
 
 export default async function OrdersPage({
   searchParams,
 }: {
   searchParams: Promise<{ email?: string }>;
 }) {
+  const session = await getSession();
   const params = await searchParams;
-  const email = params.email?.trim() ?? "";
+
+  // Use email from session if logged in, otherwise from query params
+  const queryEmail = params.email?.trim() ?? "";
+  const email = session?.email || queryEmail;
+  const isLoggedIn = Boolean(session);
 
   let orders: Order[] = [];
   if (email) {
@@ -34,25 +42,32 @@ export default async function OrdersPage({
           </a>
         </div>
         <h1 className="text-[28px] md:text-[34px] font-bold text-[#0f172a] mb-2">My Orders</h1>
-        <p className="text-[14px] text-[#64748b] mb-6">Enter your email address to find your orders.</p>
+        <p className="text-[14px] text-[#64748b] mb-6">
+          {isLoggedIn ? "Here are all your orders." : "Enter your email address to find your orders."}
+        </p>
 
-        <form action={`/orders?email=`} method="GET" className="flex gap-2 mb-8">
-          <input
-            type="email"
-            name="email"
-            defaultValue={email}
-            required
-            placeholder="your@email.com"
-            className="flex-1 px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb] transition-all"
-          />
-          <button type="submit" className="px-5 py-2.5 bg-[#2563eb] text-white font-semibold text-[14px] rounded-xl hover:bg-[#1d4ed8] transition-colors">
-            Search
-          </button>
-        </form>
+        {!isLoggedIn && (
+          <form action={`/orders?email=`} method="GET" className="flex gap-2 mb-8">
+            <input
+              type="email"
+              name="email"
+              defaultValue={queryEmail}
+              required
+              placeholder="your@email.com"
+              className="flex-1 px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb] transition-all"
+            />
+            <button type="submit" className="px-5 py-2.5 bg-[#2563eb] text-white font-semibold text-[14px] rounded-xl hover:bg-[#1d4ed8] transition-colors">
+              Search
+            </button>
+          </form>
+        )}
 
         {email && orders.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-[14px] text-[#64748b]">No orders found for this email.</p>
+            <p className="text-[14px] text-[#64748b]">No orders found{isLoggedIn ? " yet." : " for this email."}</p>
+            {!isLoggedIn && (
+              <a href="/signin" className="inline-block mt-3 text-[13px] text-[#2563eb] font-medium hover:underline">Sign in to see your orders</a>
+            )}
           </div>
         )}
 
@@ -61,7 +76,7 @@ export default async function OrdersPage({
             {orders.map((order) => (
               <a
                 key={order.id}
-                href={`/orders/${order.id}?email=${encodeURIComponent(order.customer.email)}`}
+                href={`/orders/${order.id}`}
                 className="flex items-center justify-between p-4 bg-[#f8fafc] rounded-2xl border border-slate-200/80 hover:border-[#2563eb]/30 hover:shadow-md transition-all group"
               >
                 <div>

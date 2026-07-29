@@ -4,13 +4,13 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, MapPin, Phone, Mail, Clock } from "lucide-react";
 import type { CompanyInfo } from "@/data/company";
-import defaultCompany from "@/data/company.json";
+import { business, contact } from "@/config/site";
 
 function MapEmbed({ address }: { address: string }) {
   const [loaded, setLoaded] = useState(false);
   const [timeoutReached, setTimeoutReached] = useState(false);
 
-  const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent("Swaraj Enterprises Narikombu")}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+  const mapSrc = `${contact.mapSrc}`;
 
   // Safety timeout: force-show the map after 5 seconds even if onLoad hasn't fired
   useEffect(() => {
@@ -80,8 +80,22 @@ export default function ContactSection() {
     fetch("/api/admin/data/company", { cache: "no-store" })
       .then((res) => res.ok ? res.json() : null)
       .then((data) => {
-        if (data) setCompany({ ...defaultCompany, ...data, social: { ...defaultCompany.social, ...data.social } });
-      });
+        if (data) {
+          setCompany({
+            description: business.description,
+            address: contact.address,
+            phone: contact.phone,
+            phoneRaw: contact.phoneRaw,
+            phone2: contact.phone2,
+            phone2Raw: contact.phone2Raw,
+            email: contact.email,
+            hours: contact.hours,
+            ...data,
+            social: { whatsapp: `https://wa.me/${contact.phoneRaw}`, ...data.social },
+          } as CompanyInfo);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -172,7 +186,7 @@ export default function ContactSection() {
             <div className="space-y-4">
               <motion.a
                 whileHover={{ x: 4 }}
-                href="https://maps.google.com/?q=Swaraj+Enterprises+Narikombu"
+                href={contact.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-start gap-3 group"

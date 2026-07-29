@@ -1,8 +1,9 @@
 import { Metadata } from "next";
+import { contact, business } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | Swaraj Enterprises",
-  description: "Privacy Policy for Swaraj Enterprises. Learn how we collect, use, and protect your personal information.",
+  title: `Privacy Policy | ${business.name}`,
+  description: `Privacy Policy for ${business.name}. Learn how we collect, use, and protect your personal information.`,
 };
 
 export default function PrivacyPage() {
@@ -70,8 +71,8 @@ export default function PrivacyPage() {
             <h2 className="text-[18px] font-bold text-[#0f172a] mb-3">8. Your Rights</h2>
             <p>
               You have the right to access, correct, or delete your personal information stored with us. To exercise these rights, please contact us at{" "}
-              <a href="mailto:swarajenterprises.co@gmail.com" className="text-[#2563eb] hover:underline">
-                swarajenterprises.co@gmail.com
+              <a href={`mailto:${contact.email}`} className="text-[#2563eb] hover:underline">
+                {contact.email}
               </a>
               . You can also sign out of your account at any time through the profile page.
             </p>
@@ -95,12 +96,12 @@ export default function PrivacyPage() {
             <h2 className="text-[18px] font-bold text-[#0f172a] mb-3">11. Contact Us</h2>
             <p>
               If you have any questions or concerns about this Privacy Policy, please contact us at{" "}
-              <a href="mailto:swarajenterprises.co@gmail.com" className="text-[#2563eb] hover:underline">
-                swarajenterprises.co@gmail.com
+              <a href={`mailto:${contact.email}`} className="text-[#2563eb] hover:underline">
+                {contact.email}
               </a>
               {" "}or call us at{" "}
-              <a href="tel:+919844734939" className="text-[#2563eb] hover:underline">
-                +91 98447 34939
+              <a href={`tel:+${contact.phoneRaw}`} className="text-[#2563eb] hover:underline">
+                {contact.phone}
               </a>
               .
             </p>

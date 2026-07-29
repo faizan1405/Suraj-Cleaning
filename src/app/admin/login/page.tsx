@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { site, business } from "@/config/site";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -77,7 +78,7 @@ export default function LoginPage() {
         {/* Bottom */}
         <div className="relative z-10">
           <p className="text-[11px] text-slate-500">
-            &copy; 2026 Swaraj Enterprises. All rights reserved.
+            &copy; {new Date().getFullYear()} {business.name}. All rights reserved.
           </p>
         </div>
       </div>

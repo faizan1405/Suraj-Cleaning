@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Send, MapPin, Phone, Mail, Clock } from "lucide-react";
 import type { CompanyInfo } from "@/data/company";
+import { contact } from "@/config/site";
 
 function MapEmbed({ address }: { address: string }) {
   const [loaded, setLoaded] = useState(false);
   const [timeoutReached, setTimeoutReached] = useState(false);
 
-  const mapSrc = `https://maps.google.com/maps?q=${encodeURIComponent("Swaraj Enterprises Narikombu")}&t=&z=14&ie=UTF8&iwloc=&output=embed`;
+  const mapSrc = `${contact.mapSrc}`;
 
   // Safety timeout: force-show the map after 5 seconds even if onLoad hasn't fired
   useEffect(() => {
@@ -177,7 +178,7 @@ export default function ContactView({ company }: { company: CompanyInfo }) {
                     >
                       {word}
                     </motion.span>
-                    {i < arr.length - 1 ? " " : ""}
+                    {i < arr.length - 1 ? " " : ""}
                   </span>
                 ))}
               </h2>
@@ -193,7 +194,7 @@ export default function ContactView({ company }: { company: CompanyInfo }) {
                     icon: MapPin,
                     title: "Our Address",
                     text: company.address,
-                    href: `https://maps.google.com/?q=Swaraj+Enterprises+Narikombu`,
+                    href: contact.mapsUrl,
                     external: true,
                   },
                   {

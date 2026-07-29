@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Minus, Plus, Trash2, ShoppingBag, ArrowRight, ArrowLeft } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
+import { shipping, payments } from "@/config/site";
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, totalItems, totalPrice } = useCart();
@@ -35,8 +36,8 @@ export default function CartPage() {
   }, []);
 
   const subtotal = items.reduce((s, i) => s + i.price * i.quantity, 0);
-  const deliveryFee = subtotal >= 499 ? 0 : 49;
-  const taxRate = 0;
+  const deliveryFee = subtotal >= shipping.freeDeliveryThreshold ? 0 : shipping.deliveryFee;
+  const taxRate = payments.taxPercent;
   const taxAmount = Math.round(subtotal * taxRate / 100);
   const grandTotal = subtotal + deliveryFee + taxAmount;
 

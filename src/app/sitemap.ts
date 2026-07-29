@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
+import { site } from "@/config/site";
 
-const base = "https://www.swarajenterprises.co";
+const base = site.domain;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

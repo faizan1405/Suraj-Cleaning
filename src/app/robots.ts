@@ -1,5 +1,7 @@
+import { site } from "@/config/site";
+
 export default function robots() {
-  const base = "https://www.swarajenterprises.co";
+  const base = site.domain;
 
   return {
     rules: [

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, User } from "lucide-react";
 import type { NavigationItem } from "@/data/navigation";
 import { cn } from "@/lib/utils";
+import { business, navConfig, products, contact, site } from "@/config/site";
 import CartIcon from "@/components/CartIcon";
 
 export default function Header() {
@@ -44,13 +45,9 @@ export default function Header() {
 
   const closeMenu = useCallback(() => setIsMobileOpen(false), []);
 
-  const displayNav = navigation.length > 0 ? navigation : [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "/about" },
-    { label: "Products", href: "/products" },
-    { label: "Distributor", href: "/distributor" },
-    { label: "Contact Us", href: "/contact" },
-  ];
+  const displayNav = navigation.length > 0 ? navigation : navConfig.fallbackItems;
+
+  const logoAlt = business.brandName;
 
   return (
     <>
@@ -78,7 +75,7 @@ export default function Header() {
               >
                 <img
                   src="/images/Logo.png"
-                  alt="Swaraj Enterprises"
+                  alt={logoAlt}
                   className="h-[72px] md:h-[80px] w-auto object-contain"
                 />
               </motion.a>

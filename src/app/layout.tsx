@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins, Inter } from "next/font/google";
 import { CartProvider } from "@/contexts/CartContext";
+import { business, contact, site } from "@/config/site";
 import "./globals.css";
 import PublicLayout from "@/components/PublicLayout";
 import GlobalErrorBoundary from "@/components/GlobalErrorBoundary";
@@ -19,52 +20,38 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.swarajenterprises.co"),
+  metadataBase: new URL(site.domain),
   title: {
-    default: "Swaraj Enterprises - Premium Cleaning Solutions | Clean Homes, Happy Lives",
-    template: "%s | Swaraj Enterprises",
+    default: site.defaultTitle,
+    template: site.titleTemplate,
   },
-  description:
-    "Swaraj Enterprises - Your trusted partner for premium cleaning solutions in Karnataka, India. Floor Care, Bathroom Care, Kitchen Care, Laundry Care, Personal Care products.",
-  keywords: [
-    "Swaraj Enterprises",
-    "cleaning products",
-    "floor cleaner",
-    "toilet cleaner",
-    "handwash",
-    "dishwash",
-    "glass cleaner",
-    "detergent",
-    "FMCG",
-    "Karnataka",
-    "India",
-  ],
-  authors: [{ name: "Swaraj Enterprises" }],
+  description: site.description,
+  keywords: [...site.keywords] as string[],
+  authors: [{ name: site.author }],
   icons: {
-    icon: "/images/Logo.png",
-    apple: "/images/Logo.png",
+    icon: business.favicon,
+    apple: business.favicon,
   },
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://www.swarajenterprises.co",
-    siteName: "Swaraj Enterprises",
-    title: "Swaraj Enterprises - Premium Cleaning Solutions",
-    description:
-      "Clean Homes, Happy Lives. Premium cleaning products for every need.",
+    url: site.domain,
+    siteName: business.name,
+    title: `${business.name} - Premium Cleaning Solutions`,
+    description: business.tagline,
     images: [
       {
-        url: "/images/og-image.webp",
+        url: site.ogImage,
         width: 1200,
         height: 630,
-        alt: "Swaraj Enterprises - Premium Cleaning Solutions",
+        alt: `${business.name} - Premium Cleaning Solutions`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Swaraj Enterprises - Premium Cleaning Solutions",
-    description: "Clean Homes, Happy Lives",
+    title: `${business.name} - Premium Cleaning Solutions`,
+    description: business.tagline,
   },
   robots: {
     index: true,
@@ -100,20 +87,19 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
-              name: "Swaraj Enterprises",
-              description:
-                "Premium cleaning solutions - Floor Care, Bathroom Care, Kitchen Care, Laundry Care, Personal Care",
+              name: business.name,
+              description: business.description,
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Aberottu House, Narikombu",
-                addressLocality: "Narikombu",
-                addressRegion: "Karnataka",
-                postalCode: "574231",
-                addressCountry: "IN",
+                streetAddress: contact.address,
+                addressLocality: contact.city,
+                addressRegion: contact.state,
+                postalCode: contact.pincode,
+                addressCountry: contact.country,
               },
-              telephone: "+919844734939",
-              email: "swarajenterprises.co@gmail.com",
-              openingHours: "Mo-Sa 09:00-19:00",
+              telephone: `+${contact.phoneRaw}`,
+              email: contact.email,
+              openingHours: contact.hours,
             }),
           }}
         />

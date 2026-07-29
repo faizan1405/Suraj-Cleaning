@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import crypto from "crypto";
+import { auth } from "@/config/site";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
@@ -105,7 +106,7 @@ export async function GET(request: Request) {
       name: user.name,
       picture: user.picture,
       iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 30,
+      exp: Math.floor(Date.now() / 1000) + auth.sessionTimeoutSeconds,
     };
 
     const sessionToken = signSession(sessionPayload);
@@ -117,7 +118,7 @@ export async function GET(request: Request) {
       httpOnly: true,
       secure: !isLocal,
       sameSite: isLocal ? "lax" : "none",
-      maxAge: 60 * 60 * 24 * 30,
+      maxAge: auth.sessionTimeoutSeconds,
       path: "/",
     });
 

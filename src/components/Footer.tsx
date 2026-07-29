@@ -4,34 +4,27 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { navigation } from "@/data/navigation";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { business, contact, social, products, site } from "@/config/site";
 
 const socialIcons = [
   {
     name: "Instagram",
-    path: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z",
-    href: "https://www.instagram.com/swaraj_enterprises.co?igsh=MTBkaTFzM24xbjMwMw==",
+    path: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057-1.645-.069-4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z",
+    href: social.instagram,
   },
 ];
 
-const defaultCategories = [
-  { id: "1", slug: "floor-care", name: "Floor Care" },
-  { id: "2", slug: "bathroom-care", name: "Bathroom Care" },
-  { id: "3", slug: "kitchen-care", name: "Kitchen Care" },
-  { id: "4", slug: "laundry-care", name: "Laundry Care" },
-  { id: "5", slug: "personal-care", name: "Personal Care" },
-];
-
 const defaultCompany = {
-  description: "Your trusted partner for premium cleaning solutions. Clean Homes, Happy Lives.",
-  address: "Post & Village, Aberottu House, Narikombu, Karnataka 574231",
-  phone: "+91 98447 34939 , 08246816784",
-  phoneRaw: "9198447349399188246816784",
-  email: "swarajenterprises.co@gmail.com",
-  hours: "Mon - Sat: 9:00 AM - 7:00 PM",
+  description: business.description,
+  address: `${contact.address}`,
+  phone: `${contact.phone} , ${contact.phone2}`,
+  phoneRaw: `${contact.phoneRaw}${contact.phone2Raw}`,
+  email: contact.email,
+  hours: contact.hours,
 };
 
 export default function Footer() {
-  const [categories, setCategories] = useState<{ id: string; slug: string; name: string }[]>(defaultCategories);
+  const [categories, setCategories] = useState<{ id: string; slug: string; name: string }[]>([...products.categories]);
   const [company] = useState(defaultCompany);
   const currentYear = new Date().getFullYear();
 
@@ -96,7 +89,7 @@ export default function Footer() {
                   </motion.a>
                 ))}
               </div>
-              <a href="https://www.instagram.com/swaraj_enterprises.co?igsh=MTBkaTFzM24xbjMwMw==" target="_blank" rel="noopener noreferrer" className="text-[13px] text-slate-400 hover:text-white transition-colors">
+              <a href={social.instagram} target="_blank" rel="noopener noreferrer" className="text-[13px] text-slate-400 hover:text-white transition-colors">
                 Follow us on Instagram →
               </a>
             </div>
@@ -170,7 +163,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3.5">
               {[
-                { icon: MapPin, text: company.address, href: "https://maps.google.com/?q=Swaraj+Enterprises+Narikombu" },
+                { icon: MapPin, text: company.address, href: contact.mapsUrl },
                 ...(company.phone.includes(",")
                   ? company.phone.split(",").map((num: string) => {
                       const cleaned = num.trim();
@@ -219,7 +212,7 @@ export default function Footer() {
           className="border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
         >
           <p className="text-[12px] text-slate-500">
-            &copy; {currentYear} Swaraj Enterprises. All Rights Reserved.
+            &copy; {currentYear} {business.name}. All Rights Reserved.
           </p>
           <motion.p
             className="text-[12px] text-slate-500"

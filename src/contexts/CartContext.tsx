@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import type { ReactNode } from "react";
+import { storage } from "@/config/site";
 
 export interface CartItem {
   productId: string;
@@ -30,7 +31,7 @@ interface CartContextValue extends CartState {
 
 const CartContext = createContext<CartContextValue | null>(null);
 
-const STORAGE_KEY = "suraj-cleaning-cart";
+const STORAGE_KEY = storage.cartKey;
 
 function loadCartFromStorage(): CartItem[] {
   try {

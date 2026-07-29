@@ -1,4 +1,5 @@
 import { getOrderById } from "@/data/orders";
+import { getSession } from "@/lib/auth";
 
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   confirmed: { bg: "bg-green-100", text: "text-green-700" },
@@ -10,6 +11,8 @@ const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   cancelled: { bg: "bg-red-100", text: "text-red-700" },
   refunded: { bg: "bg-slate-100", text: "text-slate-700" },
 };
+
+export const dynamic = "force-dynamic";
 
 export default async function OrderDetailPage({
   searchParams,
@@ -32,8 +35,11 @@ export default async function OrderDetailPage({
     );
   }
 
+  const session = await getSession();
   const order = await getOrderById(orderId);
-  if (!order || (email && order.customer.email.toLowerCase() !== email)) {
+
+  // Authorization: either email matches (for non-logged-in users) or session matches
+  if (!order || (email && order.customer.email.toLowerCase() !== email) || (!email && !session)) {
     return (
       <section className="py-[72px] md:py-[88px] bg-white">
         <div className="mx-auto max-w-[500px] px-5 md:px-8 text-center py-12">

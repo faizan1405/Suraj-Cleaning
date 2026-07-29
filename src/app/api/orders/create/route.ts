@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { checkoutSchema } from "@/lib/order-schema";
-import { createRazorpayOrder, getRazorpayKeyId, isRazorpayConfigured } from "@/lib/razorpay";
+import { createRazorpayOrder, getRazorpayKeyId, isRazorpayServerConfigured } from "@/lib/razorpay";
 import { getProducts } from "@/data/products";
 import { createOrder } from "@/data/orders";
 import type { Order, OrderItem } from "@/data/orders";
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const paymentMethod = body.paymentMethod === "cod" ? "cod" : "razorpay";
 
-    if (paymentMethod === "razorpay" && !isRazorpayConfigured()) {
+    if (paymentMethod === "razorpay" && !isRazorpayServerConfigured()) {
       return NextResponse.json(
         { error: "Online payment is not configured. Please select Cash on Delivery or contact support." },
         { status: 503 }

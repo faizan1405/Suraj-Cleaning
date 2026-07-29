@@ -9,6 +9,7 @@ import { useCart } from "@/contexts/CartContext";
 import { checkoutSchema, INDIAN_STATES } from "@/lib/order-schema";
 import type { CheckoutFormData } from "@/lib/order-schema";
 import { getRazorpayKeyId, isRazorpayConfigured } from "@/lib/razorpay";
+import { shipping, payments, business, contact } from "@/config/site";
 
 declare global {
   interface Window {
@@ -38,8 +39,8 @@ export default function CheckoutPage() {
   });
 
   const subtotal = totalPrice;
-  const deliveryFee = subtotal >= 499 ? 0 : 49;
-  const taxRate = 0;
+  const deliveryFee = subtotal >= shipping.freeDeliveryThreshold ? 0 : shipping.deliveryFee;
+  const taxRate = payments.taxPercent;
   const taxAmount = Math.round(subtotal * taxRate / 100);
   const grandTotal = subtotal + deliveryFee + taxAmount;
 
@@ -146,7 +147,7 @@ export default function CheckoutPage() {
       key: keyId,
       amount: result.amount * 100,
       currency: result.currency,
-      name: "Swaraj Enterprises",
+      name: business.name,
       description: `Order ${result.orderId}`,
       order_id: result.razorpayOrderId,
       prefill: {

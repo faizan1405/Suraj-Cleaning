@@ -14,19 +14,9 @@ export async function GET(request: Request) {
     }
 
     const orders = await getOrdersByEmail(email);
-    // Redact sensitive info in list view
-    const redacted = orders.map((o) => ({
-      id: o.id,
-      razorpayOrderId: o.razorpayOrderId,
-      status: o.status,
-      paymentStatus: o.paymentStatus,
-      total: o.total,
-      itemCount: o.items.reduce((s, i) => s + i.quantity, 0),
-      createdAt: o.createdAt,
-      paidAt: o.paidAt,
-    }));
-
-    return NextResponse.json({ orders: redacted });
+    // Return full orders so the profile dashboard can show items + images.
+    // Sensitive secrets (signatures) are already not stored on the order.
+    return NextResponse.json(orders);
   } catch (error) {
     console.error("Order list failed:", error);
     return NextResponse.json({ error: "Failed to fetch orders" }, { status: 500 });

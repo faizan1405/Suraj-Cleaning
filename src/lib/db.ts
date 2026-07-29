@@ -10,6 +10,7 @@ const COLLECTION_MAP: Record<string, string> = {
   "submissions/distributor.json": "distributor",
   "submissions/newsletter.json": "newsletter",
   "orders.json": "orders",
+  "users.json": "users",
 };
 
 const SINGLETON_COLLECTIONS = new Set(["company.json"]);

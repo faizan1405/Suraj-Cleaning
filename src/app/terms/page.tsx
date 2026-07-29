@@ -1,8 +1,9 @@
 import { Metadata } from "next";
+import { contact, business, site } from "@/config/site";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | Swaraj Enterprises",
-  description: "Terms of Service for Swaraj Enterprises. Read our terms and conditions for using our website and services.",
+  title: `Terms of Service | ${business.name}`,
+  description: `Terms of Service for ${business.name}. Read our terms and conditions for using our website and services.`,
 };
 
 export default function TermsPage() {
@@ -20,7 +21,7 @@ export default function TermsPage() {
           <div>
             <h2 className="text-[18px] font-bold text-[#0f172a] mb-3">1. Acceptance of Terms</h2>
             <p>
-              By accessing or using the Swaraj Enterprises website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
+              By accessing or using the {business.name} website and services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
             </p>
           </div>
 
@@ -62,14 +63,14 @@ export default function TermsPage() {
           <div>
             <h2 className="text-[18px] font-bold text-[#0f172a] mb-3">7. Intellectual Property</h2>
             <p>
-              All content on this website, including text, graphics, logos, images, and software, is the property of Swaraj Enterprises and is protected by intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission.
+              All content on this website, including text, graphics, logos, images, and software, is the property of {business.name} and is protected by intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission.
             </p>
           </div>
 
           <div>
             <h2 className="text-[18px] font-bold text-[#0f172a] mb-3">8. Limitation of Liability</h2>
             <p>
-              Swaraj Enterprises shall not be liable for any indirect, incidental, special, or consequential damages arising out of or in connection with the use of our services. Our total liability shall not exceed the amount paid by you for the specific product or service giving rise to the claim.
+              {business.name} shall not be liable for any indirect, incidental, special, or consequential damages arising out of or in connection with the use of our services. Our total liability shall not exceed the amount paid by you for the specific product or service giving rise to the claim.
             </p>
           </div>
 
@@ -84,12 +85,12 @@ export default function TermsPage() {
             <h2 className="text-[18px] font-bold text-[#0f172a] mb-3">10. Contact Information</h2>
             <p>
               If you have any questions about these Terms of Service, please contact us at{" "}
-              <a href="mailto:swarajenterprises.co@gmail.com" className="text-[#2563eb] hover:underline">
-                swarajenterprises.co@gmail.com
+              <a href={`mailto:${contact.email}`} className="text-[#2563eb] hover:underline">
+                {contact.email}
               </a>
               {" "}or call us at{" "}
-              <a href="tel:+919844734939" className="text-[#2563eb] hover:underline">
-                +91 98447 34939
+              <a href={`tel:+${contact.phoneRaw}`} className="text-[#2563eb] hover:underline">
+                {contact.phone}
               </a>
               .
             </p>
