@@ -7,9 +7,13 @@
     "shortDescription": "Complete home cleaning solution with floor, bathroom & kitchen essentials in one pack.",
     "description": "Our best-selling Home Cleaning Combo brings together the essential products you need to keep your entire home sparkling clean. Includes a floor cleaner, bathroom cleaner, and a kitchen degreaser — everything at an unbeatable combo price.",
     "price": 699,
-    "sizes": ["Combo Pack"],
+    "sizes": [
+      "Combo Pack"
+    ],
     "image": "/images/hero-products.jpg",
-    "gallery": ["/images/product-supreme.svg"],
+    "gallery": [
+      "/images/product-supreme.svg"
+    ],
     "benefits": [
       "Complete cleaning solution for entire home",
       "Save 20% compared to buying individually",
@@ -36,9 +40,13 @@
     "shortDescription": "Everything you need for a spotless, hygienic bathroom — toilet cleaner, shower gel & more.",
     "description": "Keep your bathroom fresh and germ-free with our Bathroom Essentials Combo. This curated pack includes a powerful toilet cleaner, a refreshing shower gel, and a surface disinfectant. Perfect for maintaining bathroom hygiene without the hassle of buying products separately.",
     "price": 499,
-    "sizes": ["Combo Pack"],
+    "sizes": [
+      "Combo Pack"
+    ],
     "image": "/images/product-handpure.svg",
-    "gallery": ["/images/category-bathroom-care.svg"],
+    "gallery": [
+      "/images/category-bathroom-care.svg"
+    ],
     "benefits": [
       "Kills 99.9% germs and bacteria",
       "Leaves a pleasant, long-lasting fragrance",
@@ -65,9 +73,13 @@
     "shortDescription": "Tough on grease, gentle on your hands — dishwash liquid + degreaser combo.",
     "description": "The Kitchen Combo Pack is designed for the heart of your home. Pair our ultra-grease-cutting Dishwash Liquid with the powerful Kitchen Degreaser for spotless dishes and sparkling surfaces. Save more while keeping your kitchen the cleanest place in your house.",
     "price": 399,
-    "sizes": ["Combo Pack"],
+    "sizes": [
+      "Combo Pack"
+    ],
     "image": "/images/product-dish-sheen.svg",
-    "gallery": ["/images/category-kitchen-care.svg"],
+    "gallery": [
+      "/images/category-kitchen-care.svg"
+    ],
     "benefits": [
       "Cuts through tough grease instantly",
       "Gentle on hands — no harsh chemicals",
@@ -93,9 +105,13 @@
     "shortDescription": "Brighten & freshen every wash — detergent + fabric softener combo for all fabric types.",
     "description": "Make every laundry day a breeze with our Laundry Care Combo. Combining our powerful Fabric Detergent with a premium Fabric Softener, this pack gives you brilliantly clean and beautifully soft clothes every time. Perfect for all washing machines and hand wash.",
     "price": 549,
-    "sizes": ["Combo Pack"],
+    "sizes": [
+      "Combo Pack"
+    ],
     "image": "/images/product-fabrix.svg",
-    "gallery": ["/images/category-laundry-care.svg"],
+    "gallery": [
+      "/images/category-laundry-care.svg"
+    ],
     "benefits": [
       "Deep cleaning for all fabric types",
       "Leaves clothes soft and fresh",
@@ -112,5 +128,182 @@
     "stock": 45,
     "badge": "Combo Pack",
     "variants": []
+  },
+  {
+    "id": "1",
+    "slug": "hygi-x",
+    "name": "HYGI-X",
+    "category": "Toilet Cleaner",
+    "shortDescription": "Powerful toilet cleaner with 99.9% germ protection",
+    "description": "HYGI-X is an advanced toilet cleaner designed to eliminate tough stains, kill germs, and leave your toilet sparkling clean and fragrant.",
+    "price": 99,
+    "sizes": [
+      "500ml"
+    ],
+    "image": "/images/product-hygix.webp",
+    "gallery": [],
+    "benefits": [
+      "Kills 99.9% of germs",
+      "Removes tough stains",
+      "Long-lasting fragrance",
+      "Safe for ceramic surfaces"
+    ],
+    "directions": [
+      "Apply under the rim",
+      "Let it sit for 10 minutes",
+      "Scrub with a toilet brush",
+      "Flush clean"
+    ],
+    "featured": true,
+    "bestSeller": true,
+    "active": true
+  },
+  {
+    "id": "2",
+    "slug": "handpure",
+    "name": "HANDPURE",
+    "category": "Handwash",
+    "shortDescription": "Gentle handwash that kills germs effectively",
+    "description": "HANDPURE combines powerful germ protection with skin-friendly ingredients, keeping your hands clean and soft.",
+    "price": 79,
+    "sizes": [
+      "250ml",
+      "500ml"
+    ],
+    "image": "/images/product-handpure.webp",
+    "gallery": [],
+    "benefits": [
+      "Kills 99.9% germs",
+      "Gentle on skin",
+      "Pleasant fragrance",
+      "Dermatologically tested"
+    ],
+    "directions": [
+      "Wet hands with water",
+      "Apply a small amount",
+      "Lather thoroughly",
+      "Rinse with clean water"
+    ],
+    "featured": true,
+    "bestSeller": true,
+    "active": true
+  },
+  {
+    "id": "3",
+    "slug": "dish-sheen",
+    "name": "DISH SHEEN",
+    "category": "Dishwash Liquid",
+    "shortDescription": "Tough on grease, gentle on hands",
+    "description": "DISH SHEEN effortlessly removes grease and food residue from dishes, leaving them spotless and smelling fresh.",
+    "price": 89,
+    "sizes": [
+      "500ml",
+      "1L"
+    ],
+    "image": "/images/product-dish-sheen.webp",
+    "gallery": [],
+    "benefits": [
+      "Removes tough grease",
+      "Long-lasting foam",
+      "Gentle on hands",
+      "Citrus fragrance"
+    ],
+    "directions": [
+      "Dilute in water",
+      "Soak dishes briefly",
+      "Scrub with sponge",
+      "Rinse thoroughly"
+    ],
+    "featured": true,
+    "bestSeller": true,
+    "active": true
+  },
+  {
+    "id": "4",
+    "slug": "clearon",
+    "name": "CLEARON",
+    "category": "Glass Cleaner",
+    "shortDescription": "Streak-free shine for all glass surfaces",
+    "description": "CLEARON delivers a crystal-clear, streak-free finish on windows, mirrors, and all glass surfaces.",
+    "price": 89,
+    "sizes": [
+      "500ml"
+    ],
+    "image": "/images/product-clearon.webp",
+    "gallery": [],
+    "benefits": [
+      "Streak-free finish",
+      "Quick drying formula",
+      "Safe on all glass",
+      "No residue left behind"
+    ],
+    "directions": [
+      "Spray on surface",
+      "Wipe with clean cloth",
+      "Buff for extra shine"
+    ],
+    "featured": true,
+    "bestSeller": false,
+    "active": true
+  },
+  {
+    "id": "5",
+    "slug": "supreme",
+    "name": "SUPREME",
+    "category": "Detergent Powder",
+    "shortDescription": "Powerful detergent for bright, fresh laundry",
+    "description": "SUPREME detergent powder delivers deep cleaning action, removing tough stains while keeping fabrics bright and fresh.",
+    "price": 109,
+    "sizes": [
+      "1kg",
+      "2kg"
+    ],
+    "image": "/images/product-supreme.webp",
+    "gallery": [],
+    "benefits": [
+      "Deep stain removal",
+      "Fabric brightening",
+      "Long-lasting fragrance",
+      "Works in all machines"
+    ],
+    "directions": [
+      "Add powder to drum",
+      "Add clothes",
+      "Start wash cycle",
+      "Rinse thoroughly"
+    ],
+    "featured": false,
+    "bestSeller": true,
+    "active": true
+  },
+  {
+    "id": "6",
+    "slug": "fabrix",
+    "name": "FABRIX",
+    "category": "Fabric Detergent",
+    "shortDescription": "Premium liquid detergent for all fabrics",
+    "description": "FABRIX liquid detergent is specially formulated for all fabric types, providing a thorough clean while preserving fabric softness and color.",
+    "price": 149,
+    "sizes": [
+      "1L",
+      "2L"
+    ],
+    "image": "/images/product-fabrix.webp",
+    "gallery": [],
+    "benefits": [
+      "Safe for all fabrics",
+      "Color protection",
+      "Fabric softness",
+      "Fresh fragrance"
+    ],
+    "directions": [
+      "Pour into dispenser",
+      "Add clothes to machine",
+      "Select wash cycle",
+      "Enjoy clean laundry"
+    ],
+    "featured": false,
+    "bestSeller": true,
+    "active": true
   }
 ]
