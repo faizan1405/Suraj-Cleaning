@@ -85,7 +85,11 @@ export default function AdminOrdersPage() {
       if (res.ok) {
         const data = await res.json();
         setOrders(Array.isArray(data) ? data : []);
+      } else {
+        setOrders([]);
       }
+    } catch {
+      setOrders([]);
     } finally {
       setLoading(false);
     }

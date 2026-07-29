@@ -114,7 +114,7 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
               value={row.name}
               onChange={(e) => updateRow(row.id, "name", e.target.value)}
               placeholder="e.g. 500 ml"
-              className="admin-input text-[13px]"
+              className="admin-input"
             />
             <input
               type="number"
@@ -123,7 +123,7 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
               placeholder="0"
               min="0"
               step="0.01"
-              className="admin-input text-[13px] text-center"
+              className="admin-input text-center"
             />
             <input
               type="number"
@@ -132,21 +132,21 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
               placeholder="0"
               min="0"
               step="1"
-              className="admin-input text-[13px] text-center"
+              className="admin-input text-center"
             />
             <input
               type="text"
               value={row.sku}
               onChange={(e) => updateRow(row.id, "sku", e.target.value)}
               placeholder="SKU-001"
-              className="admin-input text-[13px]"
+              className="admin-input"
             />
             <input
               type="text"
               value={row.image}
               onChange={(e) => updateRow(row.id, "image", e.target.value)}
               placeholder="/images/..."
-              className="admin-input text-[11px]"
+              className="admin-input"
             />
             <button
               type="button"

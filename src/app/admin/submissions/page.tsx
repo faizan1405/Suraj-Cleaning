@@ -15,6 +15,7 @@ export default function AdminSubmissions() {
   useEffect(() => {
     fetch("/api/admin/submissions")
       .then((r) => r.ok ? r.json() : [])
+      .catch(() => [])
       .then((d) => { setSubmissions(Array.isArray(d) ? d : []); setLoading(false); });
   }, []);
 

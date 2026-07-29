@@ -69,7 +69,7 @@ export default function AdminSidebar({ isOpen, onClose, onLogout }: AdminSidebar
         )}
       >
         {/* Brand */}
-        <div className="flex items-center justify-between h-16 px-5 border-b border-white/[0.06]">
+        <div className="flex items-center justify-between h-16 px-5 pb-3 border-b border-white/[0.06]">
           <div>
             <span className="text-[17px] font-bold tracking-tight text-white leading-none block">
               SWARAJ
@@ -88,7 +88,7 @@ export default function AdminSidebar({ isOpen, onClose, onLogout }: AdminSidebar
         </div>
 
         {/* Navigation */}
-        <nav className="p-3 space-y-0.5 overflow-y-auto h-[calc(100vh-64px-64px)]">
+        <nav className="p-3 space-y-0.5 overflow-y-auto h-[calc(100vh-64px-180px)]">
           {/* Overview section label */}
           <p className="px-3 pt-2 pb-1.5 text-[10px] font-semibold tracking-widest text-slate-500 uppercase">
             Menu
