@@ -6,9 +6,8 @@ import { cookies } from "next/headers";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-const NEXTAUTH_URL = process.env.NEXTAUTH_URL || process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+const NEXTAUTH_URL = process.env.NEXTAUTH_URL
+  || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 function generateState(): string {
   return Buffer.from(`${Date.now()}-${Math.random().toString(36).slice(2)}`).toString("base64url");

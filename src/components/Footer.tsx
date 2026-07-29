@@ -24,8 +24,8 @@ const defaultCategories = [
 const defaultCompany = {
   description: "Your trusted partner for premium cleaning solutions. Clean Homes, Happy Lives.",
   address: "Post & Village, Aberottu House, Narikombu, Karnataka 574231",
-  phone: "+91 98447 34939",
-  phoneRaw: "919844734939",
+  phone: "+91 98447 34939 , 08246816784",
+  phoneRaw: "9198447349399188246816784",
   email: "swarajenterprises.co@gmail.com",
   hours: "Mon - Sat: 9:00 AM - 7:00 PM",
 };
@@ -171,7 +171,13 @@ export default function Footer() {
             <ul className="space-y-3.5">
               {[
                 { icon: MapPin, text: company.address, href: "https://maps.google.com/?q=Swaraj+Enterprises+Narikombu" },
-                { icon: Phone, text: company.phone, href: `tel:${company.phoneRaw}` },
+                ...(company.phone.includes(",")
+                  ? company.phone.split(",").map((num: string) => {
+                      const cleaned = num.trim();
+                      const digits = cleaned.replace(/\D/g, "");
+                      return { icon: Phone, text: cleaned, href: `tel:+${digits}` };
+                    })
+                  : [{ icon: Phone, text: company.phone, href: `tel:+${company.phoneRaw.replace(/^\+/, "")}` }]),
                 { icon: Mail, text: company.email, href: `mailto:${company.email}` },
               ].map((item, i) => (
                 <motion.li
