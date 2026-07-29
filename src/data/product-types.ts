@@ -24,5 +24,6 @@ export interface Variant {
   price: number;
   stock: number;
   sku?: string;
+  image?: string;
   status?: "in_stock" | "out_of_stock";
 }

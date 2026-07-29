@@ -22,6 +22,7 @@ export function normalizeProduct(raw: Record<string, unknown>): Product {
         price: typeof v.price === "number" ? v.price : Number(v.price) || 0,
         stock: typeof v.stock === "number" ? v.stock : Number(v.stock) || 0,
         sku: typeof v.sku === "string" && v.sku.trim() ? v.sku.trim() : undefined,
+        image: typeof v.image === "string" && v.image.trim() ? v.image.trim() : undefined,
         status: ((typeof v.stock === "number" ? v.stock : Number(v.stock) || 0) > 0 ? "in_stock" : "out_of_stock") as Variant["status"],
       }))
       .filter((v) => v.name.length > 0);

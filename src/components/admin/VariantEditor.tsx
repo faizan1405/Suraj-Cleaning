@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { Plus, Trash2, GripVertical } from "lucide-react";
 
 export interface VariantRow {
@@ -9,80 +9,95 @@ export interface VariantRow {
   price: string;
   stock: string;
   sku: string;
+  image: string;
 }
 
 export interface VariantEditorProps {
-  value?: Array<{ name: string; price: number; stock: number; sku?: string }>;
-  onChange: (variants: Array<{ name: string; price: number; stock: number; sku?: string }>) => void;
+  value?: Array<{ name: string; price: number; stock: number; sku?: string; image?: string }>;
+  onChange: (variants: Array<{ name: string; price: number; stock: number; sku?: string; image?: string }>) => void;
 }
 
 let nextId = 1;
 
 function emptyRow(): VariantRow {
-  return { id: String(nextId++), name: "", price: "", stock: "", sku: "" };
+  return { id: String(nextId++), name: "", price: "", stock: "", sku: "", image: "" };
 }
 
-export default function VariantEditor({ value = [], onChange }: VariantEditorProps) {
-  const [rows, setRows] = useState<VariantRow[]>([]);
-
-  useEffect(() => {
-    if (value.length === 0 && rows.length === 0) return;
-    const mapped = value.map((v) => ({
-      id: String(nextId++),
-      name: v.name ?? "",
-      price: v.price !== undefined ? String(v.price) : "",
-      stock: v.stock !== undefined ? String(v.stock) : "",
-      sku: v.sku ?? "",
-    }));
-    setRows(mapped);
-  }, [value]);
-
-  const syncToParent = (updated: VariantRow[]) => {
-    const parsed = updated
-      .filter((r) => r.name.trim())
-      .map((r) => ({
-        name: r.name.trim(),
-        price: parseFloat(r.price) || 0,
-        stock: parseInt(r.stock, 10) || 0,
-        sku: r.sku.trim() || undefined,
-      }));
-    onChange(parsed);
+function rowToVariant(row: VariantRow): { name: string; price: number; stock: number; sku?: string; image?: string } | null {
+  if (!row.name.trim()) return null;
+  return {
+    name: row.name.trim(),
+    price: parseFloat(row.price) || 0,
+    stock: parseInt(row.stock, 10) || 0,
+    sku: row.sku.trim() || undefined,
+    image: row.image.trim() || undefined,
   };
+}
 
-  const addRow = () => {
+// Convert Variant[] from props to VariantRow[] for internal state
+function variantsToRows(variants: Array<{ name: string; price: number; stock: number; sku?: string; image?: string }>): VariantRow[] {
+  nextId = 1;
+  return variants.map((v) => ({
+    id: String(nextId++),
+    name: v.name ?? "",
+    price: v.price !== undefined ? String(v.price) : "",
+    stock: v.stock !== undefined ? String(v.stock) : "",
+    sku: v.sku ?? "",
+    image: v.image ?? "",
+  }));
+}
+
+/**
+ * VariantEditor — manages its own row state internally so that adding empty
+ * rows doesn't trigger a re-render cycle that resets state. Only emits
+ * completed variants (those with a name) to the parent via onChange.
+ */
+export default function VariantEditor({ value = [], onChange }: VariantEditorProps) {
+  const [rows, setRows] = useState<VariantRow[]>(() => variantsToRows(value));
+
+  const syncToParent = useCallback((updated: VariantRow[]) => {
+    const parsed = updated
+      .map((r) => rowToVariant(r))
+      .filter((v): v is { name: string; price: number; stock: number; sku?: string; image?: string } => v !== null);
+    onChange(parsed);
+  }, [onChange]);
+
+  const addRow = useCallback(() => {
     const newRow = emptyRow();
     setRows((prev) => {
       const next = [...prev, newRow];
-      syncToParent(next);
+      // Do NOT sync to parent — adding an empty row should not push an empty
+      // variant to the parent (would cause save to remove all variants).
       return next;
     });
-  };
+  }, []);
 
-  const removeRow = (id: string) => {
+  const removeRow = useCallback((id: string) => {
     setRows((prev) => {
       const next = prev.filter((r) => r.id !== id);
       syncToParent(next);
       return next;
     });
-  };
+  }, [syncToParent]);
 
-  const updateRow = (id: string, field: keyof VariantRow, val: string) => {
+  const updateRow = useCallback((id: string, field: keyof VariantRow, val: string) => {
     setRows((prev) => {
       const next = prev.map((r) => (r.id === id ? { ...r, [field]: val } : r));
       syncToParent(next);
       return next;
     });
-  };
+  }, [syncToParent]);
 
   return (
     <div className="space-y-3">
       {/* Header row */}
-      <div className="grid grid-cols-[auto_1fr_100px_80px_120px_36px] gap-2 items-center px-2">
+      <div className="grid grid-cols-[auto_1fr_100px_80px_120px_80px_36px] gap-2 items-center px-2">
         <div className="w-5" />
         <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Size / Name</span>
         <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide text-center">Price (₹)</span>
         <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide text-center">Stock</span>
         <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">SKU</span>
+        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wide">Image URL</span>
         <div className="w-9" />
       </div>
 
@@ -91,7 +106,7 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
         {rows.map((row) => (
           <div
             key={row.id}
-            className="grid grid-cols-[auto_1fr_100px_80px_120px_36px] gap-2 items-center bg-slate-50 border border-slate-200 rounded-xl px-2 py-2"
+            className="grid grid-cols-[auto_1fr_100px_80px_120px_80px_36px] gap-2 items-center bg-slate-50 border border-slate-200 rounded-xl px-2 py-2"
           >
             <GripVertical className="w-4 h-4 text-slate-300 cursor-grab shrink-0" />
             <input
@@ -125,6 +140,13 @@ export default function VariantEditor({ value = [], onChange }: VariantEditorPro
               onChange={(e) => updateRow(row.id, "sku", e.target.value)}
               placeholder="SKU-001"
               className="px-3 py-2 text-[13px] border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white placeholder:text-slate-400"
+            />
+            <input
+              type="text"
+              value={row.image}
+              onChange={(e) => updateRow(row.id, "image", e.target.value)}
+              placeholder="/images/..."
+              className="px-3 py-2 text-[13px] border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 bg-white placeholder:text-slate-400 text-[11px]"
             />
             <button
               type="button"

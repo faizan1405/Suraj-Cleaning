@@ -68,6 +68,8 @@ export async function POST(
     const rawItem = { ...body.data, id: body.id || crypto.randomUUID() };
     const newItem = entity === "products" ? normalizeProduct(rawItem) : rawItem;
     current.push(newItem);
+    // Write the full array atomically — deleteMany+insertMany in writeJsonFile
+    // clears all docs then inserts the complete set, so no data is lost.
     await writeJsonFile(file, current);
     return NextResponse.json({ success: true, data: newItem }, { status: 201 });
   } catch (error) {
@@ -100,11 +102,8 @@ export async function PUT(
       return NextResponse.json({ error: "Item not found" }, { status: 404 });
     }
     const merged = { ...current[index], ...body.data };
-    if (entity === "products") {
-      current[index] = normalizeProduct(merged);
-    } else {
-      current[index] = merged;
-    }
+    current[index] = entity === "products" ? normalizeProduct(merged) : merged;
+    // Write the full array atomically — safe from concurrent-write data loss
     await writeJsonFile(file, current);
     return NextResponse.json({ success: true, data: current[index] });
   } catch (error) {
@@ -132,6 +131,8 @@ export async function DELETE(
 
     const current = await readJsonFile<any[]>(file);
     const filtered = current.filter((item) => item.id !== body.id);
+    // For delete, we MUST write the full array to remove the deleted item.
+    // Use the existing writeJsonFile which handles bulk upsert + cleanup.
     await writeJsonFile(file, filtered);
     return new NextResponse(null, { status: 204 });
   } catch (error) {

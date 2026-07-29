@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,6 +18,8 @@ export function ProductCard({
   const { addItem } = useCart();
   const [added, setAdded] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<string>("");
+  const initializedProductId = useRef<string | null>(null);
+
   // Display price: show min price ("From ₹XXX") when variants exist,
   // otherwise show the product's base price
   const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
@@ -28,15 +30,18 @@ export function ProductCard({
   const priceLabel = hasVariants && variantPrices.length > 1
     ? `₹${displayPrice} – ₹${maxVariantPrice}`
     : `₹${displayPrice}`;
-  const benefits = Array.isArray(product.benefits) ? product.benefits : [];
-  const directions = Array.isArray(product.directions) ? product.directions : [];
-  const productImage = product.image && product.image.trim() ? product.image : "/images/product-placeholder.png";
   const inStock = Number(product.stock ?? 0) > 0;
+  const productImage = product.image && product.image.trim() ? product.image : "/images/product-placeholder.png";
 
-  // Auto-select first variant
-  if (hasVariants && !selectedVariant) {
-    setSelectedVariant(product.variants![0].name);
-  }
+  // Auto-select first variant when product changes
+  useEffect(() => {
+    if (hasVariants && product.variants!.length > 0) {
+      if (initializedProductId.current !== product.id || !selectedVariant) {
+        setSelectedVariant(product.variants![0].name);
+        initializedProductId.current = product.id;
+      }
+    }
+  }, [product.id, hasVariants, product.variants, selectedVariant]);
 
   const currentVariant = hasVariants
     ? product.variants!.find(v => v.name === selectedVariant) ?? product.variants![0]

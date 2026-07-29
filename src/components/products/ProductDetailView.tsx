@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, ShoppingCart, Share2, ChevronDown } from "lucide-react";
@@ -20,19 +20,30 @@ export default function ProductDetailView({
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState<string>("");
+  // Track the last product we initialized a variant for, so we re-init only
+  // when the product ID actually changes (not on every keystroke).
+  const initializedProductId = useRef<string | null>(null);
 
   const gallery =
     product.gallery && product.gallery.length > 0
       ? product.gallery
       : [product.image];
-  const hasMultiple = gallery.length > 1;
-  const inStock = Number(product.stock ?? 0) > 0;
   const hasVariants = Array.isArray(product.variants) && product.variants.length > 0;
 
-  // Auto-select first variant
-  if (hasVariants && !selectedVariant) {
-    setSelectedVariant(product.variants![0].name);
-  }
+  // Auto-select first variant when product changes and no variant is selected
+  useEffect(() => {
+    if (hasVariants && !selectedVariant && product.variants!.length > 0) {
+      setSelectedVariant(product.variants![0].name);
+      initializedProductId.current = product.id;
+    }
+    if (initializedProductId.current !== product.id && hasVariants && product.variants!.length > 0) {
+      setSelectedVariant(product.variants![0].name);
+      initializedProductId.current = product.id;
+    }
+  }, [product.id, hasVariants, product.variants, selectedVariant]);
+
+  const hasMultiple = gallery.length > 1;
+  const inStock = Number(product.stock ?? 0) > 0;
 
   const currentVariant = hasVariants
     ? product.variants!.find(v => v.name === selectedVariant) ?? product.variants![0]

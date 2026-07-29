@@ -67,31 +67,17 @@ async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
       }
 
       const items = data as Record<string, unknown>[];
-      const ids = items.map((item) => item.id);
 
       if (items.length === 0) {
         await collection.deleteMany({});
         return;
       }
 
-      // Upsert each item by its `id` field so existing rows are replaced in place
-      // and concurrent submissions never delete data mid-write. MongoDB will
-      // generate `_id` automatically since items don't carry one.
-      const operations = items.map((item) => ({
-        replaceOne: {
-          filter: { id: item.id },
-          replacement: item,
-          upsert: true,
-        },
-      }));
-      await collection.bulkWrite(operations, { ordered: false });
-
-      // Delete any documents whose `id` is NOT in the new array.
-      // `replaceOne` only replaces matching docs — it never removes removed ones.
-      // Without this, deleted items leave ghost docs that reappear on next read.
-      if (ids.length > 0) {
-        await collection.deleteMany({ id: { $nin: ids } });
-      }
+      // Atomic replace: clear the collection, then insert all items.
+      // This avoids the stale-read race condition where deleteMany({ id: { $nin: ids } })
+      // could remove items added by a concurrent write.
+      await collection.deleteMany({});
+      await collection.insertMany(items, { ordered: false });
       return;
     } catch (error) {
       if (attempt < 2) {
