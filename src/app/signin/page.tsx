@@ -1,5 +1,6 @@
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function SignInPage() {
   const session = await getSession();
@@ -13,8 +14,12 @@ function SignInForm() {
     <section className="py-[72px] md:py-[88px] bg-white min-h-screen flex items-center justify-center">
       <div className="mx-auto max-w-[420px] px-5 md:px-8">
         <div className="text-center mb-8">
+          <Link href="/" className="inline-block mb-6">
+            <span className="text-[28px] font-extrabold text-[#2563eb]">Swaraj</span>
+            <span className="text-[28px] font-extrabold text-[#0f172a]"> Enterprises</span>
+          </Link>
           <h1 className="text-[28px] md:text-[32px] font-bold text-[#0f172a] mb-2">Welcome Back</h1>
-          <p className="text-[14px] text-[#64748b]">Sign in to your account</p>
+          <p className="text-[14px] text-[#64748b]">Sign in to your account to track orders and manage your profile.</p>
         </div>
 
         <div className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm">
@@ -32,6 +37,22 @@ function SignInForm() {
               Sign in with Google
             </button>
           </form>
+        </div>
+
+        <div className="mt-6 pt-5 border-t border-slate-100">
+          <p className="text-[13px] text-[#64748b] text-center leading-relaxed">
+            By signing in, you agree to our{" "}
+            <Link href="/terms" className="text-[#2563eb] hover:underline">Terms of Service</Link>
+            {" "}and{" "}
+            <Link href="/privacy" className="text-[#2563eb] hover:underline">Privacy Policy</Link>.
+          </p>
+        </div>
+
+        <div className="mt-6 text-center">
+          <p className="text-[13px] text-[#64748b]">
+            New here?{" "}
+            <span className="text-[#64748b]">Just sign in — we&apos;ll set up your account automatically.</span>
+          </p>
         </div>
       </div>
     </section>

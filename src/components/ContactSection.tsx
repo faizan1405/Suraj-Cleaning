@@ -212,6 +212,14 @@ export default function ContactSection() {
                       </p>
                     );
                   })}
+                  {company.phone2 && (() => {
+                    const digits = company.phone2.replace(/\D/g, "");
+                    return (
+                      <p className="text-[13px] text-[#64748b]">
+                        <a href={`tel:+${digits}`} className="hover:text-[#2563eb] transition-colors">{company.phone2}</a>
+                      </p>
+                    );
+                  })()}
                 </div>
               </motion.a>
 

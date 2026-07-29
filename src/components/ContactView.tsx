@@ -199,7 +199,12 @@ export default function ContactView({ company }: { company: CompanyInfo }) {
                   {
                     icon: Phone,
                     title: "Phone",
-                    text: company.phone,
+                    text: (
+                      <>
+                        {company.phone}
+                        {company.phone2 && <><br />{company.phone2}</>}
+                      </>
+                    ),
                     href: `tel:${company.phoneRaw}`,
                     external: false,
                   },
