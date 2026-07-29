@@ -20,15 +20,17 @@ const TAX_PERCENT = 0;
 const TAX_LABEL = "GST";
 
 export async function POST(request: Request) {
-  if (!isRazorpayConfigured()) {
-    return NextResponse.json(
-      { error: "Payment is not configured. Please add Razorpay credentials to your .env file." },
-      { status: 503 }
-    );
-  }
-
   try {
     const body = await request.json();
+    const paymentMethod = body.paymentMethod === "cod" ? "cod" : "razorpay";
+
+    if (paymentMethod === "razorpay" && !isRazorpayConfigured()) {
+      return NextResponse.json(
+        { error: "Online payment is not configured. Please select Cash on Delivery or contact support." },
+        { status: 503 }
+      );
+    }
+
     const customer = checkoutSchema.parse(body.customer);
     const cartInput: CartItemInput[] = Array.isArray(body.items) ? body.items : [];
 
@@ -54,7 +56,6 @@ export async function POST(request: Request) {
         continue;
       }
 
-      // Determine price and stock from variant if size is specified
       let itemPrice: number;
       let itemStock: number;
 
@@ -64,7 +65,6 @@ export async function POST(request: Request) {
           itemPrice = typeof variant.price === "number" ? variant.price : Number(variant.price) || product.price;
           itemStock = typeof variant.stock === "number" ? variant.stock : Number(variant.stock) || 0;
         } else {
-          // Variant name not found — fall back to product-level
           itemPrice = product.price;
           itemStock = Number(product.stock ?? 0);
         }
@@ -100,22 +100,28 @@ export async function POST(request: Request) {
     const taxAmount = Math.round((subtotal * TAX_PERCENT) / 100);
     const total = subtotal + deliveryCharge + taxAmount;
 
-    const razorpay = await createRazorpayOrder({
-      amount: total,
-      notes: {
-        customer_email: customer.email,
-        customer_mobile: customer.mobile,
-      },
-    });
+    let razorpayOrderId = "";
+
+    if (paymentMethod === "razorpay") {
+      const razorpay = await createRazorpayOrder({
+        amount: total,
+        notes: {
+          customer_email: customer.email,
+          customer_mobile: customer.mobile,
+        },
+      });
+      razorpayOrderId = razorpay.id;
+    }
 
     const now = new Date().toISOString();
     const orderId = `ORD-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
 
     const order: Order = {
       id: orderId,
-      razorpayOrderId: razorpay.id,
+      razorpayOrderId,
+      paymentMethod,
       paymentStatus: "pending",
-      status: "payment_pending",
+      status: paymentMethod === "cod" ? "confirmed" : "payment_pending",
       items,
       customer,
       subtotal,
@@ -125,13 +131,29 @@ export async function POST(request: Request) {
       createdAt: now,
       updatedAt: now,
     };
+
     await createOrder(order);
+
+    // For COD, reduce stock immediately since the order is confirmed
+    if (paymentMethod === "cod") {
+      await reduceStock(items);
+    }
+
+    if (paymentMethod === "cod") {
+      return NextResponse.json({
+        orderId: order.id,
+        paymentMethod: "cod",
+        status: order.status,
+        total: order.total,
+        currency: "INR",
+      });
+    }
 
     return NextResponse.json({
       orderId: order.id,
-      razorpayOrderId: razorpay.id,
-      amount: razorpay.amount,
-      currency: razorpay.currency,
+      razorpayOrderId,
+      amount: total,
+      currency: "INR",
       keyId: getRazorpayKeyId(),
       taxLabel: TAX_LABEL,
     });
@@ -139,5 +161,26 @@ export async function POST(request: Request) {
     console.error("Order creation failed:", error);
     const message = error instanceof Error ? error.message : "Failed to create order";
     return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+async function reduceStock(items: OrderItem[]) {
+  try {
+    const { readJsonFile, writeJsonFile } = await import("@/lib/db");
+    const raw = await readJsonFile<Record<string, unknown>[]>("products.json");
+    if (!Array.isArray(raw)) return;
+
+    const itemsById = new Map(items.map((i) => [i.productId, i.quantity]));
+    const updated = raw.map((p) => {
+      const id = String(p.id ?? "");
+      if (itemsById.has(id)) {
+        const currentStock = Number(p.stock ?? 0);
+        return { ...p, stock: Math.max(0, currentStock - (itemsById.get(id) ?? 0)) };
+      }
+      return p;
+    });
+    await writeJsonFile("products.json", updated);
+  } catch (err) {
+    console.error("Failed to reduce stock:", err);
   }
 }

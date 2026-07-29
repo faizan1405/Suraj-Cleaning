@@ -1,6 +1,7 @@
 import { getOrderById } from "@/data/orders";
 
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
+  confirmed: { bg: "bg-green-100", text: "text-green-700" },
   payment_pending: { bg: "bg-amber-100", text: "text-amber-700" },
   paid: { bg: "bg-blue-100", text: "text-blue-700" },
   processing: { bg: "bg-indigo-100", text: "text-indigo-700" },
@@ -60,9 +61,18 @@ export default async function OrderDetailPage({
             <h1 className="text-[24px] font-bold text-[#0f172a] mb-1">{order.id}</h1>
             <p className="text-[13px] text-[#64748b]">Placed on {new Date(order.createdAt).toLocaleString("en-IN")}</p>
           </div>
-          <span className={`px-3 py-1.5 rounded-full text-[12px] font-bold ${colors.bg} ${colors.text}`}>
-            {order.status.replace("_", " ")}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className={`px-3 py-1.5 rounded-full text-[12px] font-bold ${
+              order.paymentMethod === "cod"
+                ? "bg-green-100 text-green-700"
+                : "bg-blue-100 text-blue-700"
+            }`}>
+              {order.paymentMethod === "cod" ? "Cash on Delivery" : "Online Payment"}
+            </span>
+            <span className={`px-3 py-1.5 rounded-full text-[12px] font-bold ${colors.bg} ${colors.text}`}>
+              {order.status.replace("_", " ")}
+            </span>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -76,7 +86,7 @@ export default async function OrderDetailPage({
                 <div className="flex-1">
                   <p className="text-[14px] font-bold text-[#0f172a]">{item.name}</p>
                   {item.size && <p className="text-[12px] text-[#64748b]">Size: {item.size}</p>}
-                  <p className="text-[12px] text-[#64748b]">Qty: {item.quantity} × ₹{item.price}</p>
+                  <p className="text-[12px] text-[#64748b]">Qty: {item.quantity} x ₹{item.price}</p>
                 </div>
                 <p className="text-[14px] font-bold text-[#0f172a]">₹{item.subtotal.toFixed(2)}</p>
               </div>
@@ -95,9 +105,13 @@ export default async function OrderDetailPage({
 
             <div className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-200/80">
               <h3 className="text-[14px] font-bold text-[#0f172a] mb-3">Payment</h3>
+              <p className="text-[13px] text-slate-600">Method: <span className="font-medium">
+                {order.paymentMethod === "cod" ? "Cash on Delivery" : "Online Payment (Razorpay)"}
+              </span></p>
               <p className="text-[13px] text-slate-600">Status: <span className="font-medium">{order.paymentStatus}</span></p>
               {order.razorpayOrderId && <p className="text-[12px] text-slate-400 mt-1">Razorpay Order: {order.razorpayOrderId}</p>}
               {order.razorpayPaymentId && <p className="text-[12px] text-slate-400 mt-0.5">Payment ID: {order.razorpayPaymentId}</p>}
+              {order.paidAt && <p className="text-[12px] text-slate-400 mt-0.5">Paid At: {new Date(order.paidAt).toLocaleString("en-IN")}</p>}
             </div>
 
             <div className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-200/80">

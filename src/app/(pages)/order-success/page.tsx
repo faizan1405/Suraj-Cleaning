@@ -25,8 +25,14 @@ export default async function OrderSuccessPage({
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-[32px]">✓</span>
               </div>
-              <h1 className="text-[24px] font-bold text-[#0f172a] mb-2">Payment Successful!</h1>
-              <p className="text-[14px] text-[#64748b] mb-6">Thank you for your order, {order.customer.fullName}.</p>
+              <h1 className="text-[24px] font-bold text-[#0f172a] mb-2">
+                {order.paymentMethod === "cod" ? "Order Confirmed!" : "Payment Successful!"}
+              </h1>
+              <p className="text-[14px] text-[#64748b] mb-6">
+                {order.paymentMethod === "cod"
+                  ? `Thank you for your order, ${order.customer.fullName}. Pay cash when you receive your delivery.`
+                  : `Thank you for your order, ${order.customer.fullName}.`}
+              </p>
 
               <div className="bg-[#f8fafc] rounded-2xl p-6 border border-slate-200/80 text-left mb-6">
                 <p className="text-[12px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Order ID</p>
@@ -41,6 +47,25 @@ export default async function OrderSuccessPage({
                       <span className="font-medium">₹{item.subtotal.toFixed(2)}</span>
                     </div>
                   ))}
+                </div>
+
+                <div className="border-t border-slate-200 pt-3">
+                  <div className="flex items-center justify-between text-[12px] mb-1">
+                    <span className="text-slate-500">Payment Method</span>
+                    <span className="font-medium text-slate-700">
+                      {order.paymentMethod === "cod" ? "Cash on Delivery" : "Online Payment"}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between text-[12px]">
+                    <span className="text-slate-500">Payment Status</span>
+                    <span className={`font-medium ${
+                      order.paymentStatus === "paid" ? "text-green-600" : "text-amber-600"
+                    }`}>
+                      {order.paymentMethod === "cod" && order.paymentStatus === "pending"
+                        ? "Pay on Delivery"
+                        : order.paymentStatus}
+                    </span>
+                  </div>
                 </div>
               </div>
 

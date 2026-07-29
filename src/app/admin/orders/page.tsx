@@ -19,6 +19,7 @@ interface Order {
   id: string;
   razorpayOrderId: string;
   razorpayPaymentId?: string;
+  paymentMethod?: string;
   paymentStatus: string;
   status: string;
   items: OrderItem[];
@@ -43,16 +44,29 @@ interface Order {
 }
 
 const STATUS_OPTIONS = [
-  "all", "payment_pending", "paid", "processing", "shipped", "delivered", "cancelled", "refunded",
+  "all", "confirmed", "payment_pending", "paid", "processing", "shipped", "delivered", "cancelled", "refunded",
 ] as const;
 
 const STATUS_COLORS: Record<string, string> = {
+  confirmed: "bg-green-100 text-green-700",
   payment_pending: "bg-amber-100 text-amber-700",
   paid: "bg-blue-100 text-blue-700",
   processing: "bg-indigo-100 text-indigo-700",
   shipped: "bg-purple-100 text-purple-700",
   delivered: "bg-green-100 text-green-700",
   cancelled: "bg-red-100 text-red-700",
+  refunded: "bg-slate-100 text-slate-700",
+};
+
+const PAYMENT_METHOD_COLORS: Record<string, string> = {
+  cod: "bg-green-100 text-green-700",
+  razorpay: "bg-blue-100 text-blue-700",
+};
+
+const PAYMENT_STATUS_COLORS: Record<string, string> = {
+  pending: "bg-amber-100 text-amber-700",
+  paid: "bg-green-100 text-green-700",
+  failed: "bg-red-100 text-red-700",
   refunded: "bg-slate-100 text-slate-700",
 };
 
@@ -156,6 +170,8 @@ export default function AdminOrdersPage() {
                   <th className="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase">Items</th>
                   <th className="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase">Total</th>
                   <th className="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase">Status</th>
+                  <th className="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase">Payment</th>
+                  <th className="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase">Pay Status</th>
                   <th className="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase">Date</th>
                   <th className="px-5 py-3 text-[11px] font-bold text-slate-500 uppercase">Actions</th>
                 </tr>
@@ -173,6 +189,16 @@ export default function AdminOrdersPage() {
                     <td className="px-5 py-3.5">
                       <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${STATUS_COLORS[order.status] || "bg-slate-100 text-slate-600"}`}>
                         {order.status.replace("_", " ")}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${PAYMENT_METHOD_COLORS[order.paymentMethod || "razorpay"] || "bg-slate-100 text-slate-600"}`}>
+                        {order.paymentMethod === "cod" ? "COD" : "Online"}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5">
+                      <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${PAYMENT_STATUS_COLORS[order.paymentStatus] || "bg-slate-100 text-slate-600"}`}>
+                        {order.paymentStatus}
                       </span>
                     </td>
                     <td className="px-5 py-3.5 text-[12px] text-slate-500">{new Date(order.createdAt).toLocaleDateString("en-IN")}</td>
@@ -234,9 +260,17 @@ export default function AdminOrdersPage() {
 
               <div className="p-4 bg-slate-50 rounded-xl">
                 <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Payment</p>
-                <p className="text-[13px] text-slate-700">Status: <span className="font-bold">{selectedOrder.paymentStatus}</span></p>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${PAYMENT_METHOD_COLORS[selectedOrder.paymentMethod || "razorpay"] || "bg-slate-100 text-slate-600"}`}>
+                    {selectedOrder.paymentMethod === "cod" ? "Cash on Delivery" : "Online Payment"}
+                  </span>
+                  <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${PAYMENT_STATUS_COLORS[selectedOrder.paymentStatus] || "bg-slate-100 text-slate-600"}`}>
+                    {selectedOrder.paymentStatus}
+                  </span>
+                </div>
                 {selectedOrder.razorpayOrderId && <p className="text-[11px] text-slate-400 mt-1">Razorpay Order ID: <span className="font-mono">{selectedOrder.razorpayOrderId}</span></p>}
                 {selectedOrder.razorpayPaymentId && <p className="text-[11px] text-slate-400 mt-0.5">Payment ID: <span className="font-mono">{selectedOrder.razorpayPaymentId}</span></p>}
+                {selectedOrder.paidAt && <p className="text-[11px] text-slate-400 mt-0.5">Paid At: {new Date(selectedOrder.paidAt).toLocaleString("en-IN")}</p>}
                 <p className="text-[13px] text-slate-700 mt-2">Total: <span className="font-bold text-[#2563eb]">₹{selectedOrder.total.toFixed(2)}</span></p>
               </div>
 
@@ -255,6 +289,36 @@ export default function AdminOrdersPage() {
                   <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                 </div>
               </div>
+
+              {selectedOrder.paymentMethod === "cod" && (
+                <div>
+                  <p className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider mb-2">Update Payment Status (COD)</p>
+                  <div className="relative">
+                    <select
+                      value={selectedOrder.paymentStatus}
+                      onChange={async (e) => {
+                        const newPaymentStatus = e.target.value;
+                        const res = await fetch("/api/admin/data/orders", {
+                          method: "PUT",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ id: selectedOrder.id, data: { paymentStatus: newPaymentStatus } }),
+                        });
+                        if (res.ok) {
+                          const updated = await res.json();
+                          setOrders((prev) => prev.map((o) => (o.id === selectedOrder.id ? updated : o)));
+                          setSelectedOrder(updated);
+                        }
+                      }}
+                      className="w-full appearance-none px-4 py-2.5 text-[13px] border border-slate-200 rounded-xl bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 pr-10"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="paid">Paid</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                  </div>
+                  <p className="text-[11px] text-slate-400 mt-1">Mark as "Paid" when cash is collected from the customer.</p>
+                </div>
+              )}
             </div>
           </motion.div>
         </div>

@@ -13,8 +13,10 @@ export interface Order {
   id: string;
   razorpayOrderId: string;
   razorpayPaymentId?: string;
+  razorpaySignature?: string;
+  paymentMethod: "cod" | "razorpay";
   paymentStatus: "pending" | "paid" | "failed" | "refunded";
-  status: "payment_pending" | "paid" | "processing" | "shipped" | "delivered" | "cancelled" | "refunded";
+  status: "payment_pending" | "confirmed" | "paid" | "processing" | "shipped" | "delivered" | "cancelled" | "refunded";
   items: OrderItem[];
   customer: {
     fullName: string;

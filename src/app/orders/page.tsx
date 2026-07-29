@@ -15,6 +15,7 @@ export default async function OrdersPage({
   }
 
   const statusColor: Record<string, string> = {
+    confirmed: "bg-green-100 text-green-700",
     payment_pending: "bg-amber-100 text-amber-700",
     paid: "bg-blue-100 text-blue-700",
     processing: "bg-indigo-100 text-indigo-700",
@@ -69,6 +70,13 @@ export default async function OrdersPage({
                   <p className="text-[12px] text-[#64748b]">{order.items.reduce((s, i) => s + i.quantity, 0)} items · ₹{order.total.toFixed(2)}</p>
                 </div>
                 <div className="flex items-center gap-3">
+                  <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                    order.paymentMethod === "cod"
+                      ? "bg-green-100 text-green-700"
+                      : "bg-blue-100 text-blue-700"
+                  }`}>
+                    {order.paymentMethod === "cod" ? "COD" : "Online"}
+                  </span>
                   <span className={`px-2.5 py-1 rounded-full text-[11px] font-bold ${statusColor[order.status] || "bg-slate-100 text-slate-600"}`}>
                     {order.status.replace("_", " ")}
                   </span>

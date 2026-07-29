@@ -16,7 +16,7 @@ const SINGLETON_COLLECTIONS = new Set(["company.json"]);
 
 const INDEX_MAP: Record<string, Record<string, 1 | -1>> = {
   products: { category: 1, slug: 1, active: 1, bestSeller: 1, "stock": 1 },
-  orders: { "customer.email": 1, status: 1, paymentStatus: 1, razorpayOrderId: 1, createdAt: -1 },
+  orders: { "customer.email": 1, status: 1, paymentStatus: 1, paymentMethod: 1, razorpayOrderId: 1, createdAt: -1 },
 };
 
 function getCollectionName(relativePath: string): string {

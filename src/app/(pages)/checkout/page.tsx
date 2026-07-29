@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, Loader2, ShieldCheck } from "lucide-react";
+import { ArrowLeft, Loader2, ShieldCheck, Truck, CreditCard } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { checkoutSchema, INDIAN_STATES } from "@/lib/order-schema";
 import type { CheckoutFormData } from "@/lib/order-schema";
@@ -32,6 +32,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [paymentMethod, setPaymentMethod] = useState<"cod" | "razorpay">("razorpay");
   const [form, setForm] = useState<CheckoutFormData>({
     fullName: "", mobile: "", email: "", address: "", city: "", state: "", pincode: "", landmark: "", orderNotes: "",
   });
@@ -88,72 +89,102 @@ export default function CheckoutPage() {
     }
 
     try {
-      const res = await fetch("/api/orders/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customer: parsed.data, items: items.map((i) => ({ productId: i.productId, quantity: i.quantity, size: i.size })) }),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        throw new Error(result.error || "Failed to create order");
+      if (paymentMethod === "cod") {
+        await handleCODSubmit(parsed.data);
+      } else {
+        await handleRazorpaySubmit(parsed.data);
       }
-
-      await loadRazorpayScript();
-
-      const keyId = getRazorpayKeyId();
-      if (!keyId) {
-        throw new Error("Payment configuration error");
-      }
-
-      const options = {
-        key: keyId,
-        amount: result.amount * 100,
-        currency: result.currency,
-        name: "Swaraj Enterprises",
-        description: `Order ${result.orderId}`,
-        order_id: result.razorpayOrderId,
-        prefill: {
-          name: parsed.data.fullName,
-          email: parsed.data.email,
-          contact: parsed.data.mobile,
-        },
-        handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
-          try {
-            const verifyRes = await fetch("/api/orders/verify", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                razorpayOrderId: response.razorpay_order_id,
-                razorpayPaymentId: response.razorpay_payment_id,
-                razorpaySignature: response.razorpay_signature,
-              }),
-            });
-            const verifyData = await verifyRes.json();
-            if (verifyRes.ok && (verifyData.status === "paid" || verifyData.status === "already_paid")) {
-              const orderId = verifyData.order?.id || result.orderId;
-              clearCart();
-              router.push(`/order-success?orderId=${orderId}`);
-            } else {
-              router.push(`/order-failed?reason=${encodeURIComponent(verifyData.error || "Payment verification failed")}`);
-            }
-          } catch {
-            router.push(`/order-failed?reason=${encodeURIComponent("Network error during verification")}`);
-          }
-        },
-        on_close: () => {
-          // User closed the modal without paying
-        },
-        theme: { color: "#2563eb" },
-      };
-
-      const rzp = new window.Razorpay(options);
-      rzp.open();
     } catch (error) {
       const message = error instanceof Error ? error.message : "Something went wrong";
       setErrors({ _form: message });
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleCODSubmit = async (customerData: CheckoutFormData) => {
+    const res = await fetch("/api/orders/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        customer: customerData,
+        items: items.map((i) => ({ productId: i.productId, quantity: i.quantity, size: i.size })),
+        paymentMethod: "cod",
+      }),
+    });
+    const result = await res.json();
+    if (!res.ok) {
+      throw new Error(result.error || "Failed to create order");
+    }
+    clearCart();
+    router.push(`/order-success?orderId=${result.orderId}`);
+  };
+
+  const handleRazorpaySubmit = async (customerData: CheckoutFormData) => {
+    const res = await fetch("/api/orders/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        customer: customerData,
+        items: items.map((i) => ({ productId: i.productId, quantity: i.quantity, size: i.size })),
+        paymentMethod: "razorpay",
+      }),
+    });
+    const result = await res.json();
+    if (!res.ok) {
+      throw new Error(result.error || "Failed to create order");
+    }
+
+    await loadRazorpayScript();
+
+    const keyId = getRazorpayKeyId();
+    if (!keyId) {
+      throw new Error("Payment configuration error");
+    }
+
+    const options = {
+      key: keyId,
+      amount: result.amount * 100,
+      currency: result.currency,
+      name: "Swaraj Enterprises",
+      description: `Order ${result.orderId}`,
+      order_id: result.razorpayOrderId,
+      prefill: {
+        name: customerData.fullName,
+        email: customerData.email,
+        contact: customerData.mobile,
+      },
+      handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
+        try {
+          const verifyRes = await fetch("/api/orders/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              razorpayOrderId: response.razorpay_order_id,
+              razorpayPaymentId: response.razorpay_payment_id,
+              razorpaySignature: response.razorpay_signature,
+            }),
+          });
+          const verifyData = await verifyRes.json();
+          if (verifyRes.ok && (verifyData.status === "paid" || verifyData.status === "already_paid")) {
+            const orderId = verifyData.order?.id || result.orderId;
+            clearCart();
+            router.push(`/order-success?orderId=${orderId}`);
+          } else {
+            router.push(`/order-failed?reason=${encodeURIComponent(verifyData.error || "Payment verification failed")}`);
+          }
+        } catch {
+          router.push(`/order-failed?reason=${encodeURIComponent("Network error during verification")}`);
+        }
+      },
+      on_close: () => {
+        // User closed the modal without paying
+      },
+      theme: { color: "#2563eb" },
+    };
+
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   };
 
   if (items.length === 0 && !submitting) {
@@ -184,9 +215,9 @@ export default function CheckoutPage() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Form */}
             <div className="lg:col-span-2 space-y-5">
-              {!razorpayReady && (
+              {paymentMethod === "razorpay" && !razorpayReady && (
                 <div className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-[13px] text-amber-800">
-                  Payment is not configured. Please add Razorpay environment variables to enable checkout.
+                  Online payment (Razorpay) is currently not configured. Please select Cash on Delivery to complete your order.
                 </div>
               )}
               {errors._form && (
@@ -250,6 +281,56 @@ export default function CheckoutPage() {
                 <label htmlFor="orderNotes" className="block text-[13px] font-semibold text-slate-700 mb-1.5">Order Notes <span className="text-slate-400">(optional)</span></label>
                 <textarea id="orderNotes" rows={2} value={form.orderNotes} onChange={(e) => setField("orderNotes", e.target.value)} className="w-full px-4 py-2.5 text-[14px] border border-slate-200 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb] transition-all resize-none" placeholder="Any special instructions..." />
               </div>
+
+              {/* Payment Method Selector */}
+              <div>
+                <label className="block text-[13px] font-semibold text-slate-700 mb-2">Payment Method</label>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod("cod")}
+                    className={`relative p-4 rounded-xl border-2 text-left transition-all ${
+                      paymentMethod === "cod"
+                        ? "border-[#2563eb] bg-blue-50/50 shadow-sm"
+                        : "border-slate-200 bg-white hover:border-slate-300"
+                    }`}
+                  >
+                    {paymentMethod === "cod" && (
+                      <div className="absolute top-2 right-2 w-5 h-5 bg-[#2563eb] rounded-full flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full" />
+                      </div>
+                    )}
+                    <Truck className="w-6 h-6 text-[#2563eb] mb-2" />
+                    <p className="text-[14px] font-bold text-slate-800">Cash on Delivery</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">Pay when you receive</p>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPaymentMethod("razorpay")}
+                    className={`relative p-4 rounded-xl border-2 text-left transition-all ${
+                      paymentMethod === "razorpay"
+                        ? "border-[#2563eb] bg-blue-50/50 shadow-sm"
+                        : "border-slate-200 bg-white hover:border-slate-300"
+                    }`}
+                  >
+                    {paymentMethod === "razorpay" && (
+                      <div className="absolute top-2 right-2 w-5 h-5 bg-[#2563eb] rounded-full flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full" />
+                      </div>
+                    )}
+                    <CreditCard className="w-6 h-6 text-[#2563eb] mb-2" />
+                    <p className="text-[14px] font-bold text-slate-800">Online Payment</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">Pay via Razorpay</p>
+                  </button>
+                </div>
+
+                {paymentMethod === "cod" && (
+                  <div className="mt-3 p-3 bg-amber-50 border border-amber-100 rounded-xl text-[12px] text-amber-800">
+                    <strong>COD Terms:</strong> Please keep exact change ready. Our delivery partner will collect cash at the time of delivery. Orders can be cancelled before dispatch only.
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Summary */}
@@ -278,18 +359,24 @@ export default function CheckoutPage() {
                 </div>
                 <button
                   type="submit"
-                  disabled={submitting || !razorpayReady}
+                  disabled={submitting || (paymentMethod === "razorpay" && !razorpayReady)}
                   className="w-full py-3.5 bg-[#2563eb] text-white font-bold text-[15px] rounded-full hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 disabled:opacity-60 flex items-center justify-center gap-2"
                 >
                   {submitting ? (
                     <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</>
+                  ) : paymentMethod === "cod" ? (
+                    <>Place Order (COD)</>
                   ) : !razorpayReady ? (
                     "Payment Not Configured"
                   ) : (
                     <>Pay ₹{grandTotal.toFixed(2)} <ShieldCheck className="w-4 h-4" /></>
                   )}
                 </button>
-                <p className="text-[11px] text-slate-400 text-center mt-3">Secured by Razorpay. Your payment info is encrypted.</p>
+                <p className="text-[11px] text-slate-400 text-center mt-3">
+                  {paymentMethod === "cod"
+                    ? "Pay cash to the delivery agent when you receive your order."
+                    : "Secured by Razorpay. Your payment info is encrypted."}
+                </p>
               </div>
             </div>
           </div>
