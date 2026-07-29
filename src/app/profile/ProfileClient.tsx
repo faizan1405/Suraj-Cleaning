@@ -171,16 +171,17 @@ export default function ProfileClient({ initialUser, initialProfile }: { initial
     })();
   }, [initialUser]);
 
-  // Fetch orders by email
+  // Fetch orders using session (cookie-based auth — no email needed)
   useEffect(() => {
-    if (!profile?.email) return;
     (async () => {
       setOrdersLoading(true);
       try {
-        const res = await fetch(`/api/orders/list?email=${encodeURIComponent(profile.email)}`, { cache: "no-store" });
+        const res = await fetch("/api/orders/list", { cache: "no-store", credentials: "same-origin" });
         if (res.ok) {
           const data = await res.json();
           setOrders(Array.isArray(data) ? data : []);
+        } else if (res.status === 401) {
+          setOrders([]);
         }
       } catch {
         setOrders([]);
@@ -188,7 +189,7 @@ export default function ProfileClient({ initialUser, initialProfile }: { initial
         setOrdersLoading(false);
       }
     })();
-  }, [profile?.email]);
+  }, []);
 
   const orderStats = useMemo(() => {
     const total = orders.length;

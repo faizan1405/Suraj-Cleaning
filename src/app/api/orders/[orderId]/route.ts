@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { getOrderById } from "@/data/orders";
+import { getSession } from "@/lib/auth";
 
 export async function GET(
   request: Request,
@@ -18,7 +19,16 @@ export async function GET(
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    if (email && order.customer.email.toLowerCase() !== email) {
+    // Check authorization: either email matches (for non-logged-in users)
+    // or the session user owns this order (by userId or email)
+    const session = await getSession();
+    if (session) {
+      const ownsByUserId = (order as any).userId === session.sub;
+      const ownsByEmail = order.customer.email.toLowerCase() === session.email.toLowerCase();
+      if (!ownsByUserId && !ownsByEmail) {
+        return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      }
+    } else if (email && order.customer.email.toLowerCase() !== email) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 

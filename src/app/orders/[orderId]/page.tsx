@@ -15,40 +15,42 @@ const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
 export const dynamic = "force-dynamic";
 
 export default async function OrderDetailPage({
-  searchParams,
+  params,
 }: {
-  searchParams: Promise<{ orderId?: string; email?: string }>;
+  params: Promise<{ orderId: string }>;
 }) {
-  const params = await searchParams;
-  const orderId = params.orderId;
-  const email = params.email?.toLowerCase().trim() ?? "";
+  const { orderId } = await params;
+  const session = await getSession();
+  const order = await getOrderById(orderId);
 
-  if (!orderId) {
+  // Authorization: require login or matching email
+  if (!order) {
     return (
       <section className="py-[72px] md:py-[88px] bg-white">
         <div className="mx-auto max-w-[500px] px-5 md:px-8 text-center py-12">
           <h1 className="text-[24px] font-bold text-[#0f172a] mb-2">Order Not Found</h1>
-          <p className="text-[14px] text-[#64748b] mb-6">No order ID was provided.</p>
+          <p className="text-[14px] text-[#64748b] mb-6">No order exists with ID {orderId}.</p>
           <a href="/orders" className="inline-flex items-center gap-2 text-[#2563eb] font-semibold text-[15px]">View All Orders</a>
         </div>
       </section>
     );
   }
 
-  const session = await getSession();
-  const order = await getOrderById(orderId);
-
-  // Authorization: either email matches (for non-logged-in users) or session matches
-  if (!order || (email && order.customer.email.toLowerCase() !== email) || (!email && !session)) {
-    return (
-      <section className="py-[72px] md:py-[88px] bg-white">
-        <div className="mx-auto max-w-[500px] px-5 md:px-8 text-center py-12">
-          <h1 className="text-[24px] font-bold text-[#0f172a] mb-2">Order Not Found</h1>
-          <p className="text-[14px] text-[#64748b] mb-6">This order does not exist or you don't have permission to view it.</p>
-          <a href="/orders" className="inline-flex items-center gap-2 text-[#2563eb] font-semibold text-[15px]">View All Orders</a>
-        </div>
-      </section>
-    );
+  // If logged in, verify ownership by userId or email
+  if (session) {
+    const ownsByUserId = (order as any).userId === session.sub;
+    const ownsByEmail = order.customer.email.toLowerCase() === session.email.toLowerCase();
+    if (!ownsByUserId && !ownsByEmail) {
+      return (
+        <section className="py-[72px] md:py-[88px] bg-white">
+          <div className="mx-auto max-w-[500px] px-5 md:px-8 text-center py-12">
+            <h1 className="text-[24px] font-bold text-[#0f172a] mb-2">Order Not Found</h1>
+            <p className="text-[14px] text-[#64748b] mb-6">This order does not exist or you don't have permission to view it.</p>
+            <a href="/orders" className="inline-flex items-center gap-2 text-[#2563eb] font-semibold text-[15px]">View All Orders</a>
+          </div>
+        </section>
+      );
+    }
   }
 
   const colors = STATUS_COLORS[order.status] || { bg: "bg-slate-100", text: "text-slate-600" };
@@ -58,7 +60,7 @@ export default async function OrderDetailPage({
       <div className="mx-auto max-w-[800px] px-5 md:px-8">
         <div className="mb-6">
           <a href="/orders" className="inline-flex items-center gap-1.5 text-[13px] text-[#64748b] hover:text-[#2563eb] transition-colors">
-            ← Back to Orders
+            &larr; Back to Orders
           </a>
         </div>
 
@@ -92,9 +94,9 @@ export default async function OrderDetailPage({
                 <div className="flex-1">
                   <p className="text-[14px] font-bold text-[#0f172a]">{item.name}</p>
                   {item.size && <p className="text-[12px] text-[#64748b]">Size: {item.size}</p>}
-                  <p className="text-[12px] text-[#64748b]">Qty: {item.quantity} x ₹{item.price}</p>
+                  <p className="text-[12px] text-[#64748b]">Qty: {item.quantity} x &yen;{item.price}</p>
                 </div>
-                <p className="text-[14px] font-bold text-[#0f172a]">₹{item.subtotal.toFixed(2)}</p>
+                <p className="text-[14px] font-bold text-[#0f172a]">&yen;{item.subtotal.toFixed(2)}</p>
               </div>
             ))}
           </div>
@@ -106,7 +108,7 @@ export default async function OrderDetailPage({
               <p className="text-[13px] text-slate-600">{order.customer.address}</p>
               {order.customer.landmark && <p className="text-[13px] text-slate-600">{order.customer.landmark}</p>}
               <p className="text-[13px] text-slate-600">{order.customer.city}, {order.customer.state} - {order.customer.pincode}</p>
-              <p className="text-[13px] text-slate-600 mt-2">📞 {order.customer.mobile}</p>
+              <p className="text-[13px] text-slate-600 mt-2">{"📞"} {order.customer.mobile}</p>
             </div>
 
             <div className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-200/80">
@@ -123,10 +125,10 @@ export default async function OrderDetailPage({
             <div className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-200/80">
               <h3 className="text-[14px] font-bold text-[#0f172a] mb-3">Summary</h3>
               <div className="space-y-1.5">
-                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Subtotal</span><span>₹{order.subtotal.toFixed(2)}</span></div>
-                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Delivery</span><span>{order.deliveryCharge === 0 ? "FREE" : `₹${order.deliveryCharge}`}</span></div>
-                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Tax</span><span>₹{order.taxAmount.toFixed(2)}</span></div>
-                <div className="flex justify-between pt-2 border-t border-slate-200 font-bold text-[15px]"><span>Total</span><span className="text-[#2563eb]">₹{order.total.toFixed(2)}</span></div>
+                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Subtotal</span><span>&yen;{order.subtotal.toFixed(2)}</span></div>
+                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Delivery</span><span>{order.deliveryCharge === 0 ? "FREE" : `&yen;${order.deliveryCharge}`}</span></div>
+                <div className="flex justify-between text-[13px]"><span className="text-[#64748b]">Tax</span><span>&yen;{order.taxAmount.toFixed(2)}</span></div>
+                <div className="flex justify-between pt-2 border-t border-slate-200 font-bold text-[15px]"><span>Total</span><span className="text-[#2563eb]">&yen;{order.total.toFixed(2)}</span></div>
               </div>
             </div>
           </div>

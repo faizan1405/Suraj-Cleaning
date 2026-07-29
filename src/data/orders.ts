@@ -11,6 +11,7 @@ export interface OrderItem {
 export interface Order {
   _id?: string;
   id: string;
+  userId?: string;
   razorpayOrderId: string;
   razorpayPaymentId?: string;
   razorpaySignature?: string;
@@ -53,6 +54,13 @@ export async function getOrders(): Promise<Order[]> {
 export async function getOrderById(id: string): Promise<Order | null> {
   const orders = await getOrders();
   return orders.find((o) => o.id === id) ?? null;
+}
+
+export async function getOrdersByUserId(userId: string): Promise<Order[]> {
+  const orders = await getOrders();
+  return orders
+    .filter((o) => (o as any).userId === userId)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 
 export async function getOrdersByEmail(email: string): Promise<Order[]> {

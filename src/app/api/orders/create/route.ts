@@ -2,6 +2,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
+import { getSession } from "@/lib/auth";
 import { checkoutSchema } from "@/lib/order-schema";
 import { createRazorpayOrder, getRazorpayKeyId, isRazorpayServerConfigured } from "@/lib/razorpay";
 import { getProducts } from "@/data/products";
@@ -116,8 +117,12 @@ export async function POST(request: Request) {
     const now = new Date().toISOString();
     const orderId = `ORD-${Date.now()}-${Math.random().toString(36).slice(2, 8).toUpperCase()}`;
 
+    // Attach userId if logged in so future My Account lookups work
+    const session = await getSession();
+
     const order: Order = {
       id: orderId,
+      userId: session?.sub,
       razorpayOrderId,
       paymentMethod,
       paymentStatus: "pending",

@@ -2,21 +2,23 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
-import { getOrdersByEmail } from "@/data/orders";
+import { getSession } from "@/lib/auth";
+import { getOrdersByEmail, getOrdersByUserId } from "@/data/orders";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
-    const url = new URL(request.url);
-    const email = url.searchParams.get("email")?.trim() ?? "";
-
-    if (!email) {
-      return NextResponse.json({ orders: [] });
+    const session = await getSession();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const orders = await getOrdersByEmail(email);
-    // Return full orders so the profile dashboard can show items + images.
-    // Sensitive secrets (signatures) are already not stored on the order.
-    return NextResponse.json(orders);
+    // Prefer linking by user id (Google sub), fall back to email for legacy orders.
+    const orders = await getOrdersByUserId(session.sub);
+    const finalOrders = orders.length > 0
+      ? orders
+      : await getOrdersByEmail(session.email);
+
+    return NextResponse.json(finalOrders);
   } catch (error) {
     console.error("Order list failed:", error);
     return NextResponse.json({ error: "Failed to fetch orders" }, { status: 500 });
