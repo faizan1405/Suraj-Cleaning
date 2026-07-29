@@ -1,6 +1,6 @@
 import crypto from "crypto";
 
-const SECRET = process.env.NEXTAUTH_SECRET || "swaraj-dev-secret-change-me-in-production";
+const SECRET = process.env.NEXTAUTH_SECRET || "swaraj_cleaning_secure_session_secret";
 
 export interface SessionUser {
   sub: string;

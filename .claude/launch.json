@@ -2,11 +2,8 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "suraj-cleaning-prod",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["next", "dev", "--turbopack"],
-      "port": 3099,
-      "autoPort": true
+      "name": "suraj-cleaning",
+      "url": "http://localhost:3000"
     }
   ]
 }

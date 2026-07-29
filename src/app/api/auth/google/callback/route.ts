@@ -7,6 +7,7 @@ import crypto from "crypto";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
+const SESSION_SECRET = process.env.NEXTAUTH_SECRET || "swaraj_cleaning_secure_session_secret";
 
 function getBaseUrl(request: Request): string {
   const url = new URL(request.url);
@@ -15,10 +16,13 @@ function getBaseUrl(request: Request): string {
   return `${proto}://${host}`;
 }
 
+function isLocalhost(baseUrl: string): boolean {
+  return baseUrl.includes("localhost") || baseUrl.includes("127.0.0.1");
+}
+
 function signSession(payload: object): string {
-  const secret = process.env.NEXTAUTH_SECRET || "swaraj_dev_secret_change_me";
   const data = Buffer.from(JSON.stringify(payload)).toString("base64url");
-  const sig = crypto.createHmac("sha256", secret).update(data).digest("base64url");
+  const sig = crypto.createHmac("sha256", SESSION_SECRET).update(data).digest("base64url");
   return `${data}.${sig}`;
 }
 
@@ -107,10 +111,12 @@ export async function GET(request: Request) {
     const sessionToken = signSession(sessionPayload);
 
     const cookieStore = await cookies();
+    const isLocal = isLocalhost(baseUrl);
+
     cookieStore.set("session", sessionToken, {
       httpOnly: true,
-      secure: !baseUrl.includes("localhost") && !baseUrl.includes("127.0.0.1"),
-      sameSite: "none",
+      secure: !isLocal,
+      sameSite: isLocal ? "lax" : "none",
       maxAge: 60 * 60 * 24 * 30,
       path: "/",
     });

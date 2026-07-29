@@ -1,11 +1,13 @@
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-export async function POST() {
+export async function POST(request: Request) {
   const cookieStore = await cookies();
   cookieStore.delete("session");
-  return NextResponse.redirect(new URL("/signin", process.env.NEXTAUTH_URL || "http://localhost:3000"));
+
+  const url = new URL(request.url);
+  const host = url.host;
+  const proto = request.headers.get("x-forwarded-proto") || (host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https");
+
+  return NextResponse.redirect(new URL("/signin", `${proto}://${host}`));
 }
