@@ -52,6 +52,48 @@ async function readJsonFile<T>(relativePath: string): Promise<T> {
 }
 
 async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
+  const client = (await import("@/lib/mongodb"))._getClientSync();
+
+  // Use a MongoDB session + transaction so the clear-then-insert is atomic.
+  // Without this, deleteMany followed by insertMany leaves the collection
+  // empty between the two calls — a concurrent read (or partial insert
+  // failure) returns no data or corrupt data, which causes stale product
+  // lists and re-appearing items.
+  if (client) {
+    try {
+      const session = client.startSession();
+      await session.withTransaction(async () => {
+        const db = await getDb();
+        const collection = db.collection(getCollectionName(relativePath));
+
+        if (SINGLETON_COLLECTIONS.has(relativePath)) {
+          await collection.updateOne(
+            { _id: "singleton" } as Record<string, string>,
+            { $set: { data } },
+            { session }
+          );
+          return;
+        }
+
+        const items = data as Record<string, unknown>[];
+
+        if (items.length === 0) {
+          await collection.deleteMany({}, { session });
+          return;
+        }
+
+        await collection.deleteMany({}, { session });
+        await collection.insertMany(items, { ordered: false, session });
+      });
+      return;
+    } catch (txError) {
+      // If the transaction fails (e.g., session already ended on a non-transactable
+      // engine), fall through to the non-transactional path below.
+      console.error("writeJsonFile transaction failed, falling back:", txError);
+    }
+  }
+
+  // Non-transactional fallback (used if no active client or session support)
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       const db = await getDb();
@@ -73,9 +115,6 @@ async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
         return;
       }
 
-      // Atomic replace: clear the collection, then insert all items.
-      // This avoids the stale-read race condition where deleteMany({ id: { $nin: ids } })
-      // could remove items added by a concurrent write.
       await collection.deleteMany({});
       await collection.insertMany(items, { ordered: false });
       return;
@@ -87,6 +126,7 @@ async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
       throw error;
     }
   }
+  throw new Error("writeJsonFile: all retries exhausted");
 }
 
 export { resetDb, readJsonFile, writeJsonFile };
