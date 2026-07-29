@@ -25,16 +25,15 @@ import { business, contact } from "@/config/site";
 let cachedCompany: CompanyInfo | null = null;
 
 export async function getCompany(): Promise<CompanyInfo> {
-  if (cachedCompany) return cachedCompany;
-
+  // Always re-fetch so admin settings changes are visible immediately.
+  // The previous in-memory cache caused stale data after saves.
   try {
     const res = await fetch("/api/admin/data/company", { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch company");
-    cachedCompany = await res.json();
-    return cachedCompany!;
+    return await res.json();
   } catch {
     console.error("Error fetching company, returning default");
-    cachedCompany = {
+    return {
       name: business.name,
       tagline: business.tagline,
       description: business.description,
@@ -48,7 +47,6 @@ export async function getCompany(): Promise<CompanyInfo> {
       social: { whatsapp: `https://wa.me/${contact.phoneRaw}` },
       stats: { customers: 500, distributors: 100, products: 25, years: 5 },
     };
-    return cachedCompany;
   }
 }
 
