@@ -356,7 +356,7 @@ export default function AdminFormModal({
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div className="admin-modal-backdrop" onClick={onClose} />
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col border border-slate-200/80 admin-modal-content">
+      <div className="relative bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-hidden flex flex-col border border-slate-200/80 admin-modal-content z-[70]">
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-slate-100">
           <div>
