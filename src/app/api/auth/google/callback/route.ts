@@ -110,7 +110,7 @@ export async function GET(request: Request) {
     cookieStore.set("session", sessionToken, {
       httpOnly: true,
       secure: !baseUrl.includes("localhost") && !baseUrl.includes("127.0.0.1"),
-      sameSite: "lax",
+      sameSite: "none",
       maxAge: 60 * 60 * 24 * 30,
       path: "/",
     });
