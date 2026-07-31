@@ -20,20 +20,22 @@ async function main() {
   const products = JSON.parse(readFileSync("src/data/products.json", "utf-8"));
   console.log(`Syncing ${products.length} products to MongoDB...`);
 
-  // Use a transaction to atomically replace all products
-  const session = client.startSession();
-  try {
-    await session.withTransaction(async () => {
-      await db.collection("products").deleteMany({}, { session });
-      await db.collection("products").insertMany(products, { ordered: false, session });
-    });
-    console.log("Done! Products synced to MongoDB.");
-  } catch (err) {
-    console.error("Transaction failed, falling back to non-transactional:", err.message);
-    await db.collection("products").deleteMany({});
-    await db.collection("products").insertMany(products, { ordered: false });
-    console.log("Done! Products synced to MongoDB (fallback mode).");
+  // Upsert each product by id — preserves anything in the DB we don't know about
+  let upserted = 0;
+  let inserted = 0;
+  let updated = 0;
+  for (const product of products) {
+    const { _id, ...rest } = product;
+    const result = await db.collection("products").updateOne(
+      { id: product.id },
+      { $set: rest },
+      { upsert: true }
+    );
+    if (result.upsertedCount > 0) inserted++;
+    else if (result.modifiedCount > 0) updated++;
+    upserted++;
   }
+  console.log(`Synced ${upserted} products (${inserted} inserted, ${updated} updated).`);
 
   // Verify
   const count = await db.collection("products").countDocuments({});
