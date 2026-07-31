@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuth } from "@/lib/require-auth";
-import { getUser, createUser, updateUser } from "@/data/users";
+import { getUser, upsertUser, updateUser } from "@/data/users";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,8 +10,11 @@ export async function GET() {
   if (auth instanceof NextResponse) return auth;
   const user = await getUser(auth.sub);
   if (!user) {
-    // Auto-create user profile from OAuth session
-    const created = await createUser({
+    // First-time login: atomically create the profile. The upsert
+    // uses a unique-key write so two concurrent requests (profile +
+    // orders list firing simultaneously on landing) cannot produce
+    // duplicate users.
+    const created = await upsertUser({
       id: auth.sub,
       email: auth.email,
       name: auth.name,

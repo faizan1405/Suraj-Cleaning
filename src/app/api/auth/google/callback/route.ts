@@ -3,29 +3,10 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import crypto from "crypto";
-import { auth } from "@/config/site";
+import { getBaseUrl, getCookieOptions, getOAuthRedirectUri, signSession } from "@/lib/auth";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-const SESSION_SECRET = process.env.NEXTAUTH_SECRET || "swaraj_cleaning_secure_session_secret";
-
-function getBaseUrl(request: Request): string {
-  const url = new URL(request.url);
-  const host = url.host;
-  const proto = request.headers.get("x-forwarded-proto") || (host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https");
-  return `${proto}://${host}`;
-}
-
-function isLocalhost(baseUrl: string): boolean {
-  return baseUrl.includes("localhost") || baseUrl.includes("127.0.0.1");
-}
-
-function signSession(payload: object): string {
-  const data = Buffer.from(JSON.stringify(payload)).toString("base64url");
-  const sig = crypto.createHmac("sha256", SESSION_SECRET).update(data).digest("base64url");
-  return `${data}.${sig}`;
-}
 
 export async function GET(request: Request) {
   const baseUrl = getBaseUrl(request);
@@ -51,7 +32,7 @@ export async function GET(request: Request) {
   cookieStore.delete("oauth_state");
 
   try {
-    const redirectUri = `${baseUrl}/api/auth/google/callback`;
+    const redirectUri = getOAuthRedirectUri(baseUrl);
 
     const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
@@ -100,27 +81,20 @@ export async function GET(request: Request) {
       return NextResponse.redirect(`${baseUrl}/signin?error=email_not_verified`);
     }
 
+    const now = Math.floor(Date.now() / 1000);
     const sessionPayload = {
       sub: user.sub,
       email: user.email,
       name: user.name,
       picture: user.picture,
-      iat: Math.floor(Date.now() / 1000),
-      exp: Math.floor(Date.now() / 1000) + auth.sessionTimeoutSeconds,
+      iat: now,
+      exp: now + (7 * 24 * 60 * 60),
     };
 
     const sessionToken = signSession(sessionPayload);
 
-    const cookieStore = await cookies();
-    const isLocal = isLocalhost(baseUrl);
-
-    cookieStore.set("session", sessionToken, {
-      httpOnly: true,
-      secure: !isLocal,
-      sameSite: isLocal ? "lax" : "none",
-      maxAge: auth.sessionTimeoutSeconds,
-      path: "/",
-    });
+    const options = getCookieOptions(baseUrl);
+    cookieStore.set("session", sessionToken, options);
 
     return NextResponse.redirect(`${baseUrl}/profile`);
   } catch (err) {

@@ -70,6 +70,27 @@ export async function createUser(user: Omit<User, "createdAt" | "updatedAt">): P
   return newUser;
 }
 
+export async function upsertUser(user: Omit<User, "createdAt" | "updatedAt">): Promise<User> {
+  const { writeJsonFile } = await import("@/lib/db");
+  const users = await getUsersInternal();
+  const now = new Date().toISOString();
+  const existing = users.find((u) => u.id === user.id);
+  const merged: User = {
+    ...user,
+    createdAt: existing?.createdAt ?? now,
+    updatedAt: now,
+  };
+  // Replace the entry if it already exists; otherwise append.
+  const idx = users.findIndex((u) => u.id === user.id);
+  if (idx >= 0) {
+    users[idx] = merged;
+  } else {
+    users.push(merged);
+  }
+  await writeJsonFile(USERS_FILE, users);
+  return merged;
+}
+
 export async function updateUser(id: string, updates: Partial<Pick<User, "name" | "phone" | "picture">>): Promise<User | null> {
   const { writeJsonFile } = await import("@/lib/db");
   const users = await getUsersInternal();

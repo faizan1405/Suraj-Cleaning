@@ -187,10 +187,6 @@ export const orders = {
 // Authentication Settings
 // ──────────────────────────────────────────────
 export const auth = {
-  /** Google OAuth enabled */
-  googleLoginEnabled: true,
-  /** Email / password login enabled */
-  emailLoginEnabled: true,
   /** Session expiry in seconds (default: 7 days) */
   sessionTimeoutSeconds: 7 * 24 * 60 * 60,
 } as const;

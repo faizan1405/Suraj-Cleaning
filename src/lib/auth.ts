@@ -1,6 +1,39 @@
 import crypto from "crypto";
 
-const SECRET = process.env.NEXTAUTH_SECRET || "swaraj_cleaning_secure_session_secret";
+const _secret = process.env.NEXTAUTH_SECRET;
+if (!_secret) {
+  throw new Error("NEXTAUTH_SECRET is not set in environment variables");
+}
+const SECRET = _secret as string;
+
+export const SESSION_COOKIE_NAME = "session";
+export const SESSION_COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days
+
+export function isLocalhost(host: string): boolean {
+  return host.includes("localhost") || host.includes("127.0.0.1");
+}
+
+export function getBaseUrl(request: Request): string {
+  const url = new URL(request.url);
+  const host = url.host;
+  const proto = request.headers.get("x-forwarded-proto") || (isLocalhost(host) ? "http" : "https");
+  return `${proto}://${host}`;
+}
+
+export function getCookieOptions(baseUrl: string) {
+  const isLocal = isLocalhost(baseUrl);
+  return {
+    httpOnly: true,
+    secure: !isLocal,
+    sameSite: isLocal ? ("lax" as const) : ("none" as const),
+    maxAge: SESSION_COOKIE_MAX_AGE,
+    path: "/",
+  };
+}
+
+export function getOAuthRedirectUri(baseUrl: string): string {
+  return `${baseUrl}/api/auth/google/callback`;
+}
 
 export interface SessionUser {
   sub: string;
@@ -41,6 +74,6 @@ export function parseSession(token: string | undefined): SessionPayload | null {
 export async function getSession(): Promise<SessionPayload | null> {
   const { cookies } = await import("next/headers");
   const cookieStore = await cookies();
-  const token = cookieStore.get("session")?.value;
+  const token = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   return parseSession(token);
 }

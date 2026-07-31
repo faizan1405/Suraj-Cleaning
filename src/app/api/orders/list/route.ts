@@ -12,13 +12,13 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Prefer linking by user id (Google sub), fall back to email for legacy orders.
-    const orders = await getOrdersByUserId(session.sub);
-    const finalOrders = orders.length > 0
-      ? orders
-      : await getOrdersByEmail(session.email);
+    // Fetch by both userId (primary) and email (legacy), then merge/dedup.
+    const byUserId = await getOrdersByUserId(session.sub);
+    const byEmail = await getOrdersByEmail(session.email);
+    const seen = new Set<string>(byUserId.map((o) => o.id));
+    const merged = [...byUserId, ...byEmail.filter((o) => !seen.has(o.id))];
 
-    return NextResponse.json(finalOrders);
+    return NextResponse.json(merged);
   } catch (error) {
     console.error("Order list failed:", error);
     return NextResponse.json({ error: "Failed to fetch orders" }, { status: 500 });

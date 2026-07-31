@@ -78,7 +78,13 @@ export default function CheckoutPage() {
     setSubmitting(true);
     setErrors({});
 
-    const parsed = checkoutSchema.safeParse(form);
+    // Normalise mobile before validation — strip +91, spaces, dashes
+    const normalised = {
+      ...form,
+      mobile: form.mobile.replace(/^\+?91[-\s]?/, "").replace(/[-\s]/g, ""),
+    };
+
+    const parsed = checkoutSchema.safeParse(normalised);
     if (!parsed.success) {
       const fieldErrors: Record<string, string> = {};
       for (const err of parsed.error.errors) {

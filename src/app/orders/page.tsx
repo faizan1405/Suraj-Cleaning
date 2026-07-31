@@ -1,27 +1,22 @@
 import { getSession } from "@/lib/auth";
-import { getOrdersByEmail } from "@/data/orders";
+import { redirect } from "next/navigation";
+import { getOrdersByUserId, getOrdersByEmail } from "@/data/orders";
 import type { Order } from "@/data/orders";
 import { formatPrice } from "@/lib/currency";
 
 export const dynamic = "force-dynamic";
 
-export default async function OrdersPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ email?: string }>;
-}) {
+export default async function OrdersPage() {
   const session = await getSession();
-  const params = await searchParams;
-
-  // Use email from session if logged in, otherwise from query params
-  const queryEmail = params.email?.trim() ?? "";
-  const email = session?.email || queryEmail;
-  const isLoggedIn = Boolean(session);
-
-  let orders: Order[] = [];
-  if (email) {
-    orders = await getOrdersByEmail(email);
+  if (!session) {
+    redirect("/signin");
   }
+
+  // Fetch by userId (primary), fall back to email for legacy orders
+  const orders = await getOrdersByUserId(session.sub);
+  const legacy = await getOrdersByEmail(session.email);
+  const seen = new Set<string>(orders.map((o) => o.id));
+  const finalOrders = [...orders, ...legacy.filter((o) => !seen.has(o.id))];
 
   const statusColor: Record<string, string> = {
     confirmed: "bg-green-100 text-green-700",
@@ -31,7 +26,7 @@ export default async function OrdersPage({
     shipped: "bg-purple-100 text-purple-700",
     delivered: "bg-green-100 text-green-700",
     cancelled: "bg-red-100 text-red-700",
-    refunded: "bg-slate-100 text-slate-700",
+    refunded: "bg-slate-100 text-slate-600",
   };
 
   return (
@@ -39,42 +34,22 @@ export default async function OrdersPage({
       <div className="mx-auto max-w-[600px] px-5 md:px-8">
         <div className="mb-6">
           <a href="/" className="inline-flex items-center gap-1.5 text-[13px] text-[#64748b] hover:text-[#2563eb] transition-colors">
-            ← Back to Home
+            &larr; Back to Home
           </a>
         </div>
         <h1 className="text-[28px] md:text-[34px] font-bold text-[#0f172a] mb-2">My Orders</h1>
-        <p className="text-[14px] text-[#64748b] mb-6">
-          {isLoggedIn ? "Here are all your orders." : "Enter your email address to find your orders."}
-        </p>
+        <p className="text-[14px] text-[#64748b] mb-6">Here are all your orders.</p>
 
-        {!isLoggedIn && (
-          <form action={`/orders?email=`} method="GET" className="flex gap-2 mb-8">
-            <input
-              type="email"
-              name="email"
-              defaultValue={queryEmail}
-              required
-              placeholder="your@email.com"
-              className="flex-1 px-4 py-2.5 text-[14px] border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-[#2563eb] transition-all"
-            />
-            <button type="submit" className="px-5 py-2.5 bg-[#2563eb] text-white font-semibold text-[14px] rounded-xl hover:bg-[#1d4ed8] transition-colors">
-              Search
-            </button>
-          </form>
-        )}
-
-        {email && orders.length === 0 && (
+        {finalOrders.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-[14px] text-[#64748b]">No orders found{isLoggedIn ? " yet." : " for this email."}</p>
-            {!isLoggedIn && (
-              <a href="/signin" className="inline-block mt-3 text-[13px] text-[#2563eb] font-medium hover:underline">Sign in to see your orders</a>
-            )}
+            <p className="text-[14px] text-[#64748b]">No orders found yet.</p>
+            <a href="/products" className="inline-block mt-3 text-[13px] text-[#2563eb] font-medium hover:underline">Start Shopping</a>
           </div>
         )}
 
-        {orders.length > 0 && (
+        {finalOrders.length > 0 && (
           <div className="space-y-3">
-            {orders.map((order) => (
+            {finalOrders.map((order: Order) => (
               <a
                 key={order.id}
                 href={`/orders/${order.id}`}
@@ -83,13 +58,11 @@ export default async function OrdersPage({
                 <div>
                   <p className="text-[13px] font-bold text-[#0f172a]">{order.id}</p>
                   <p className="text-[12px] text-[#64748b]">{new Date(order.createdAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p>
-                  <p className="text-[12px] text-[#64748b]">{order.items.reduce((s, i) => s + i.quantity, 0)} items · {formatPrice(order.total)}</p>
+                  <p className="text-[12px] text-[#64748b]">{order.items.reduce((s, i) => s + i.quantity, 0)} items &middot; {formatPrice(order.total)}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
-                    order.paymentMethod === "cod"
-                      ? "bg-green-100 text-green-700"
-                      : "bg-blue-100 text-blue-700"
+                    order.paymentMethod === "cod" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
                   }`}>
                     {order.paymentMethod === "cod" ? "COD" : "Online"}
                   </span>

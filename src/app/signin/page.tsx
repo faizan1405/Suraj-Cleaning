@@ -1,15 +1,29 @@
-import { getSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
+"use client";
+
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default async function SignInPage() {
-  const session = await getSession();
-  if (session) redirect("/profile");
+function SignInContent() {
+  const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
 
-  return <SignInForm />;
-}
+  useEffect(() => {
+    const err = searchParams.get("error");
+    if (err) {
+      const messages: Record<string, string> = {
+        missing_params: "The sign-in request was incomplete. Please try again.",
+        invalid_state: "The sign-in session expired. Please try again.",
+        token_exchange_failed: "Could not connect to Google. Please try again.",
+        userinfo_failed: "Could not retrieve your profile. Please try again.",
+        email_not_verified: "Please verify your email with Google before signing in.",
+        callback_failed: "An unexpected error occurred. Please try again.",
+        access_denied: "You denied access to Google. Please try again.",
+      };
+      setError(messages[err] || `Sign-in failed: ${err}`);
+    }
+  }, [searchParams]);
 
-function SignInForm() {
   return (
     <section className="py-[72px] md:py-[88px] bg-white min-h-screen flex items-center justify-center">
       <div className="mx-auto max-w-[420px] px-5 md:px-8">
@@ -23,6 +37,11 @@ function SignInForm() {
         </div>
 
         <div className="bg-white rounded-2xl p-6 md:p-8 border border-slate-200/80 shadow-sm">
+          {error && (
+            <div className="mb-5 p-4 bg-red-50 border border-red-100 rounded-xl text-[13px] text-red-700">
+              {error}
+            </div>
+          )}
           <form action="/api/auth/google" method="GET">
             <button
               type="submit"
@@ -56,5 +75,19 @@ function SignInForm() {
         </div>
       </div>
     </section>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense fallback={
+      <section className="py-[72px] md:py-[88px] bg-white min-h-screen flex items-center justify-center">
+        <div className="mx-auto max-w-[420px] px-5 md:px-8 text-center">
+          <div className="w-8 h-8 border-2 border-slate-200 border-t-[#2563eb] rounded-full animate-spin mx-auto" />
+        </div>
+      </section>
+    }>
+      <SignInContent />
+    </Suspense>
   );
 }

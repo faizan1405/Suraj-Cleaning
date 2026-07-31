@@ -3,16 +3,9 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { getBaseUrl, getOAuthRedirectUri } from "@/lib/auth";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
-
-function getBaseUrl(request: Request): string {
-  const url = new URL(request.url);
-  const host = url.host;
-  const proto = request.headers.get("x-forwarded-proto") || (host.includes("localhost") || host.includes("127.0.0.1") ? "http" : "https");
-  return `${proto}://${host}`;
-}
 
 function generateState(): string {
   return Buffer.from(`${Date.now()}-${Math.random().toString(36).slice(2)}`).toString("base64url");
@@ -34,7 +27,7 @@ export async function GET(request: Request) {
 
   const params = new URLSearchParams({
     client_id: GOOGLE_CLIENT_ID,
-    redirect_uri: `${baseUrl}/api/auth/google/callback`,
+    redirect_uri: getOAuthRedirectUri(baseUrl),
     response_type: "code",
     scope: "openid email profile",
     state,

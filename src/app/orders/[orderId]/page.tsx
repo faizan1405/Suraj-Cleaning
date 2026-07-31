@@ -1,5 +1,6 @@
 import { getOrderById } from "@/data/orders";
 import { getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 import { formatPrice } from "@/lib/currency";
 
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
@@ -24,7 +25,11 @@ export default async function OrderDetailPage({
   const session = await getSession();
   const order = await getOrderById(orderId);
 
-  // Authorization: require login or matching email
+  // Authorization: require login
+  if (!session) {
+    redirect("/signin");
+  }
+
   if (!order) {
     return (
       <section className="py-[72px] md:py-[88px] bg-white">
@@ -37,21 +42,19 @@ export default async function OrderDetailPage({
     );
   }
 
-  // If logged in, verify ownership by userId or email
-  if (session) {
-    const ownsByUserId = (order as any).userId === session.sub;
-    const ownsByEmail = order.customer.email.toLowerCase() === session.email.toLowerCase();
-    if (!ownsByUserId && !ownsByEmail) {
-      return (
-        <section className="py-[72px] md:py-[88px] bg-white">
-          <div className="mx-auto max-w-[500px] px-5 md:px-8 text-center py-12">
-            <h1 className="text-[24px] font-bold text-[#0f172a] mb-2">Order Not Found</h1>
-            <p className="text-[14px] text-[#64748b] mb-6">This order does not exist or you don't have permission to view it.</p>
-            <a href="/orders" className="inline-flex items-center gap-2 text-[#2563eb] font-semibold text-[15px]">View All Orders</a>
-          </div>
-        </section>
-      );
-    }
+  // Verify ownership by userId or email
+  const ownsByUserId = (order as any).userId === session.sub;
+  const ownsByEmail = order.customer.email.toLowerCase() === session.email.toLowerCase();
+  if (!ownsByUserId && !ownsByEmail) {
+    return (
+      <section className="py-[72px] md:py-[88px] bg-white">
+        <div className="mx-auto max-w-[500px] px-5 md:px-8 text-center py-12">
+          <h1 className="text-[24px] font-bold text-[#0f172a] mb-2">Order Not Found</h1>
+          <p className="text-[14px] text-[#64748b] mb-6">This order does not exist or you don't have permission to view it.</p>
+          <a href="/orders" className="inline-flex items-center gap-2 text-[#2563eb] font-semibold text-[15px]">View All Orders</a>
+        </div>
+      </section>
+    );
   }
 
   const colors = STATUS_COLORS[order.status] || { bg: "bg-slate-100", text: "text-slate-600" };

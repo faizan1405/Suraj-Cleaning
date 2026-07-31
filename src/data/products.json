@@ -1,178 +1,992 @@
 [
-    "id": "1",
-    "slug": "hygi-x",
-    "name": "HYGI-X",
-    "category": "Toilet Cleaner",
-    "shortDescription": "Powerful toilet cleaner with 99.9% germ protection",
-    "description": "HYGI-X is an advanced toilet cleaner designed to eliminate tough stains, kill germs, and leave your toilet sparkling clean and fragrant.",
-    "price": 99,
-    "sizes": [
-      "500ml"
-    ],
-    "image": "/images/product-hygix.webp",
-    "gallery": [],
-    "benefits": [
-      "Kills 99.9% of germs",
-      "Removes tough stains",
-      "Long-lasting fragrance",
-      "Safe for ceramic surfaces"
-    ],
-    "directions": [
-      "Apply under the rim",
-      "Let it sit for 10 minutes",
-      "Scrub with a toilet brush",
-      "Flush clean"
-    ],
-    "featured": true,
-    "bestSeller": true,
-    "active": true
-  },
-  {
-    "id": "2",
-    "slug": "handpure",
-    "name": "HANDPURE",
-    "category": "Handwash",
-    "shortDescription": "Gentle handwash that kills germs effectively",
-    "description": "HANDPURE combines powerful germ protection with skin-friendly ingredients, keeping your hands clean and soft.",
-    "price": 79,
-    "sizes": [
-      "250ml",
-      "500ml"
-    ],
-    "image": "/images/product-handpure.webp",
-    "gallery": [],
-    "benefits": [
-      "Kills 99.9% germs",
-      "Gentle on skin",
-      "Pleasant fragrance",
-      "Dermatologically tested"
-    ],
-    "directions": [
-      "Wet hands with water",
-      "Apply a small amount",
-      "Lather thoroughly",
-      "Rinse with clean water"
-    ],
-    "featured": true,
-    "bestSeller": true,
-    "active": true
-  },
-  {
-    "id": "3",
-    "slug": "dish-sheen",
-    "name": "DISH SHEEN",
-    "category": "Dishwash Liquid",
-    "shortDescription": "Tough on grease, gentle on hands",
-    "description": "DISH SHEEN effortlessly removes grease and food residue from dishes, leaving them spotless and smelling fresh.",
-    "price": 89,
-    "sizes": [
-      "500ml",
-      "1L"
-    ],
-    "image": "/images/product-dish-sheen.webp",
-    "gallery": [],
-    "benefits": [
-      "Removes tough grease",
-      "Long-lasting foam",
-      "Gentle on hands",
-      "Citrus fragrance"
-    ],
-    "directions": [
-      "Dilute in water",
-      "Soak dishes briefly",
-      "Scrub with sponge",
-      "Rinse thoroughly"
-    ],
-    "featured": true,
-    "bestSeller": true,
-    "active": true
-  },
-  {
-    "id": "4",
-    "slug": "clearon",
-    "name": "CLEARON",
-    "category": "Glass Cleaner",
-    "shortDescription": "Streak-free shine for all glass surfaces",
-    "description": "CLEARON delivers a crystal-clear, streak-free finish on windows, mirrors, and all glass surfaces.",
-    "price": 89,
-    "sizes": [
-      "500ml"
-    ],
-    "image": "/images/product-clearon.webp",
-    "gallery": [],
-    "benefits": [
-      "Streak-free finish",
-      "Quick drying formula",
-      "Safe on all glass",
-      "No residue left behind"
-    ],
-    "directions": [
-      "Spray on surface",
-      "Wipe with clean cloth",
-      "Buff for extra shine"
-    ],
-    "featured": true,
-    "bestSeller": false,
-    "active": true
-  },
-  {
-    "id": "5",
-    "slug": "supreme",
-    "name": "SUPREME",
-    "category": "Detergent Powder",
-    "shortDescription": "Powerful detergent for bright, fresh laundry",
-    "description": "SUPREME detergent powder delivers deep cleaning action, removing tough stains while keeping fabrics bright and fresh.",
-    "price": 109,
-    "sizes": [
-      "1kg",
-      "2kg"
-    ],
-    "image": "/images/product-supreme.webp",
-    "gallery": [],
-    "benefits": [
-      "Deep stain removal",
-      "Fabric brightening",
-      "Long-lasting fragrance",
-      "Works in all machines"
-    ],
-    "directions": [
-      "Add powder to drum",
-      "Add clothes",
-      "Start wash cycle",
-      "Rinse thoroughly"
-    ],
-    "featured": false,
-    "bestSeller": true,
-    "active": true
-  },
-  {
-    "id": "6",
-    "slug": "fabrix",
-    "name": "FABRIX",
-    "category": "Fabric Detergent",
-    "shortDescription": "Premium liquid detergent for all fabrics",
-    "description": "FABRIX liquid detergent is specially formulated for all fabric types, providing a thorough clean while preserving fabric softness and color.",
-    "price": 149,
-    "sizes": [
-      "1L",
-      "2L"
-    ],
-    "image": "/images/product-fabrix.webp",
-    "gallery": [],
-    "benefits": [
-      "Safe for all fabrics",
-      "Color protection",
-      "Fabric softness",
-      "Fresh fragrance"
-    ],
-    "directions": [
-      "Pour into dispenser",
-      "Add clothes to machine",
-      "Select wash cycle",
-      "Enjoy clean laundry"
-    ],
-    "featured": false,
-    "bestSeller": true,
-    "active": true
-  }
+    {
+        "id": "4f592db2-845f-4ca1-82cc-ac9bb7a5c037",
+        "slug": "blackguard-black-phenyl-floor-cleaner-500ml",
+        "name": "BLACKGUARD Black Phenyl Floor Cleaner",
+        "category": "Floor Care",
+        "shortDescription": "BLACKGUARD Black Phenyl by Swaraj Enterprises is a concentrated floor cleaner that removes dirt, tough stains, and unpleasant odours while providing superior germ protection. Suitable for all floor types, it leaves your home and workplace fresh, hygienic, and sparkling clean.",
+        "description": "BLACKGUARD Black Phenyl – Powerful Cleaning with Superior Germ Protection\n\nMaintain a cleaner, healthier environment with BLACKGUARD Black Phenyl from Swaraj Enterprises. Its advanced concentrated formula effectively removes stubborn dirt, stains, and bad odours while helping protect your family and workplace from harmful germs.\n\nDesigned for everyday cleaning, BLACKGUARD delivers a hygienic shine and a long-lasting fresh fragrance that keeps your surroundings smelling clean for hours.\n\nIdeal for homes, offices, hospitals, schools, hotels, restaurants, and commercial spaces, it works efficiently on a wide range of flooring surfaces without leaving sticky residue.",
+        "price": 79,
+        "sizes": [
+            "500ml"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785340382/suraj-cleaning/admin/n4jvhdi5e5xnhtn9wteo.png",
+        "gallery": [],
+        "benefits": [
+            "Powerful germ protection\nEffectively removes dirt and tough stains\nEliminates unpleasant odours\nLong-lasting fresh fragrance\nConcentrated formula for economical use"
+        ],
+        "directions": [
+            "Shake the bottle well before use.\nDilute 20–30 ml of BLACKGUARD Black Phenyl in 1 litre of water (or as required depending on the level of dirt).\nMop the floor using a clean mop or cloth."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100
+    },
+    {
+        "id": "214c93e2-72cb-4de0-acd6-80b38701e996",
+        "slug": "cleanora-lavender-floor-cleaner-1l-5l",
+        "name": "CLEANORA Floor Cleaner (Lavender)",
+        "category": "Floor Care",
+        "shortDescription": "Enjoy sparkling clean floors with the calming fragrance of lavender while effectively removing germs, stains, and unpleasant odours.",
+        "description": "Experience a peaceful cleaning routine with CLEANORA Lavender Floor Cleaner. Its powerful antibacterial formula removes dirt, stains, and germs while filling your home with the calming aroma of fresh lavender.\n\nSuitable for all washable flooring including tiles, marble, granite, ceramic, and vitrified surfaces.",
+        "price": 99,
+        "sizes": [
+            "1L,5L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785341214/suraj-cleaning/admin/cmhig8a8zso4xjmepf1o.jpg",
+        "gallery": [],
+        "benefits": [
+            "Kills 99.9% of germs\nRich sandalwood fragrance\nRemoves dirt & stains"
+        ],
+        "directions": [
+            "Add 20–30 ml to 1 litre of water.\nMop the floor thoroughly."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "variants": [
+            {
+                "name": "1L",
+                "price": 99,
+                "stock": 100,
+                "sku": "PO-09",
+                "status": "in_stock"
+            },
+            {
+                "name": "5L",
+                "price": 399,
+                "stock": 100,
+                "sku": "PO-08",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "452678d0-188d-4416-a1b8-a89fb5b884ad",
+        "slug": "cleanora-lemon-floor-cleaner-1l-5l",
+        "name": "CLEANORA Floor Cleaner (Lemon)",
+        "category": "Floor Care",
+        "shortDescription": "Powerful floor cleaner with refreshing lemon fragrance that removes dirt, stains, and germs while leaving your floors hygienically clean and citrus fresh all day.",
+        "description": "Enjoy sparkling clean floors with the refreshing scent of lemons. CLEANORA Lemon Floor Cleaner effectively removes dirt, grease, stains, and harmful germs while delivering a streak-free shine. Its advanced formula keeps your surroundings fresh and hygienic with every mop.\n\nSuitable for all washable floor surfaces including tiles, marble, granite, ceramic, vitrified flooring, and more.",
+        "price": 99,
+        "sizes": [
+            "1L,5L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785340962/suraj-cleaning/admin/aeaevte0x2rakwgcqavs.jpg",
+        "gallery": [],
+        "benefits": [
+            "Kills 99.9% of germs\nRefreshing lemon fragrance\nRemoves grease & stains\nEliminates bad odours"
+        ],
+        "directions": [
+            "Mix 20–30 ml in 1 litre of water.\nMop the floor evenly.\nNo rinsing required."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "variants": [
+            {
+                "name": "1L",
+                "price": 99,
+                "stock": 100,
+                "sku": "SK-01",
+                "status": "in_stock"
+            },
+            {
+                "name": "5L",
+                "price": 399,
+                "stock": 100,
+                "sku": "HK-02",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "e1b9f8ef-9820-46e2-a70b-e756f906edbc",
+        "slug": "cleanora-lemongrass-floor-cleaner-1l-5l",
+        "name": "CLEANORA Floor Cleaner (Lemongrass)",
+        "category": "Floor Care",
+        "shortDescription": "Advanced floor cleaner infused with natural lemongrass freshness that removes germs, stains, and odours while keeping your floors fresh for longer.",
+        "description": "Bring home the refreshing goodness of lemongrass with CLEANORA Floor Cleaner. Designed for superior hygiene, it removes dirt, stubborn stains, germs, and unpleasant odours while leaving behind a naturally refreshing fragrance that lasts.\n\nPerfect for everyday cleaning of homes, offices, hospitals, schools, and commercial areas.",
+        "price": 99,
+        "sizes": [
+            "1L,5L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785341095/suraj-cleaning/admin/vhrpunzg8qn3jq40l6yw.jpg",
+        "gallery": [],
+        "benefits": [
+            "Kills 99.9% of germs\nFresh natural lemongrass fragrance\nRemoves dirt and stains\nLong-lasting freshness"
+        ],
+        "directions": [
+            "Dilute 20–30 ml in 1 litre of water.\nMop the floor thoroughly.\nNo rinsing required."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "variants": [
+            {
+                "name": "1L",
+                "price": 99,
+                "stock": 100,
+                "sku": "KK-01",
+                "status": "in_stock"
+            },
+            {
+                "name": "5L",
+                "price": 399,
+                "stock": 100,
+                "sku": "kk-02",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "83fe4e0f-9bf2-4939-a1a1-e477dd929b6d",
+        "slug": "cleanora-rose-floor-cleaner-1l-5l",
+        "name": "CLEANORA Floor Cleaner (Rose)",
+        "category": "Floor Care",
+        "shortDescription": "Keep your floors sparkling clean with CLEANORA Floor Cleaner by Swaraj Enterprises. Its powerful formula removes dirt, stains, and germs while leaving behind a long-lasting fresh fragrance. Suitable for all floor types and ideal for daily use in homes, offices, hospitals, and commercial spaces.",
+        "description": "CLEANORA Floor Cleaner – Powerful Cleaning. Long-Lasting Freshness.\n\nExperience a cleaner, healthier home with CLEANORA Floor Cleaner from Swaraj Enterprises. Specially formulated to provide deep cleaning and hygiene, CLEANORA effectively removes dirt, stubborn stains, and unpleasant odours while eliminating up to 99.9% of germs.\n\nIts advanced, non-sticky formula leaves every floor with a brilliant shine and a refreshing fragrance that lasts for hours. Safe for everyday use, CLEANORA works efficiently on tiles, marble, granite, ceramic, vitrified flooring, and other washable surfaces.\n\nWhether you're cleaning your home, office, hospital, school, hotel, or commercial space, CLEANORA delivers professional-quality results with every mop.",
+        "price": 98,
+        "sizes": [
+            "1L,5L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785405696/suraj-cleaning/admin/erln5i3ybjpyvqep4jq7.png",
+        "gallery": [],
+        "benefits": [
+            "Kills 99.9% of germs\nPowerful stain and dirt removal\nRemoves unpleasant odours"
+        ],
+        "directions": [
+            "Add 1 capful (20–30 ml) of CLEANORA Rose Floor Cleaner to 1 litre of water.\nMop the floor using a clean mop or cloth.\nNo rinsing required."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "variants": [
+            {
+                "name": "1L",
+                "price": 99,
+                "stock": 100,
+                "sku": "SKU-01",
+                "status": "in_stock"
+            },
+            {
+                "name": "5L",
+                "price": 399,
+                "stock": 100,
+                "sku": "SLU-02",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "0bfeba9d-d40d-43d7-85cc-169f2fff8234",
+        "slug": "cleanora-sandal-floor-cleaner-1l-5l",
+        "name": "CLEANORA Floor Cleaner (Sandal)",
+        "category": "Floor Care",
+        "shortDescription": "Premium sandalwood floor cleaner that delivers powerful cleaning with a rich woody fragrance and long-lasting freshness.",
+        "description": "Enhance your cleaning experience with the luxurious fragrance of sandalwood. CLEANORA Sandal Floor Cleaner removes dirt, stains, germs, and odours while leaving your floors spotless and beautifully fragrant.\n\nIts advanced cleaning formula provides excellent shine without leaving sticky residue and is safe for all floor types.",
+        "price": 99,
+        "sizes": [
+            "1L,5L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785405998/suraj-cleaning/admin/yg1bm2q7sl41z8z34shh.jpg",
+        "gallery": [],
+        "benefits": [
+            "Kills 99.9% of germs\nRich sandalwood fragrance\nRemoves dirt & stains\nLong-lasting freshness\nSuperior shine"
+        ],
+        "directions": [
+            "Add 20–30 ml to 1 litre of water.\nMop the floor thoroughly.\nNo rinsing required."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "badge": "Best value",
+        "variants": [
+            {
+                "name": "1L",
+                "price": 99,
+                "stock": 100,
+                "sku": "LL-01",
+                "status": "in_stock"
+            },
+            {
+                "name": "5L",
+                "price": 399,
+                "stock": 100,
+                "sku": "LL-02",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "0028f824-7f63-4486-a239-2ff0d9aacc2f",
+        "slug": "clearon-glass-cleaner-500ml",
+        "name": "CLEARON Glass Cleaner",
+        "category": "Personal Care",
+        "shortDescription": "Keep every glass surface sparkling with CLEARON Glass Cleaner by Swaraj Enterprises. Its powerful, quick-drying formula removes dust, grease, fingerprints, and smudges, delivering a crystal-clear, streak-free shine on windows, mirrors, glass tables, and more.",
+        "description": "Experience spotless clarity with CLEARON Glass Cleaner from Swaraj Enterprises. Designed with an advanced cleaning formula, CLEARON effectively cuts through stubborn grease, fingerprints, dust, and everyday dirt, leaving every glass surface crystal clear without streaks or residue.\n\nWhether you're cleaning windows, mirrors, glass doors, display cabinets, or car windows, CLEARON restores the original shine in just a few sprays. Its fast-drying, non-sticky formula makes everyday cleaning quick, easy, and hassle-free.\n\nIdeal for both residential and commercial use, CLEARON is your trusted solution for maintaining sparkling clean glass surfaces.",
+        "price": 99,
+        "sizes": [
+            "500ml"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785339581/suraj-cleaning/admin/jdpwyv8sgxyk3ou8orrh.png",
+        "gallery": [],
+        "benefits": [
+            "Suitable for everyday cleaning\nSafe for glass, mirrors, and glossy surfaces\nEasy-to-use spray bottle for convenient application\nIdeal for home, office, and automotive use"
+        ],
+        "directions": [
+            "Shake the bottle gently before use.\nSpray CLEARON Glass Cleaner directly onto the glass surface from a distance of 15–20 cm.\nAllow the solution to sit for a few seconds to loosen dirt and stains."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "badge": "Best value"
+    },
+    {
+        "id": "3",
+        "slug": "dish-sheen",
+        "name": "DISH SHEEN",
+        "category": "Dishwash Liquid",
+        "shortDescription": "Tough on grease, gentle on hands",
+        "description": "DISH SHEEN effortlessly removes grease and food residue from dishes, leaving them spotless and smelling fresh.",
+        "price": 89,
+        "sizes": [
+            "500ml",
+            "1L"
+        ],
+        "image": "/images/product-dish-sheen.webp",
+        "gallery": [],
+        "benefits": [
+            "Removes tough grease",
+            "Long-lasting foam",
+            "Gentle on hands",
+            "Citrus fragrance"
+        ],
+        "directions": [
+            "Dilute in water",
+            "Soak dishes briefly",
+            "Scrub with sponge",
+            "Rinse thoroughly"
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 0
+    },
+    {
+        "id": "e44eba8d-95df-49df-b9f6-06200af6f53f",
+        "slug": "dishsheen-lemon-dishwash-liquid",
+        "name": "DishSheen Dishwash Liquid by Swaraj",
+        "category": "Kitchen Care",
+        "shortDescription": "DishSheen Dishwash Liquid by Swaraj Enterprises is a premium concentrated dishwashing liquid that removes tough grease, oil, and stubborn food stains effortlessly. Its rich foam, refreshing lemon fragrance, and gentle-on-hands formula leave utensils sparkling clean after every wash. Perfect for homes, restaurants, hotels, and commercial kitchens.",
+        "description": "DishSheen Dishwash Liquid\nTough on Grease. Gentle on Hands.\n\nDishSheen Dishwash Liquid by Swaraj Enterprises is a premium-quality concentrated dishwashing solution specially developed to provide powerful grease removal while remaining gentle on your hands. Its advanced cleaning formula quickly cuts through stubborn oil, burnt food residue, and tough kitchen stains, leaving utensils hygienically clean and shining after every wash.\n\nThe rich, long-lasting foam ensures maximum cleaning with only a small amount of liquid, making it both economical and highly effective. Infused with a refreshing lemon fragrance, DishSheen eliminates unpleasant food odours while leaving your kitchen utensils fresh and spotless.\n\nSuitable for everyday household use as well as restaurants, hotels, catering businesses, and commercial kitchens, DishSheen delivers professional cleaning performance with every wash.",
+        "price": 110,
+        "sizes": [
+            "500ml,1L,5L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785338837/suraj-cleaning/admin/pbdttfujq0fa9isb08iv.jpg",
+        "gallery": [
+            "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785338841/suraj-cleaning/admin/cvk2wsdnleo4nov0efbn.jpg"
+        ],
+        "benefits": [
+            "Removes grease and oil effortlessly\nCleans stubborn food stains quickly\nLeaves utensils hygienically clean\nEliminates unpleasant food odours"
+        ],
+        "directions": [
+            "Wet the sponge or scrubber.\nAdd 2–3 drops of DishSheen Dishwash Liquid.\nWash the utensils thoroughly.\nRinse with clean water."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 99,
+        "variants": [
+            {
+                "name": "500 ml",
+                "price": 110,
+                "stock": 110,
+                "sku": "SKU-01",
+                "status": "in_stock"
+            },
+            {
+                "name": "1L",
+                "price": 199,
+                "stock": 100,
+                "sku": "SKU-02",
+                "status": "in_stock"
+            },
+            {
+                "name": "5L",
+                "price": 499,
+                "stock": 100,
+                "sku": "SKU-03",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "3a2b8658-c3d4-48dd-b000-0087ce6e7609",
+        "slug": "swaraj-fabrix-fabric-conditioner",
+        "name": "Fabrix Fabric Conditioner",
+        "category": "Laundry Care",
+        "shortDescription": "Give your clothes the care they deserve with Fabrix Fabric Conditioner. Its advanced fabric care formula provides long-lasting freshness, exceptional softness, and helps protect fabric fibres from daily wear. Suitable for both hand wash and machine wash, it leaves every garment feeling smooth, fresh, and comfortable.",
+        "description": "Fabrix Fabric Conditioner – Ultimate Fabric Softness & Long-Lasting Freshness\n\nExperience premium fabric care with Fabrix Fabric Conditioner by Swaraj Enterprises. Designed to keep your clothes incredibly soft, fresh, and pleasant to wear, its advanced conditioning formula penetrates deep into fabric fibres to reduce roughness while maintaining the quality of your garments.\n\nFabrix not only adds a refreshing, long-lasting fragrance but also helps reduce static cling and wrinkles, making clothes easier to iron and more comfortable to wear. Whether you wash by hand or use a washing machine, Fabrix delivers gentle yet effective care for everyday fabrics.\n\nPerfect for daily use on cotton, linen, synthetics, and blended fabrics, Fabrix ensures your clothes remain soft, smooth, and fresh after every wash.",
+        "price": 80,
+        "sizes": [
+            "250ml"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785337731/suraj-cleaning/admin/qx8j9qbtqkpl6vocttcc.png",
+        "gallery": [],
+        "benefits": [
+            "✔ Long-lasting floral fragrance\n✔ Provides ultra-soft and smooth fabric feel\n✔ Helps protect fabric fibres from everyday wear\n✔ Reduces wrinkles for easier ironing"
+        ],
+        "directions": [
+            "Wash clothes with detergent and rinse thoroughly.\nFill a bucket with clean water.\nAdd ½ cap (approximately 15–20 ml) of Fabrix Fabric Conditioner.\nSoak washed clothes for 5 minutes."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "badge": "Best value"
+    },
+    {
+        "id": "3ef47ea2-d754-47e0-8678-d2ad95e4f5c0",
+        "slug": "fabrix-fabric-conditioner",
+        "name": "Fabrix Fabric Conditioner",
+        "category": "Laundry Care",
+        "shortDescription": "Keep your clothes irresistibly soft, fresh, and smooth with Fabrix Fabric Conditioner by Swaraj Enterprises. Its premium floral fragrance, fabric-protecting formula, and anti-static properties help maintain the softness and freshness of every wash. Suitable for both hand wash and machine wash.",
+        "description": "Fabrix Fabric Conditioner\nSoftness That Lasts, Freshness You Love\n\nGive your clothes the care they deserve with Fabrix Fabric Conditioner from Swaraj Enterprises. Designed to provide exceptional softness and a refreshing floral fragrance, Fabrix protects fabric fibres while reducing wrinkles, static, and everyday wear caused by repeated washing.\n\nIts advanced conditioning formula penetrates deep into the fabric, making clothes feel smoother, easier to iron, and more comfortable to wear. Whether you're washing everyday clothes, delicate fabrics, towels, or baby garments, Fabrix ensures long-lasting freshness and fabric care after every wash.\n\nPerfect for both hand washing and machine washing, Fabrix keeps your laundry looking newer, softer, and smelling fresh all day.",
+        "price": 80,
+        "sizes": [
+            "250ml"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785338207/suraj-cleaning/admin/mhb03t9j2g60wbeectak.png",
+        "gallery": [],
+        "benefits": [
+            "Long-lasting floral fragrance\n Makes clothes soft, smooth, and comfortable\n Protects fabric fibres from wear and tear\n Reduces wrinkles for easier ironing"
+        ],
+        "directions": [
+            "Wash clothes with detergent and rinse thoroughly.\nFill a bucket with clean water.\nAdd ½ cap (approximately 10–15 ml) of Fabrix Fabric Conditioner."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "badge": "Best value"
+    },
+    {
+        "id": "2",
+        "slug": "handpure",
+        "name": "HANDPURE",
+        "category": "Handwash",
+        "shortDescription": "Gentle handwash that kills germs effectively",
+        "description": "HANDPURE combines powerful germ protection with skin-friendly ingredients, keeping your hands clean and soft.",
+        "price": 79,
+        "sizes": [
+            "250ml",
+            "500ml"
+        ],
+        "image": "/images/product-handpure.webp",
+        "gallery": [],
+        "benefits": [
+            "Kills 99.9% germs",
+            "Gentle on skin",
+            "Pleasant fragrance",
+            "Dermatologically tested"
+        ],
+        "directions": [
+            "Wet hands with water",
+            "Apply a small amount",
+            "Lather thoroughly",
+            "Rinse with clean water"
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 0
+    },
+    {
+        "id": "07798222-0cb1-4a23-afeb-2e9df248319e",
+        "slug": "handpure-floral-hand-wash-250ml",
+        "name": "HandPure Hand Wash – Floral",
+        "category": "Bathroom Care",
+        "shortDescription": "Keep your hands clean, soft, and refreshed with HandPure Floral Hand Wash. Its rich, creamy lather removes 99.9% of germs while the delightful floral fragrance leaves your hands feeling fresh, moisturized, and beautifully scented after every wash.",
+        "description": "HandPure Hand Wash – Floral\nGentle Care. Powerful Protection.\n\nHandPure Floral Hand Wash is specially formulated to provide effective germ protection while being gentle on your skin. It creates a rich, creamy lather that removes dirt, impurities, and up to 99.9% of germs, leaving your hands clean, soft, and moisturized.\n\nInfused with a refreshing Floral Bloom fragrance, every wash delivers a pleasant, long-lasting freshness. Its skin-friendly formula is suitable for everyday use by the entire family, making hand hygiene both effective and enjoyable.\n\nWhether at home, in the office, or in commercial spaces, HandPure Floral Hand Wash offers the perfect combination of cleanliness, freshness, and gentle care.",
+        "price": 80,
+        "sizes": [
+            "250ml"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785338321/suraj-cleaning/admin/ewzrudqqwolrfd0k3lvv.jpg",
+        "gallery": [],
+        "benefits": [
+            "Removes 99.9% of germs for effective hygiene.\nRich, creamy lather cleans thoroughly.\nGentle formula suitable for everyday use."
+        ],
+        "directions": [
+            "Wet your hands with clean water.\nDispense 1–2 pumps of HandPure Hand Wash onto your palms.\nRub your hands together thoroughly for at least 20 seconds, covering the palms, back of hands, fingers, between fingers, and under nails."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "badge": "Best value"
+    },
+    {
+        "id": "1",
+        "slug": "hygi-x",
+        "name": "HYGI-X",
+        "category": "Toilet Cleaner",
+        "shortDescription": "Powerful toilet cleaner with 99.9% germ protection",
+        "description": "HYGI-X is an advanced toilet cleaner designed to eliminate tough stains, kill germs, and leave your toilet sparkling clean and fragrant.",
+        "price": 99,
+        "sizes": [
+            "500ml"
+        ],
+        "image": "/images/product-hygix.webp",
+        "gallery": [],
+        "benefits": [
+            "Kills 99.9% of germs",
+            "Removes tough stains",
+            "Long-lasting fragrance",
+            "Safe for ceramic surfaces"
+        ],
+        "directions": [
+            "Apply under the rim",
+            "Let it sit for 10 minutes",
+            "Scrub with a toilet brush",
+            "Flush clean"
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 0
+    },
+    {
+        "id": "e7d6d3ad-0251-4fbd-9694-9ba006e3109e",
+        "slug": "hygi-x-toilet-cleaner-500ml-1L",
+        "name": "HYGI-X Toilet Cleaner",
+        "category": "Bathroom Care",
+        "shortDescription": "HYGI-X Toilet Cleaner by Swaraj Enterprises is a powerful toilet cleaning solution designed to remove stubborn stains, limescale, rust deposits, and unpleasant odours while killing germs. Its thick formula clings to the toilet bowl for deep cleaning and leaves behind a long-lasting fresh fragrance.",
+        "description": "HYGI-X Toilet Cleaner\nPowerful Cleaning. Lasting Freshness.\n\nKeep your toilet sparkling clean with HYGI-X Toilet Cleaner from Swaraj Enterprises. Its advanced thick cleaning formula is specially developed to tackle tough stains, hard water deposits, rust marks, and limescale while eliminating harmful germs and unpleasant odours.\n\nThe specially designed angled nozzle reaches under the toilet rim and other hard-to-clean areas, ensuring complete coverage for effective cleaning. After every use, your toilet is left hygienically clean, stain-free, and refreshed with a pleasant long-lasting fragrance.\n\nPerfect for daily cleaning and suitable for all ceramic toilet bowls and washroom surfaces.",
+        "price": 99,
+        "sizes": [
+            "500ml,1L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785339726/suraj-cleaning/admin/pxporxbep8jrsetumdgm.png",
+        "gallery": [],
+        "benefits": [
+            "Removes stubborn stains with ease\nDissolves limescale and hard water deposits\nEliminates rust stains effectively\nKills germs for better hygiene"
+        ],
+        "directions": [
+            "Open the bottle by twisting the safety cap.\nLift the toilet seat.\nSqueeze HYGI-X Toilet Cleaner evenly under the rim and around the inside of the toilet bowl using the angled nozzle."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "variants": [
+            {
+                "name": "500ml",
+                "price": 99,
+                "stock": 100,
+                "sku": "SKU-01",
+                "status": "in_stock"
+            },
+            {
+                "name": "1L",
+                "price": 199,
+                "stock": 100,
+                "sku": "SKU-02",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "a82b9878-0dc1-41df-b401-7d9ca3918703",
+        "slug": "laundryx-detergent-liquid",
+        "name": "LaundryX Detergent Liquid",
+        "category": "Laundry Care",
+        "shortDescription": "LaundryX Detergent Liquid by Swaraj Enterprises is a powerful liquid detergent that removes tough stains, dirt, and odours while being gentle on fabrics. Its advanced formula protects colours, brightens whites, and leaves clothes with a long-lasting fresh fragrance. Suitable for both bucket wash and machine wash.",
+        "description": "LaundryX Detergent Liquid – Powerful Cleaning. Gentle on Fabrics.\n\nExperience deep, effective cleaning with LaundryX Detergent Liquid from Swaraj Enterprises. Formulated with an advanced cleaning system, it easily removes stubborn stains, dirt, grease, and unpleasant odours while being gentle on fabric fibres.\n\nUnlike ordinary detergents, LaundryX helps preserve the softness and colour of your clothes, making them look fresh and new after every wash. Its rich cleaning formula produces excellent results in both bucket washing and washing machines, while the refreshing fragrance keeps your clothes smelling clean for longer.\n\nWhether you're washing everyday wear, office clothes, school uniforms, or delicate fabrics, LaundryX delivers outstanding cleanliness without leaving residue.",
+        "price": 119,
+        "sizes": [
+            "500ml,2L,5L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785339964/suraj-cleaning/admin/tyjc8dauwxxt4mtpkjmj.png",
+        "gallery": [],
+        "benefits": [
+            "Powerful stain removal formula\nRemoves dirt, grease, and stubborn stains\nEliminates unpleasant odours\nGentle on fabric fibres"
+        ],
+        "directions": [
+            "Add ½ cap (approximately 25 ml) of LaundryX Detergent Liquid to 10 litres of water.\nMix well until dissolved.\nSoak clothes for 10–15 minutes if heavily soiled."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "badge": "Best value",
+        "variants": [
+            {
+                "name": "500ml",
+                "price": 119,
+                "stock": 100,
+                "sku": "SKU-01",
+                "status": "in_stock"
+            },
+            {
+                "name": "2L",
+                "price": 229,
+                "stock": 100,
+                "sku": "SKu-02",
+                "status": "in_stock"
+            },
+            {
+                "name": "5L",
+                "price": 549,
+                "stock": 100,
+                "sku": "SKU-03",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "3079272a-c6ee-4d1e-bbee-9ea1ae5d78ec",
+        "slug": "laundryx-detergent-liquid-rose-fresh",
+        "name": "LaundryX Detergent Liquid – Rose Fresh",
+        "category": "Laundry Care",
+        "shortDescription": "LaundryX Detergent Liquid – Rose Fresh delivers powerful stain removal with a refreshing long-lasting rose fragrance. Its advanced formula effectively cleans dirt, grease, and tough stains while keeping fabrics soft, bright, and fresh. Suitable for both bucket wash and machine wash, it is safe for white and coloured clothes.",
+        "description": "LaundryX Detergent Liquid – Rose Fresh\n\nExperience a superior laundry wash with LaundryX Detergent Liquid – Rose Fresh from Swaraj Enterprises. Specially formulated for deep cleaning, this premium detergent penetrates fabric fibres to remove stubborn stains, dirt, grease, and unpleasant odours while preserving the softness and brightness of your clothes.\n\nIts rich cleaning agents produce excellent washing performance without leaving any residue. The delightful Rose Fresh fragrance keeps your clothes smelling fresh for hours after every wash.\n\nDesigned for everyday use, LaundryX Detergent Liquid works effectively in both bucket washing and all types of washing machines, making it the perfect solution for modern households.\n\nSuitable for white and coloured clothes, it protects fabric quality while delivering a hygienic, sparkling clean wash every time.",
+        "price": 119,
+        "sizes": [
+            "500ml,2L,5L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785340121/suraj-cleaning/admin/tfodxlahdtezgejaoloe.png",
+        "gallery": [],
+        "benefits": [
+            "Powerful deep-cleaning formula\nRemoves tough stains effectively\nLong-lasting Rose Fresh fragrance\nEliminates sweat, dirt & unpleasant odours"
+        ],
+        "directions": [
+            "Add ½ cap (approximately 25–30 ml) of LaundryX Detergent Liquid to 10 litres of water.\nMix well before adding clothes.\nSoak clothes for 15–20 minutes if heavily soiled."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "variants": [
+            {
+                "name": "500ml",
+                "price": 119,
+                "stock": 100,
+                "sku": "SKU-01",
+                "status": "in_stock"
+            },
+            {
+                "name": "2L",
+                "price": 229,
+                "stock": 100,
+                "sku": "SKU-02",
+                "status": "in_stock"
+            },
+            {
+                "name": "5L",
+                "price": 549,
+                "stock": 100,
+                "sku": "SKU-03",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "19e7f18b-bfb0-4ff1-902b-4793ea9bcb49",
+        "slug": "mega-home-care-combo-pack",
+        "name": "Mega Home Care Combo Pack",
+        "category": "Combo Pack",
+        "shortDescription": "The Mega Home Care Combo Pack by Swaraj Enterprises is a complete household cleaning solution featuring six essential cleaning products for floors, dishes, toilets, laundry, and fabric care. Enjoy superior cleaning, long-lasting freshness, and excellent value in one convenient combo pack.",
+        "description": "Mega Home Care Combo Pack\nComplete Home Cleaning Solution in One Pack\n\nKeep your entire home sparkling clean, fresh, and hygienic with the Swaraj Enterprises Mega Home Care Combo Pack. Carefully curated to cover all your everyday cleaning needs, this value-packed combo includes six premium home care products that deliver powerful cleaning performance while maintaining freshness and hygiene throughout your home.\n\nWhether you're cleaning floors, washing dishes, removing toilet stains, caring for clothes, or doing laundry, this all-in-one combo ensures every task becomes easier and more effective.\n\nIdeal for families, offices, hostels, apartments, and commercial spaces, the Mega Home Care Combo Pack offers exceptional quality and outstanding value for daily household cleaning.\nWhat's Included\n🧴 Cleanora Floor Cleaner – 1 Litre\n\nLeaves floors sparkling clean with a refreshing fragrance while helping maintain hygiene.\n\n🍽️ DishSheen Dishwash Liquid – 500 ml\n\nCuts through grease and stubborn food stains for spotless utensils.\n\n🚽 HYGI-X Toilet Cleaner – 500 ml\n\nRemoves tough stains, kills germs, and keeps toilets fresh and hygienic.\n\n👕 Fabrix Fabric Conditioner – 250 ml\n\nKeeps clothes soft, fresh, and pleasantly fragrant after every wash.\n\n🧼 Premium Detergent Soap – 100 g\n\nPowerful cleaning bar for removing dirt and stains from clothes.\n\n👚 LaundryX Detergent Powder – 500 g\n\nDeep cleans fabrics while helping maintain brightness and freshness.",
+        "price": 199,
+        "sizes": [
+            "Standard"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785341651/suraj-cleaning/admin/rtx6avfyfp4x6instaye.jpg",
+        "gallery": [],
+        "benefits": [
+            "✔ Complete home cleaning solution in one pack\n✔ Includes 6 essential household cleaning products\n✔ Powerful stain and grease removal\n✔ Helps maintain home hygiene\n✔ Long-lasting freshness and pleasant fragrance"
+        ],
+        "directions": [
+            "Cleanora Floor Cleaner\nAdd approximately 20–30 ml to a bucket of water.\nMop the floor evenly.\nAllow to air dry.\nNo rinsing required for regular cleaning.\nDishSheen Dishwash Liquid\nApply a few drops to a wet sponge.\nWash utensils thoroughly.\nRinse well with clean water.\nHYGI-X Toilet Cleaner\nApply under the toilet rim.\nLeave for 10–15 minutes.\nScrub thoroughly with a toilet brush.\nFlush with water.\nFabrix Fabric Conditioner\nAfter washing clothes, dilute the recommended amount in clean water.\nSoak clothes for 5–10 minutes.\nRemove and dry without rinsing.\nPremium Detergent Soap\nWet the fabric.\nRub the soap directly on stained areas.\nWash by hand or rinse before machine washing if needed.\nLaundryX Detergent Powder\nAdd the recommended amount based on load size.\nWash using a washing machine or by hand.\nRinse thoroughly and dry."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "badge": "Combo"
+    },
+    {
+        "id": "eff7c864-ef70-460a-be49-603abb45f6b6",
+        "slug": "spark-clean-acid-cleaner",
+        "name": "Spark Clean Acid Cleaner",
+        "category": "Bathroom Care",
+        "shortDescription": "Spark Clean Acid Cleaner by Swaraj Enterprises is a powerful, fast-acting cleaning solution formulated to remove cement residue, hard water stains, rust deposits, soap scum, and stubborn dirt from tiles, granite, toilets, wash basins, and ceramic surfaces. It restores shine while ensuring a hygienic and spotless finish.",
+        "description": "Spark Clean Acid Cleaner\nPowerful Cleaning for Tiles, Granite & Toilets\n\nSpark Clean Acid Cleaner by Swaraj Enterprises is a professional-grade acid cleaner designed to tackle the toughest stains and mineral deposits. Its advanced fast-acting formula effortlessly removes cement residue, hard water marks, rust stains, soap scum, and deep-seated dirt from ceramic tiles, granite, sanitary ware, wash basins, and bathroom surfaces.\n\nWhether for residential, commercial, or industrial cleaning, Spark Clean delivers exceptional cleaning performance, restoring the original shine of your surfaces while maintaining superior hygiene.\n\nSuitable for daily maintenance as well as heavy-duty post-construction cleaning.",
+        "price": 80,
+        "sizes": [
+            "250ml"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785338646/suraj-cleaning/admin/olag6wfwq7fcqpjh8bre.jpg",
+        "gallery": [],
+        "benefits": [
+            "Removes tough stains and cement residue\nEliminates hard water deposits and rust stains\nRemoves soap scum and stubborn dirt\nRestores the natural shine of tiles and granite"
+        ],
+        "directions": [
+            "Apply Spark Clean Acid Cleaner directly onto the stained surface.\nLeave it for 2–5 minutes depending on the severity of the stain.\nScrub gently using a brush or cleaning pad.\nRinse thoroughly with clean water."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 98,
+        "badge": "Best value"
+    },
+    {
+        "id": "6df2cf8b-f0a8-445b-b52f-4874dad2f530",
+        "slug": "swaraj-air-freshener-royal-oud",
+        "name": "Swaraj Air Freshener – Royal Oud",
+        "category": "Personal Care",
+        "shortDescription": "Experience the luxurious fragrance of Royal Oud with Swaraj Air Freshener. Its premium long-lasting formula instantly eliminates unpleasant odours and fills your home, office, car, or workspace with a rich, refreshing aroma that lasts for hours.",
+        "description": "Swaraj Air Freshener – Royal Oud is crafted to bring elegance and freshness to every space. Infused with the rich and sophisticated scent of Royal Oud, this premium air freshener instantly neutralizes unwanted odours while leaving behind a luxurious, long-lasting fragrance.\n\nWhether you're refreshing your living room, bedroom, office, hotel room, or car, its fine mist spray ensures even distribution for a pleasant and welcoming environment. The easy-to-use spray bottle makes it perfect for daily use, keeping your surroundings fresh, clean, and inviting.",
+        "price": 160,
+        "sizes": [
+            "250ml"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785340297/suraj-cleaning/admin/zgxlwjmw2yay0hqmdrpg.jpg",
+        "gallery": [],
+        "benefits": [
+            "Premium Royal Oud fragrance for a luxurious ambience\nInstantly neutralizes unpleasant odours\nLong-lasting freshness that stays for hours"
+        ],
+        "directions": [
+            "Shake the bottle gently before use.\nHold the bottle upright.\nSpray 2–4 times into the air or around the room."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100
+    },
+    {
+        "id": "87934dd2-4e65-4d8c-80f4-b02320201b62",
+        "slug": "swaraj-divyajyoti-deepam-oil",
+        "name": "SWARAJ DIVYAJYOTI Deepam Oil",
+        "category": "Pooja Oil",
+        "shortDescription": "SWARAJ DIVYAJYOTI Deepam Oil is a premium-quality non-edible pooja lamp oil formulated to provide a bright, long-lasting flame with minimal smoke. Ideal for daily worship, temples, festivals, and spiritual ceremonies, it creates a pure and peaceful devotional atmosphere.",
+        "description": "SWARAJ DIVYAJYOTI Deepam Oil\nPure Light. Pure Devotion.\n\nIlluminate your prayers with the divine glow of SWARAJ DIVYAJYOTI Deepam Oil. Specially crafted using a premium blend of high-quality non-edible oils, this pooja lamp oil ensures a bright, steady, and long-lasting flame while producing minimal smoke.\n\nDesigned for homes, temples, and religious institutions, DIVYAJYOTI Deepam Oil enhances every spiritual moment with purity, peace, and devotion. Whether used for daily pooja, festive celebrations, or sacred rituals, it helps create a serene atmosphere that reflects faith and tradition.\n\nManufactured with strict quality standards, SWARAJ DIVYAJYOTI Deepam Oil is the trusted choice for families and temples seeking reliable performance and a clean-burning devotional lamp oil.",
+        "price": 175,
+        "sizes": [
+            "500ml,1L,2L,5L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785341999/suraj-cleaning/admin/ppc9dfiqpq9yyv3c8qia.jpg",
+        "gallery": [
+            "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785342009/suraj-cleaning/admin/x7qhz5p1jrncblobtn4t.png"
+        ],
+        "benefits": [
+            "Premium-quality blended non-edible pooja oil\nProduces a bright and steady flame\nLong-lasting burning performance\nLow smoke for a cleaner worship environment"
+        ],
+        "directions": [
+            "Ensure the diya or oil lamp is clean and dry before use.\nFill the lamp with SWARAJ DIVYAJYOTI Deepam Oil.\nPlace a clean cotton wick inside the diya."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 100,
+        "badge": "Best value",
+        "variants": [
+            {
+                "name": "500ml",
+                "price": 88,
+                "stock": 100,
+                "sku": "PO-01",
+                "status": "in_stock"
+            },
+            {
+                "name": "1L",
+                "price": 175,
+                "stock": 100,
+                "sku": "PO-2",
+                "status": "in_stock"
+            },
+            {
+                "name": "2L",
+                "price": 350,
+                "stock": 100,
+                "sku": "PO-3",
+                "status": "in_stock"
+            },
+            {
+                "name": "5L",
+                "price": 875,
+                "stock": 100,
+                "sku": "PO-4",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "15b5721c-f7a5-4d2f-9328-9d468ac6ecd3",
+        "slug": "swaraj-florenza-floor-cleaner-lemon",
+        "name": "SWARAJ FLORENZA Floor Cleaner",
+        "category": "Floor Care",
+        "shortDescription": "SWARAJ FLORENZA Floor Cleaner is a premium cleaning solution that removes tough stains, dirt, and grime while killing 99.9% of germs. Its advanced concentrated formula leaves floors sparkling clean with a refreshing long-lasting lemon fragrance. Suitable for all hard floor surfaces including tiles, marble, granite, mosaic, and vitrified flooring.",
+        "description": "Powerful Cleaning. Refreshing Fragrance. Hygienic Protection.\n\nKeep your home and workplace hygienically clean with SWARAJ FLORENZA Floor Cleaner, a premium floor cleaning liquid designed to deliver superior cleaning performance while providing long-lasting freshness.\n\nIts advanced concentrated formula effectively removes stubborn stains, dirt, grease, and everyday grime while eliminating 99.9% of germs, helping maintain a healthier and cleaner environment. The refreshing lemon fragrance leaves your floors smelling fresh long after every mop.\n\nSuitable for homes, offices, hotels, hospitals, schools, restaurants, retail stores, and commercial spaces, SWARAJ FLORENZA works efficiently on all hard floor surfaces without affecting their natural shine.\n\nWhether you need daily cleaning or deep cleaning, FLORENZA provides spotless, streak-free, and hygienic floors with every use.",
+        "price": 99,
+        "sizes": [
+            "500ml,1L"
+        ],
+        "image": "https://res.cloudinary.com/dgnavpt3k/image/upload/v1785342279/suraj-cleaning/admin/ksyy2sztyamtrnauubna.jpg",
+        "gallery": [],
+        "benefits": [
+            "Removes tough stains, dirt, grease, and grime\nKills 99.9% of germs for hygienic cleaning\nRefreshing long-lasting lemon fragrance\nLeaves floors shiny and streak-free\nMaintains the natural shine of flooring"
+        ],
+        "directions": [
+            "Mix 25 ml of SWARAJ FLORENZA Floor Cleaner with 4 litres of clean water.\nDip a mop into the prepared solution.\nMop the floor evenly."
+        ],
+        "featured": true,
+        "bestSeller": true,
+        "active": true,
+        "stock": 99,
+        "badge": "Best value",
+        "variants": [
+            {
+                "name": "500ml",
+                "price": 99,
+                "stock": 100,
+                "sku": "CK-01",
+                "status": "in_stock"
+            },
+            {
+                "name": "1L",
+                "price": 199,
+                "stock": 100,
+                "sku": "NK-02",
+                "status": "in_stock"
+            }
+        ]
+    },
+    {
+        "id": "4",
+        "slug": "clearon",
+        "name": "CLEARON",
+        "category": "Glass Cleaner",
+        "shortDescription": "Streak-free shine for all glass surfaces",
+        "description": "CLEARON delivers a crystal-clear, streak-free finish on windows, mirrors, and all glass surfaces.",
+        "price": 89,
+        "sizes": [
+            "500ml"
+        ],
+        "image": "/images/product-clearon.webp",
+        "gallery": [],
+        "benefits": [
+            "Streak-free finish",
+            "Quick drying formula",
+            "Safe on all glass",
+            "No residue left behind"
+        ],
+        "directions": [
+            "Spray on surface",
+            "Wipe with clean cloth",
+            "Buff for extra shine"
+        ],
+        "featured": true,
+        "bestSeller": false,
+        "active": true,
+        "stock": 0
+    },
+    {
+        "id": "6",
+        "slug": "fabrix",
+        "name": "FABRIX",
+        "category": "Fabric Detergent",
+        "shortDescription": "Premium liquid detergent for all fabrics",
+        "description": "FABRIX liquid detergent is specially formulated for all fabric types, providing a thorough clean while preserving fabric softness and color.",
+        "price": 149,
+        "sizes": [
+            "1L",
+            "2L"
+        ],
+        "image": "/images/product-fabrix.webp",
+        "gallery": [],
+        "benefits": [
+            "Safe for all fabrics",
+            "Color protection",
+            "Fabric softness",
+            "Fresh fragrance"
+        ],
+        "directions": [
+            "Pour into dispenser",
+            "Add clothes to machine",
+            "Select wash cycle",
+            "Enjoy clean laundry"
+        ],
+        "featured": false,
+        "bestSeller": true,
+        "active": true,
+        "stock": 0
+    },
+    {
+        "id": "5",
+        "slug": "supreme",
+        "name": "SUPREME",
+        "category": "Detergent Powder",
+        "shortDescription": "Powerful detergent for bright, fresh laundry",
+        "description": "SUPREME detergent powder delivers deep cleaning action, removing tough stains while keeping fabrics bright and fresh.",
+        "price": 109,
+        "sizes": [
+            "1kg",
+            "2kg"
+        ],
+        "image": "/images/product-supreme.webp",
+        "gallery": [],
+        "benefits": [
+            "Deep stain removal",
+            "Fabric brightening",
+            "Long-lasting fragrance",
+            "Works in all machines"
+        ],
+        "directions": [
+            "Add powder to drum",
+            "Add clothes",
+            "Start wash cycle",
+            "Rinse thoroughly"
+        ],
+        "featured": false,
+        "bestSeller": true,
+        "active": true,
+        "stock": 0
+    },
+    {
+        "id": "combo-002",
+        "slug": "bathroom-essentials-combo",
+        "name": "Bathroom Essentials Combo",
+        "category": "Bathroom Care",
+        "shortDescription": "Everything you need for a spotless, hygienic bathroom — toilet cleaner, shower gel & more.",
+        "description": "Keep your bathroom fresh and germ-free with our Bathroom Essentials Combo. This curated pack includes a powerful toilet cleaner, a refreshing shower gel, and a surface disinfectant. Perfect for maintaining bathroom hygiene without the hassle of buying products separately.",
+        "price": 499,
+        "sizes": [
+            "Combo Pack"
+        ],
+        "image": "/images/product-handpure.svg",
+        "gallery": [
+            "/images/category-bathroom-care.svg"
+        ],
+        "benefits": [
+            "Kills 99.9% germs and bacteria",
+            "Leaves a pleasant, long-lasting fragrance",
+            "Gentle on surfaces, tough on stains",
+            "Complete bathroom hygiene in one pack"
+        ],
+        "directions": [
+            "Apply Toilet Cleaner under the rim, leave 10 min, scrub & flush",
+            "Use Shower Gel for daily bathing — lather & rinse",
+            "Spray Surface Disinfectant on tiles, leave 3 min, wipe dry"
+        ],
+        "featured": false,
+        "bestSeller": false,
+        "active": true,
+        "stock": 40,
+        "badge": "Combo Offer"
+    },
+    {
+        "id": "combo-001",
+        "slug": "home-cleaning-combo",
+        "name": "Home Cleaning Combo",
+        "category": "Floor Care",
+        "shortDescription": "Complete home cleaning solution with floor, bathroom & kitchen essentials in one pack.",
+        "description": "Our best-selling Home Cleaning Combo brings together the essential products you need to keep your entire home sparkling clean. Includes a floor cleaner, bathroom cleaner, and a kitchen degreaser — everything at an unbeatable combo price.",
+        "price": 699,
+        "sizes": [
+            "Combo Pack"
+        ],
+        "image": "/images/hero-products.jpg",
+        "gallery": [
+            "/images/product-supreme.svg"
+        ],
+        "benefits": [
+            "Complete cleaning solution for entire home",
+            "Save 20% compared to buying individually",
+            "Premium quality products trusted by 500+ families",
+            "Suitable for all floor and surface types"
+        ],
+        "directions": [
+            "Use Floor Cleaner: dilute 1 cap in 1L water, mop the floor",
+            "Use Bathroom Cleaner: spray on surfaces, leave for 5 min, wipe",
+            "Use Kitchen Degreaser: spray on greasy areas, scrub and rinse"
+        ],
+        "featured": false,
+        "bestSeller": false,
+        "active": true,
+        "stock": 50,
+        "badge": "Combo Offer"
+    },
+    {
+        "id": "combo-003",
+        "slug": "kitchen-combo-pack",
+        "name": "Kitchen Combo Pack",
+        "category": "Kitchen Care",
+        "shortDescription": "Tough on grease, gentle on your hands — dishwash liquid + degreaser combo.",
+        "description": "The Kitchen Combo Pack is designed for the heart of your home. Pair our ultra-grease-cutting Dishwash Liquid with the powerful Kitchen Degreaser for spotless dishes and sparkling surfaces. Save more while keeping your kitchen the cleanest place in your house.",
+        "price": 399,
+        "sizes": [
+            "Combo Pack"
+        ],
+        "image": "/images/product-dish-sheen.svg",
+        "gallery": [
+            "/images/category-kitchen-care.svg"
+        ],
+        "benefits": [
+            "Cuts through tough grease instantly",
+            "Gentle on hands — no harsh chemicals",
+            "Pleasant lemon fragrance",
+            "20% savings vs individual purchase"
+        ],
+        "directions": [
+            "Dishwash Liquid: add 2 drops on sponge, scrub dishes, rinse",
+            "Degreaser: spray on stovetop & surfaces, leave 5 min, wipe clean"
+        ],
+        "featured": false,
+        "bestSeller": false,
+        "active": true,
+        "stock": 60,
+        "badge": "Combo Pack"
+    },
+    {
+        "id": "combo-004",
+        "slug": "laundry-care-combo",
+        "name": "Laundry Care Combo",
+        "category": "Laundry Care",
+        "shortDescription": "Brighten & freshen every wash — detergent + fabric softener combo for all fabric types.",
+        "description": "Make every laundry day a breeze with our Laundry Care Combo. Combining our powerful Fabric Detergent with a premium Fabric Softener, this pack gives you brilliantly clean and beautifully soft clothes every time. Perfect for all washing machines and hand wash.",
+        "price": 549,
+        "sizes": [
+            "Combo Pack"
+        ],
+        "image": "/images/product-fabrix.svg",
+        "gallery": [
+            "/images/category-laundry-care.svg"
+        ],
+        "benefits": [
+            "Deep cleaning for all fabric types",
+            "Leaves clothes soft and fresh",
+            "Color-safe formula protects fabric vibrancy",
+            "Works in both machines and hand wash"
+        ],
+        "directions": [
+            "Detergent: add 1 cap (front load) or 2 caps (top load) to drum",
+            "Fabric Softener: add 1/2 cap in the softener tray during rinse cycle"
+        ],
+        "featured": false,
+        "bestSeller": false,
+        "active": true,
+        "stock": 45,
+        "badge": "Combo Pack"
+    }
 ]

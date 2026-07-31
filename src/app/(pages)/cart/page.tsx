@@ -111,7 +111,7 @@ export default function CartPage() {
                       </button>
                       <div className="flex items-center gap-1">
                         <button
-                          onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+                          onClick={() => updateQuantity(item.productId, item.quantity - 1, item.size)}
                           disabled={item.quantity <= 1}
                           className="w-7 h-7 flex items-center justify-center rounded-lg border border-slate-200 hover:bg-slate-50 disabled:opacity-40 transition-colors"
                           aria-label="Decrease quantity"
@@ -120,7 +120,7 @@ export default function CartPage() {
                         </button>
                         <span className="w-8 text-center text-[13px] font-semibold">{item.quantity}</span>
                         <button
-                          onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.productId, item.quantity + 1, item.size)}
                           disabled={isOutOfStock || (available > 0 && item.quantity >= available)}
                           className="w-7 h-7 flex items-center justify-center rounded-lg border border-slate-200 hover:bg-slate-50 disabled:opacity-40 transition-colors"
                           aria-label="Increase quantity"

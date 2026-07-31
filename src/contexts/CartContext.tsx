@@ -21,7 +21,7 @@ interface CartState {
 interface CartContextValue extends CartState {
   addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
   removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  updateQuantity: (productId: string, quantity: number, size?: string) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -70,8 +70,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setIsOpen(true);
   }, []);
 
-  const removeItem = useCallback((productId: string) => {
-    setItems((prev) => prev.filter((i) => i.productId !== productId));
+  const removeItem = useCallback((productId: string, size?: string) => {
+    setItems((prev) => prev.filter((i) => !(i.productId === productId && i.size === size)));
   }, []);
 
   const updateQuantity = useCallback((productId: string, quantity: number, size?: string) => {

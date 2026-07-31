@@ -359,15 +359,20 @@ proxy.ts
 
 #### **Google / User Auth**
 ```
-lib/auth.ts
-app/api/auth/google/route.ts
-app/api/auth/google/callback/route.ts
+lib/auth.ts  (signSession, parseSession, getSession, getBaseUrl, getCookieOptions, getOAuthRedirectUri)
+app/api/auth/google/route.ts  (OAuth initiation — shared getBaseUrl)
+app/api/auth/google/callback/route.ts  (OAuth callback — shared getBaseUrl, signSession)
 app/api/auth/session/route.ts
 app/api/auth/signout/route.ts
-app/(pages)/signin/page.tsx
+app/signin/page.tsx  (signin page with error display)
 app/profile/page.tsx
 app/profile/ProfileClient.tsx
-.env  (NEXTAUTH_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET)
+app/orders/page.tsx  (auth-guarded orders list)
+app/orders/[orderId]/page.tsx  (auth-guarded order detail)
+app/api/users/me/route.ts  (GET auto-creates user via upsertUser)
+app/api/users/addresses/route.ts
+app/api/users/addresses/[addressId]/route.ts
+.env  (GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, NEXTAUTH_SECRET)
 ```
 
 #### **Orders**
@@ -490,7 +495,7 @@ Use these to quickly resolve a natural-language request to relevant files:
 | Variable | Used In | Purpose |
 |----------|---------|---------|
 | `MONGODB_URI` | `lib/mongodb.ts` | Database connection |
-| `NEXTAUTH_SECRET` | `lib/auth.ts` | Session signing |
+| `NEXTAUTH_SECRET` | `lib/auth.ts` | Session signing (required — no fallback) |
 | `GOOGLE_CLIENT_ID` | `app/api/auth/google/route.ts` | Google OAuth |
 | `GOOGLE_CLIENT_SECRET` | `app/api/auth/google/callback/route.ts` | Google OAuth |
 | `ADMIN_USERNAME` | `lib/admin-auth.ts` | Admin login |
