@@ -9,8 +9,7 @@ const svgFiles = [
   "category-bathroom-care.svg",
   "category-kitchen-care.svg",
   "category-laundry-care.svg",
-  "category-personal-care.svg",
-  "product-hygix.svg",
+  "category-personal-care.svg"
 ];
 
 for (const file of svgFiles) {

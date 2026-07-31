@@ -95,18 +95,6 @@ export default function Header() {
                 ))}
               </nav>
 
-              <motion.a
-                href="#contact"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                whileHover={{ y: -3, scale: 1.04 }}
-                whileTap={{ scale: 0.97 }}
-                className="hidden lg:inline-flex items-center px-5 py-2.5 bg-[#2563eb] text-white text-[14px] font-semibold rounded-full hover:bg-[#1d4ed8] transition-colors shadow-md shadow-blue-200 btn-shine"
-              >
-                <span className="relative">Get in Touch</span>
-              </motion.a>
-
               <CartIcon />
 
               <div className="flex items-center gap-1">

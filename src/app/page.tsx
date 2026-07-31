@@ -3,7 +3,6 @@ import ProductCategories from "@/components/ProductCategories";
 import MegaPackSection from "@/components/MegaPackSection";
 import AboutSection from "@/components/AboutSection";
 import BestSellingProducts from "@/components/BestSellingProducts";
-import ComboProducts from "@/components/ComboProducts";
 import DistributorSection from "@/components/DistributorSection";
 import TrustBenefits from "@/components/TrustBenefits";
 import Testimonials from "@/components/Testimonials";
@@ -19,7 +18,6 @@ export default function Home() {
       <MegaPackSection />
       <AboutSection />
       <BestSellingProducts />
-      <ComboProducts />
       <DistributorSection />
       <TrustBenefits />
       <Testimonials />

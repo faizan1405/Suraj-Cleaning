@@ -250,37 +250,6 @@
         "badge": "Best value"
     },
     {
-        "id": "3",
-        "slug": "dish-sheen",
-        "name": "DISH SHEEN",
-        "category": "Kitchen Care",
-        "shortDescription": "Tough on grease, gentle on hands",
-        "description": "DISH SHEEN effortlessly removes grease and food residue from dishes, leaving them spotless and smelling fresh.",
-        "price": 89,
-        "sizes": [
-            "500ml",
-            "1L"
-        ],
-        "image": "/images/product-dish-sheen.webp",
-        "gallery": [],
-        "benefits": [
-            "Removes tough grease",
-            "Long-lasting foam",
-            "Gentle on hands",
-            "Citrus fragrance"
-        ],
-        "directions": [
-            "Dilute in water",
-            "Soak dishes briefly",
-            "Scrub with sponge",
-            "Rinse thoroughly"
-        ],
-        "featured": true,
-        "bestSeller": true,
-        "active": true,
-        "stock": 0
-    },
-    {
         "id": "e44eba8d-95df-49df-b9f6-06200af6f53f",
         "slug": "dishsheen-lemon-dishwash-liquid",
         "name": "DishSheen Dishwash Liquid by Swaraj",
@@ -380,37 +349,6 @@
         "badge": "Best value"
     },
     {
-        "id": "2",
-        "slug": "handpure",
-        "name": "HANDPURE",
-        "category": "Bathroom Care",
-        "shortDescription": "Gentle handwash that kills germs effectively",
-        "description": "HANDPURE combines powerful germ protection with skin-friendly ingredients, keeping your hands clean and soft.",
-        "price": 79,
-        "sizes": [
-            "250ml",
-            "500ml"
-        ],
-        "image": "/images/product-handpure.webp",
-        "gallery": [],
-        "benefits": [
-            "Kills 99.9% germs",
-            "Gentle on skin",
-            "Pleasant fragrance",
-            "Dermatologically tested"
-        ],
-        "directions": [
-            "Wet hands with water",
-            "Apply a small amount",
-            "Lather thoroughly",
-            "Rinse with clean water"
-        ],
-        "featured": true,
-        "bestSeller": true,
-        "active": true,
-        "stock": 0
-    },
-    {
         "id": "07798222-0cb1-4a23-afeb-2e9df248319e",
         "slug": "handpure-floral-hand-wash-250ml",
         "name": "HandPure Hand Wash – Floral",
@@ -434,36 +372,6 @@
         "active": true,
         "stock": 100,
         "badge": "Best value"
-    },
-    {
-        "id": "1",
-        "slug": "hygi-x",
-        "name": "HYGI-X",
-        "category": "Bathroom Care",
-        "shortDescription": "Powerful toilet cleaner with 99.9% germ protection",
-        "description": "HYGI-X is an advanced toilet cleaner designed to eliminate tough stains, kill germs, and leave your toilet sparkling clean and fragrant.",
-        "price": 99,
-        "sizes": [
-            "500ml"
-        ],
-        "image": "/images/product-hygix.webp",
-        "gallery": [],
-        "benefits": [
-            "Kills 99.9% of germs",
-            "Removes tough stains",
-            "Long-lasting fragrance",
-            "Safe for ceramic surfaces"
-        ],
-        "directions": [
-            "Apply under the rim",
-            "Let it sit for 10 minutes",
-            "Scrub with a toilet brush",
-            "Flush clean"
-        ],
-        "featured": true,
-        "bestSeller": true,
-        "active": true,
-        "stock": 0
     },
     {
         "id": "e7d6d3ad-0251-4fbd-9694-9ba006e3109e",
@@ -606,7 +514,7 @@
         "name": "Mega Home Care Combo Pack",
         "category": "Combo Pack",
         "shortDescription": "The Mega Home Care Combo Pack by Swaraj Enterprises is a complete household cleaning solution featuring six essential cleaning products for floors, dishes, toilets, laundry, and fabric care. Enjoy superior cleaning, long-lasting freshness, and excellent value in one convenient combo pack.",
-        "description": "Mega Home Care Combo Pack\nComplete Home Cleaning Solution in One Pack\n\nKeep your entire home sparkling clean, fresh, and hygienic with the Swaraj Enterprises Mega Home Care Combo Pack. Carefully curated to cover all your everyday cleaning needs, this value-packed combo includes six premium home care products that deliver powerful cleaning performance while maintaining freshness and hygiene throughout your home.\n\nWhether you're cleaning floors, washing dishes, removing toilet stains, caring for clothes, or doing laundry, this all-in-one combo ensures every task becomes easier and more effective.\n\nIdeal for families, offices, hostels, apartments, and commercial spaces, the Mega Home Care Combo Pack offers exceptional quality and outstanding value for daily household cleaning.\nWhat's Included\n🧴 Cleanora Floor Cleaner – 1 Litre\n\nLeaves floors sparkling clean with a refreshing fragrance while helping maintain hygiene.\n\n🍽️ DishSheen Dishwash Liquid – 500 ml\n\nCuts through grease and stubborn food stains for spotless utensils.\n\n🚽 HYGI-X Toilet Cleaner – 500 ml\n\nRemoves tough stains, kills germs, and keeps toilets fresh and hygienic.\n\n👕 Fabrix Fabric Conditioner – 250 ml\n\nKeeps clothes soft, fresh, and pleasantly fragrant after every wash.\n\n🧼 Premium Detergent Soap – 100 g\n\nPowerful cleaning bar for removing dirt and stains from clothes.\n\n👚 LaundryX Detergent Powder – 500 g\n\nDeep cleans fabrics while helping maintain brightness and freshness.",
+        "description": "Mega Home Care Combo Pack\nComplete Home Cleaning Solution in One Pack\n\nKeep your entire home sparkling clean, fresh, and hygienic with the Swaraj Enterprises Mega Home Care Combo Pack. Carefully curated to cover all your everyday cleaning needs, this value-packed combo includes six premium home care products that deliver powerful cleaning performance while maintaining freshness and hygiene throughout your home.\n\nWhether you're cleaning floors, washing dishes, removing toilet stains, caring for clothes, or doing laundry, this all-in-one combo ensures every task becomes easier and more effective.\n\nIdeal for families, offices, hostels, apartments, and commercial spaces, the Mega Home Care Combo Pack offers exceptional quality and outstanding value for daily household cleaning.\nWhat's Included\n🎴 Cleanora Floor Cleaner – 1 Litre\n\nLeaves floors sparkling clean with a refreshing fragrance while helping maintain hygiene.\n\n🍽️ DishSheen Dishwash Liquid – 500 ml\n\nCuts through grease and stubborn food stains for spotless utensils.\n\n🚽 HYGI-X Toilet Cleaner – 500 ml\n\nRemoves tough stains, kills germs, and keeps toilets fresh and hygienic.\n\n👕 Fabrix Fabric Conditioner – 250 ml\n\nKeeps clothes soft, fresh, and pleasantly fragrant after every wash.\n\n🍼 Premium Detergent Soap – 100 g\n\nPowerful cleaning bar for removing dirt and stains from clothes.\n\n👚 LaundryX Detergent Powder – 500 g\n\nDeep cleans fabrics while helping maintain brightness and freshness.",
         "price": 199,
         "sizes": [
             "Standard"
@@ -771,222 +679,5 @@
                 "status": "in_stock"
             }
         ]
-    },
-    {
-        "id": "4",
-        "slug": "clearon",
-        "name": "CLEARON",
-        "category": "Personal Care",
-        "shortDescription": "Streak-free shine for all glass surfaces",
-        "description": "CLEARON delivers a crystal-clear, streak-free finish on windows, mirrors, and all glass surfaces.",
-        "price": 89,
-        "sizes": [
-            "500ml"
-        ],
-        "image": "/images/product-clearon.webp",
-        "gallery": [],
-        "benefits": [
-            "Streak-free finish",
-            "Quick drying formula",
-            "Safe on all glass",
-            "No residue left behind"
-        ],
-        "directions": [
-            "Spray on surface",
-            "Wipe with clean cloth",
-            "Buff for extra shine"
-        ],
-        "featured": true,
-        "bestSeller": false,
-        "active": true,
-        "stock": 0
-    },
-    {
-        "id": "6",
-        "slug": "fabrix",
-        "name": "FABRIX",
-        "category": "Laundry Care",
-        "shortDescription": "Premium liquid detergent for all fabrics",
-        "description": "FABRIX liquid detergent is specially formulated for all fabric types, providing a thorough clean while preserving fabric softness and color.",
-        "price": 149,
-        "sizes": [
-            "1L",
-            "2L"
-        ],
-        "image": "/images/product-fabrix.webp",
-        "gallery": [],
-        "benefits": [
-            "Safe for all fabrics",
-            "Color protection",
-            "Fabric softness",
-            "Fresh fragrance"
-        ],
-        "directions": [
-            "Pour into dispenser",
-            "Add clothes to machine",
-            "Select wash cycle",
-            "Enjoy clean laundry"
-        ],
-        "featured": false,
-        "bestSeller": true,
-        "active": true,
-        "stock": 0
-    },
-    {
-        "id": "5",
-        "slug": "supreme",
-        "name": "SUPREME",
-        "category": "Laundry Care",
-        "shortDescription": "Powerful detergent for bright, fresh laundry",
-        "description": "SUPREME detergent powder delivers deep cleaning action, removing tough stains while keeping fabrics bright and fresh.",
-        "price": 109,
-        "sizes": [
-            "1kg",
-            "2kg"
-        ],
-        "image": "/images/product-supreme.webp",
-        "gallery": [],
-        "benefits": [
-            "Deep stain removal",
-            "Fabric brightening",
-            "Long-lasting fragrance",
-            "Works in all machines"
-        ],
-        "directions": [
-            "Add powder to drum",
-            "Add clothes",
-            "Start wash cycle",
-            "Rinse thoroughly"
-        ],
-        "featured": false,
-        "bestSeller": true,
-        "active": true,
-        "stock": 0
-    },
-    {
-        "id": "combo-002",
-        "slug": "bathroom-essentials-combo",
-        "name": "Bathroom Essentials Combo",
-        "category": "Bathroom Care",
-        "shortDescription": "Everything you need for a spotless, hygienic bathroom — toilet cleaner, shower gel & more.",
-        "description": "Keep your bathroom fresh and germ-free with our Bathroom Essentials Combo. This curated pack includes a powerful toilet cleaner, a refreshing shower gel, and a surface disinfectant. Perfect for maintaining bathroom hygiene without the hassle of buying products separately.",
-        "price": 499,
-        "sizes": [
-            "Combo Pack"
-        ],
-        "image": "/images/product-handpure.svg",
-        "gallery": [
-            "/images/category-bathroom-care.svg"
-        ],
-        "benefits": [
-            "Kills 99.9% germs and bacteria",
-            "Leaves a pleasant, long-lasting fragrance",
-            "Gentle on surfaces, tough on stains",
-            "Complete bathroom hygiene in one pack"
-        ],
-        "directions": [
-            "Apply Toilet Cleaner under the rim, leave 10 min, scrub & flush",
-            "Use Shower Gel for daily bathing — lather & rinse",
-            "Spray Surface Disinfectant on tiles, leave 3 min, wipe dry"
-        ],
-        "featured": false,
-        "bestSeller": false,
-        "active": true,
-        "stock": 40,
-        "badge": "Combo Offer"
-    },
-    {
-        "id": "combo-001",
-        "slug": "home-cleaning-combo",
-        "name": "Home Cleaning Combo",
-        "category": "Floor Care",
-        "shortDescription": "Complete home cleaning solution with floor, bathroom & kitchen essentials in one pack.",
-        "description": "Our best-selling Home Cleaning Combo brings together the essential products you need to keep your entire home sparkling clean. Includes a floor cleaner, bathroom cleaner, and a kitchen degreaser — everything at an unbeatable combo price.",
-        "price": 699,
-        "sizes": [
-            "Combo Pack"
-        ],
-        "image": "/images/hero-products.jpg",
-        "gallery": [
-            "/images/product-supreme.svg"
-        ],
-        "benefits": [
-            "Complete cleaning solution for entire home",
-            "Save 20% compared to buying individually",
-            "Premium quality products trusted by 500+ families",
-            "Suitable for all floor and surface types"
-        ],
-        "directions": [
-            "Use Floor Cleaner: dilute 1 cap in 1L water, mop the floor",
-            "Use Bathroom Cleaner: spray on surfaces, leave for 5 min, wipe",
-            "Use Kitchen Degreaser: spray on greasy areas, scrub and rinse"
-        ],
-        "featured": false,
-        "bestSeller": false,
-        "active": true,
-        "stock": 50,
-        "badge": "Combo Offer"
-    },
-    {
-        "id": "combo-003",
-        "slug": "kitchen-combo-pack",
-        "name": "Kitchen Combo Pack",
-        "category": "Kitchen Care",
-        "shortDescription": "Tough on grease, gentle on your hands — dishwash liquid + degreaser combo.",
-        "description": "The Kitchen Combo Pack is designed for the heart of your home. Pair our ultra-grease-cutting Dishwash Liquid with the powerful Kitchen Degreaser for spotless dishes and sparkling surfaces. Save more while keeping your kitchen the cleanest place in your house.",
-        "price": 399,
-        "sizes": [
-            "Combo Pack"
-        ],
-        "image": "/images/product-dish-sheen.svg",
-        "gallery": [
-            "/images/category-kitchen-care.svg"
-        ],
-        "benefits": [
-            "Cuts through tough grease instantly",
-            "Gentle on hands — no harsh chemicals",
-            "Pleasant lemon fragrance",
-            "20% savings vs individual purchase"
-        ],
-        "directions": [
-            "Dishwash Liquid: add 2 drops on sponge, scrub dishes, rinse",
-            "Degreaser: spray on stovetop & surfaces, leave 5 min, wipe clean"
-        ],
-        "featured": false,
-        "bestSeller": false,
-        "active": true,
-        "stock": 60,
-        "badge": "Combo Pack"
-    },
-    {
-        "id": "combo-004",
-        "slug": "laundry-care-combo",
-        "name": "Laundry Care Combo",
-        "category": "Laundry Care",
-        "shortDescription": "Brighten & freshen every wash — detergent + fabric softener combo for all fabric types.",
-        "description": "Make every laundry day a breeze with our Laundry Care Combo. Combining our powerful Fabric Detergent with a premium Fabric Softener, this pack gives you brilliantly clean and beautifully soft clothes every time. Perfect for all washing machines and hand wash.",
-        "price": 549,
-        "sizes": [
-            "Combo Pack"
-        ],
-        "image": "/images/product-fabrix.svg",
-        "gallery": [
-            "/images/category-laundry-care.svg"
-        ],
-        "benefits": [
-            "Deep cleaning for all fabric types",
-            "Leaves clothes soft and fresh",
-            "Color-safe formula protects fabric vibrancy",
-            "Works in both machines and hand wash"
-        ],
-        "directions": [
-            "Detergent: add 1 cap (front load) or 2 caps (top load) to drum",
-            "Fabric Softener: add 1/2 cap in the softener tray during rinse cycle"
-        ],
-        "featured": false,
-        "bestSeller": false,
-        "active": true,
-        "stock": 45,
-        "badge": "Combo Pack"
     }
 ]

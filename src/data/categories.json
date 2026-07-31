@@ -4,35 +4,35 @@
     "slug": "floor-care",
     "name": "Floor Care",
     "description": "Clean, Shine & Protect your floors",
-    "image": "/images/category-floor-care.webp"
+    "image": "/images/category-floor-care.svg"
   },
   {
     "id": "2",
     "slug": "bathroom-care",
     "name": "Bathroom Care",
     "description": "Powerful cleaning for hygienic bathrooms",
-    "image": "/images/category-bathroom-care.webp"
+    "image": "/images/category-bathroom-care.svg"
   },
   {
     "id": "3",
     "slug": "kitchen-care",
     "name": "Kitchen Care",
     "description": "Tough on grease, gentle on hands",
-    "image": "/images/category-kitchen-care.webp"
+    "image": "/images/category-kitchen-care.svg"
   },
   {
     "id": "4",
     "slug": "laundry-care",
     "name": "Laundry Care",
     "description": "Deep clean & freshness always",
-    "image": "/images/category-laundry-care.webp"
+    "image": "/images/category-laundry-care.svg"
   },
   {
     "id": "5",
     "slug": "personal-care",
     "name": "Personal Care",
     "description": "Gentle & safe care for your family",
-    "image": "/images/category-personal-care.webp"
+    "image": "/images/category-personal-care.svg"
   },
   {
     "id": "6",
@@ -46,6 +46,6 @@
     "slug": "pooja-oil",
     "name": "Pooja Oil",
     "description": "Pure & divine lighting for worship",
-    "image": "/images/category-floor-care.webp"
+    "image": "/images/category-floor-care.svg"
   }
 ]
