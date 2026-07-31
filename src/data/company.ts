@@ -1,3 +1,6 @@
+import { readJsonFile } from "@/lib/db";
+import { business, contact } from "@/config/site";
+
 export interface CompanyInfo {
   name: string;
   tagline: string;
@@ -20,19 +23,20 @@ export interface CompanyInfo {
   };
 }
 
-import { business, contact } from "@/config/site";
-
-let cachedCompany: CompanyInfo | null = null;
-
+/**
+ * Read company info from the data layer (MongoDB with JSON fallback).
+ * This replaces the previous internal fetch() which broke during static
+ * generation because it depended on a live database connection.
+ */
 export async function getCompany(): Promise<CompanyInfo> {
-  // Always re-fetch so admin settings changes are visible immediately.
-  // The previous in-memory cache caused stale data after saves.
   try {
-    const res = await fetch("/api/admin/data/company", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch company");
-    return await res.json();
-  } catch {
-    console.error("Error fetching company, returning default");
+    const data = await readJsonFile<any>("company.json");
+    if (data && data.name) {
+      return data as CompanyInfo;
+    }
+    throw new Error("No company data found");
+  } catch (err) {
+    console.error("Error fetching company, returning default:", err instanceof Error ? err.message : err);
     return {
       name: business.name,
       tagline: business.tagline,
@@ -48,8 +52,4 @@ export async function getCompany(): Promise<CompanyInfo> {
       stats: { customers: 500, distributors: 100, products: 25, years: 5 },
     };
   }
-}
-
-export function clearCompanyCache() {
-  cachedCompany = null;
 }

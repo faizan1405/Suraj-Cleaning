@@ -1,3 +1,5 @@
+import { readJsonFile } from "@/lib/db";
+
 export interface Testimonial {
   id: string;
   quote: string;
@@ -7,13 +9,16 @@ export interface Testimonial {
   rating: number;
 }
 
+/**
+ * Read testimonials directly from the data layer (MongoDB with JSON fallback).
+ * Replaces the broken internal fetch() call.
+ */
 export async function getTestimonials(): Promise<Testimonial[]> {
   try {
-    const res = await fetch("/api/admin/data/testimonials", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch testimonials");
-    return res.json();
-  } catch {
-    console.error("Error fetching testimonials, returning empty array");
+    const data = await readJsonFile<Testimonial[]>("testimonials.json");
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error("Error fetching testimonials:", err instanceof Error ? err.message : err);
     return [];
   }
 }

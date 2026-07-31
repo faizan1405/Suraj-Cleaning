@@ -1,3 +1,5 @@
+import { readJsonFile } from "@/lib/db";
+
 export interface QualityStep {
   id: string;
   stepNumber: number;
@@ -6,13 +8,16 @@ export interface QualityStep {
   image: string;
 }
 
+/**
+ * Read quality process steps directly from the data layer (MongoDB with JSON fallback).
+ * Replaces the broken internal fetch() call.
+ */
 export async function getQualitySteps(): Promise<QualityStep[]> {
   try {
-    const res = await fetch("/api/admin/data/qualityProcess", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch quality steps");
-    return res.json();
-  } catch {
-    console.error("Error fetching quality steps, returning empty array");
+    const data = await readJsonFile<QualityStep[]>("qualityProcess.json");
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error("Error fetching quality steps:", err instanceof Error ? err.message : err);
     return [];
   }
 }

@@ -47,6 +47,7 @@ export interface SessionUser {
 export interface SessionPayload extends SessionUser {
   iat: number;
   exp: number;
+  isAdmin?: boolean;
 }
 
 export function signSession(payload: SessionPayload): string {

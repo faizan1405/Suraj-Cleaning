@@ -1,4 +1,9 @@
 import { getDb, resetDb } from "@/lib/mongodb";
+import { readFileSync, existsSync } from "fs";
+import { join } from "path";
+
+const DB_NAME = "suraj-cleaning";
+const DATA_DIR = join(process.cwd(), "src", "data");
 
 const COLLECTION_MAP: Record<string, string> = {
   "products.json": "products",
@@ -16,9 +21,12 @@ const COLLECTION_MAP: Record<string, string> = {
 const SINGLETON_COLLECTIONS = new Set(["company.json"]);
 
 const INDEX_MAP: Record<string, Record<string, 1 | -1>> = {
-  products: { category: 1, slug: 1, active: 1, bestSeller: 1, "stock": 1 },
+  products: { category: 1, slug: 1, active: 1, bestSeller: 1, stock: 1 },
   orders: { "customer.email": 1, status: 1, paymentStatus: 1, paymentMethod: 1, razorpayOrderId: 1, createdAt: -1 },
   users: { id: 1 },
+  contact: { submittedAt: -1 },
+  distributor: { submittedAt: -1 },
+  newsletter: { submittedAt: -1 },
 };
 
 function getCollectionName(relativePath: string): string {
@@ -27,39 +35,70 @@ function getCollectionName(relativePath: string): string {
   return name;
 }
 
+/**
+ * Load data from a JSON file in src/data as a fallback when MongoDB
+ * is unavailable or the collection is empty. This ensures the site
+ * always has data even if the database has not been seeded yet.
+ */
+function loadJsonFallback<T>(relativePath: string): T {
+  const filePath = join(DATA_DIR, relativePath);
+  if (!existsSync(filePath)) {
+    return (SINGLETON_COLLECTIONS.has(relativePath) ? { _id: "singleton", data: {} } : []) as T;
+  }
+  const content = readFileSync(filePath, "utf-8");
+  const parsed = JSON.parse(content) as T;
+  return parsed;
+}
+
 async function readJsonFile<T>(relativePath: string): Promise<T> {
-  for (let attempt = 0; attempt < 3; attempt++) {
+  for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const db = await getDb();
       const collection = db.collection(getCollectionName(relativePath));
 
       if (SINGLETON_COLLECTIONS.has(relativePath)) {
         const doc = await collection.findOne<{ data: T }>({ _id: "singleton" } as Record<string, string>);
-        return doc?.data ?? ([] as unknown as T);
+        if (doc?.data) return doc.data;
+        // Fall back to JSON file
+        const fallback = loadJsonFallback<T>(relativePath);
+        if (fallback && (fallback as any)._id !== "singleton") {
+          return fallback;
+        }
+        return (fallback as any).data ?? ({} as T);
       }
 
       const docs = await collection.find({}).toArray();
-      const items = docs.map(({ _id, ...rest }) => rest as Record<string, unknown>);
-      return items as unknown as T;
+      if (docs.length > 0) {
+        const items = docs.map(({ _id, ...rest }) => rest as Record<string, unknown>);
+        return items as unknown as T;
+      }
+
+      // Collection empty — fall back to JSON file
+      const fallback = loadJsonFallback<T>(relativePath);
+      if (Array.isArray(fallback) && fallback.length > 0) {
+        return fallback;
+      }
+      return fallback as T;
     } catch (error) {
-      if (attempt < 2) {
+      if (attempt < 1) {
         await resetDb();
         continue;
       }
-      throw error;
+      // Final attempt: try JSON fallback
+      try {
+        return loadJsonFallback<T>(relativePath);
+      } catch {
+        throw error;
+      }
     }
   }
-  throw new Error("readJsonFile: all retries exhausted");
+  // Should not reach here
+  return loadJsonFallback<T>(relativePath);
 }
 
 async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
   const client = (await import("@/lib/mongodb"))._getClientSync();
 
-  // Use a MongoDB session + transaction so the clear-then-insert is atomic.
-  // Without this, deleteMany followed by insertMany leaves the collection
-  // empty between the two calls — a concurrent read (or partial insert
-  // failure) returns no data or corrupt data, which causes stale product
-  // lists and re-appearing items.
   if (client) {
     try {
       const session = client.startSession();
@@ -71,31 +110,29 @@ async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
           await collection.updateOne(
             { _id: "singleton" } as Record<string, string>,
             { $set: { data } },
-            { session }
+            { upsert: true, session }
           );
           return;
         }
 
         const items = data as Record<string, unknown>[];
-
         if (items.length === 0) {
           await collection.deleteMany({}, { session });
           return;
         }
 
+        // Atomic: delete all then insert all
         await collection.deleteMany({}, { session });
         await collection.insertMany(items, { ordered: false, session });
       });
       return;
     } catch (txError) {
-      // If the transaction fails (e.g., session already ended on a non-transactable
-      // engine), fall through to the non-transactional path below.
       console.error("writeJsonFile transaction failed, falling back:", txError);
     }
   }
 
-  // Non-transactional fallback (used if no active client or session support)
-  for (let attempt = 0; attempt < 3; attempt++) {
+  // Non-transactional fallback
+  for (let attempt = 0; attempt < 2; attempt++) {
     try {
       const db = await getDb();
       const collection = db.collection(getCollectionName(relativePath));
@@ -110,7 +147,6 @@ async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
       }
 
       const items = data as Record<string, unknown>[];
-
       if (items.length === 0) {
         await collection.deleteMany({});
         return;
@@ -120,14 +156,13 @@ async function writeJsonFile<T>(relativePath: string, data: T): Promise<void> {
       await collection.insertMany(items, { ordered: false });
       return;
     } catch (error) {
-      if (attempt < 2) {
+      if (attempt < 1) {
         await resetDb();
         continue;
       }
       throw error;
     }
   }
-  throw new Error("writeJsonFile: all retries exhausted");
 }
 
 export { resetDb, readJsonFile, writeJsonFile };
@@ -146,7 +181,7 @@ export async function ensureIndexes(): Promise<void> {
         }
       }
     }
-  } catch {
-    // Silently skip index creation if DB is unavailable
+  } catch (err) {
+    console.error("[db] Failed to ensure indexes:", err instanceof Error ? err.message : err);
   }
 }

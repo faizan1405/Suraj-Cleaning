@@ -1,3 +1,5 @@
+import { readJsonFile } from "@/lib/db";
+
 export interface Category {
   id: string;
   slug: string;
@@ -6,13 +8,16 @@ export interface Category {
   image: string;
 }
 
+/**
+ * Read categories directly from the data layer (MongoDB with JSON fallback).
+ * Replaces the broken internal fetch() call that failed during static generation.
+ */
 export async function getCategories(): Promise<Category[]> {
   try {
-    const res = await fetch("/api/admin/data/categories", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch categories");
-    return res.json();
-  } catch {
-    console.error("Error fetching categories, returning empty array");
+    const data = await readJsonFile<Category[]>("categories.json");
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error("Error fetching categories:", err instanceof Error ? err.message : err);
     return [];
   }
 }
