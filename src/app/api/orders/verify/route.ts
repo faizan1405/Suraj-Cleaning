@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import { verifyRazorpaySignature } from "@/lib/razorpay";
 import { getOrderByRazorpayOrderId, updateOrder, getOrderByRazorpayPaymentId } from "@/data/orders";
 import { readJsonFile, writeJsonFile } from "@/lib/db";
+import logger from "@/lib/logger";
 
 export async function POST(request: Request) {
   try {
@@ -51,7 +52,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ order: updated, status: "paid" });
   } catch (error) {
-    console.error("Order verification failed:", error);
+    logger.error("Order verification failed", { error: error instanceof Error ? error.message : "Unknown error" });
     return NextResponse.json({ error: "Verification failed" }, { status: 500 });
   }
 }

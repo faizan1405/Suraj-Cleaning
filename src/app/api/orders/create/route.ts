@@ -8,6 +8,7 @@ import { createRazorpayOrder, getRazorpayKeyId, isRazorpayServerConfigured } fro
 import { getProducts } from "@/data/products";
 import { createOrder } from "@/data/orders";
 import type { Order, OrderItem } from "@/data/orders";
+import logger from "@/lib/logger";
 
 interface CartItemInput {
   productId: string;
@@ -163,7 +164,7 @@ export async function POST(request: Request) {
       taxLabel: TAX_LABEL,
     });
   } catch (error) {
-    console.error("Order creation failed:", error);
+    logger.error("Order creation failed", { error: error instanceof Error ? error.message : "Unknown error" });
     const message = error instanceof Error ? error.message : "Failed to create order";
     return NextResponse.json({ error: message }, { status: 500 });
   }

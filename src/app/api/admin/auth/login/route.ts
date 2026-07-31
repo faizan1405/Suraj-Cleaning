@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { validateCredentials } from "@/lib/admin-auth";
+import logger from "@/lib/logger";
 
 export async function POST(request: Request) {
   try {
@@ -7,6 +8,7 @@ export async function POST(request: Request) {
     const { username, password } = body as { username: string; password: string };
 
     if (!username || !password || !validateCredentials(username, password)) {
+      logger.warn("Admin login failed", { username });
       return NextResponse.json({ error: "Invalid username or password" }, { status: 401 });
     }
 

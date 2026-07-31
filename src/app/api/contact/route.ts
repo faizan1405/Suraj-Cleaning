@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import { readJsonFile, writeJsonFile } from "@/lib/db";
+import logger from "@/lib/logger";
 
 export async function POST(request: Request) {
   try {
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   } catch {
+    logger.error("Contact form submission failed");
     return NextResponse.json(
       { message: "Something went wrong" },
       { status: 500 }

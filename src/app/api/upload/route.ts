@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 
 import { NextResponse } from "next/server";
 import cloudinary, { initCloudinary } from "@/lib/cloudinary";
+import logger from "@/lib/logger";
 
 export async function POST(request: Request) {
   try {
@@ -46,7 +47,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ url: result.secure_url });
   } catch (error: any) {
-    console.error("[upload] Error:", error?.message || error);
+    logger.error("Upload failed", { error: error?.message || error });
     return NextResponse.json(
       {
         error:

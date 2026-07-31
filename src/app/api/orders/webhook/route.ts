@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
 import { verifyWebhookSignature } from "@/lib/razorpay";
 import { getOrderByRazorpayPaymentId, getOrderByRazorpayOrderId, updateOrder } from "@/data/orders";
+import logger from "@/lib/logger";
 
 export async function POST(request: Request) {
   try {
@@ -61,7 +62,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ received: true });
   } catch (error) {
-    console.error("Webhook handler error:", error);
+    logger.error("Webhook handler error", { error: error instanceof Error ? error.message : "Unknown error" });
     return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
   }
 }

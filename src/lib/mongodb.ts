@@ -1,4 +1,5 @@
 import { MongoClient, type Db } from "mongodb";
+import logger from "./logger";
 
 const MONGODB_URI = process.env.MONGODB_URI;
 const DB_NAME = "suraj-cleaning";
@@ -9,6 +10,7 @@ let connectingPromise: Promise<Db> | null = null;
 
 async function connect(): Promise<Db> {
   if (!MONGODB_URI) {
+    logger.error("MONGODB_URI is not set in environment variables");
     throw new Error("MONGODB_URI is not set in environment variables");
   }
 
@@ -23,14 +25,19 @@ async function connect(): Promise<Db> {
     db = null;
   }
 
-  client = new MongoClient(MONGODB_URI, {
-    serverSelectionTimeoutMS: 5000,
-    retryWrites: true,
-  });
+  try {
+    client = new MongoClient(MONGODB_URI, {
+      serverSelectionTimeoutMS: 5000,
+      retryWrites: true,
+    });
 
-  await client.connect();
-  db = client.db(DB_NAME);
-  return db;
+    await client.connect();
+    db = client.db(DB_NAME);
+    return db;
+  } catch (error) {
+    logger.error("MongoDB connection failed", { error: error instanceof Error ? error.message : String(error) });
+    throw error;
+  }
 }
 
 export async function getDb(): Promise<Db> {
