@@ -33,5 +33,19 @@
     "name": "Personal Care",
     "description": "Gentle & safe care for your family",
     "image": "/images/category-personal-care.webp"
+  },
+  {
+    "id": "6",
+    "slug": "combo-pack",
+    "name": "Combo Pack",
+    "description": "Value packs for complete home care",
+    "image": "/images/mega-pack-combo.jpg"
+  },
+  {
+    "id": "7",
+    "slug": "pooja-oil",
+    "name": "Pooja Oil",
+    "description": "Pure & divine lighting for worship",
+    "image": "/images/category-floor-care.webp"
   }
 ]

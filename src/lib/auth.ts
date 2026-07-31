@@ -1,10 +1,12 @@
 import crypto from "crypto";
 
 const _secret = process.env.NEXTAUTH_SECRET;
-if (!_secret) {
-  throw new Error("NEXTAUTH_SECRET is not set in environment variables");
+const SECRET = _secret as string | undefined;
+
+function requireSecret(): string {
+  if (!SECRET) throw new Error("NEXTAUTH_SECRET is not set in environment variables");
+  return SECRET;
 }
-const SECRET = _secret as string;
 
 export const SESSION_COOKIE_NAME = "session";
 export const SESSION_COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days
@@ -48,18 +50,20 @@ export interface SessionPayload extends SessionUser {
 }
 
 export function signSession(payload: SessionPayload): string {
+  const secret = requireSecret();
   const data = Buffer.from(JSON.stringify(payload)).toString("base64url");
-  const sig = crypto.createHmac("sha256", SECRET).update(data).digest("base64url");
+  const sig = crypto.createHmac("sha256", secret).update(data).digest("base64url");
   return `${data}.${sig}`;
 }
 
 export function parseSession(token: string | undefined): SessionPayload | null {
   if (!token) return null;
   try {
+    const secret = requireSecret();
     const [data, sig] = token.split(".");
     if (!data || !sig) return null;
 
-    const expectedSig = crypto.createHmac("sha256", SECRET).update(data).digest("base64url");
+    const expectedSig = crypto.createHmac("sha256", secret).update(data).digest("base64url");
     if (sig !== expectedSig) return null;
 
     const payload = JSON.parse(Buffer.from(data, "base64url").toString("utf-8")) as SessionPayload;
